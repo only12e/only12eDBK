@@ -13,9 +13,16 @@ let OperatorCache = {
             callBack()
         else {
             Axios.post('/Base_Manage/Home/GetOperatorInfo').then(resJson => {
-                this.info = resJson.Data.UserInfo
-                permissions = resJson.Data.Permissions
-                inited = true
+                if (resJson && resJson.Data) {
+                    this.info = resJson.Data.UserInfo || {}
+                    permissions = resJson.Data.Permissions || []
+                    inited = true
+                }
+                callBack()
+            }).catch(error => {
+                console.warn('获取用户信息失败:', error)
+                this.info = {}
+                permissions = []
                 callBack()
             })
         }
