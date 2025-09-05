@@ -63,6 +63,10 @@
     <a-table ref="table" :columns="columns" :rowKey="row => row.Id" :dataSource="data" :pagination="pagination"
       :loading="loading" @change="handleTableChange" :scroll="{ x: 1200, y: 600 }"
       :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :bordered="true" size="middle">
+      <span slot="cover" slot-scope="text">
+        <img v-if="text" :src="text" style="width: 40px; height: 30px; object-fit: cover; border-radius: 4px;" />
+        <span v-else>-</span>
+      </span>
       <span slot="status" slot-scope="text">
         <a-badge :status="text === 'published' ? 'success' : text === 'draft' ? 'default' : 'error'"
           :text="text === 'published' ? '已发布' : text === 'draft' ? '草稿' : '隐藏'" />
@@ -143,10 +147,18 @@ import EditForm from './EditForm'
 
 const columns = [
   {
+    title: '封面',
+    dataIndex: 'CoverImage',
+    scopedSlots: { customRender: 'cover' },
+    width: 80,
+    fixed: 'left'
+  },
+  {
     title: '标题',
     dataIndex: 'Title',
     width: 200,
-    ellipsis: true
+    ellipsis: true,
+    fixed: 'left'
   },
   {
     title: '分类',
@@ -195,7 +207,8 @@ const columns = [
   {
     title: '操作',
     scopedSlots: { customRender: 'action' },
-    width: 150
+    width: 150,
+    fixed: 'right'
   }
 ]
 

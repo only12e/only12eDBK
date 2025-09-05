@@ -216,9 +216,15 @@ export default {
     },
 
     openForm(id) {
-      this.init()
-
       if (id) {
+        // 编辑时：先显示对话框和初始化编辑器，但不重置entity
+        this.visible = true
+        this.$nextTick(() => {
+          this.$refs['form'].clearValidate()
+          this.initEditor()
+        })
+        
+        // 获取数据后再设置entity
         GetTheData(id).then(resJson => {
           this.entity = {
             ...resJson.Data,
@@ -230,6 +236,9 @@ export default {
             this.editor.txt.html(this.entity.Content)
           }
         })
+      } else {
+        // 新建时：正常初始化
+        this.init()
       }
     },
 
