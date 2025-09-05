@@ -34,13 +34,8 @@ export default {
     }
   },
   mounted() {
-    if (this.maxCount == 1) {
-      this.value = this.value || ''
-    } else {
-      this.value = this.value || []
-    }
+    // 不要直接修改 props，让父组件保持数据控制权
     this.checkType(this.value)
-
     this.refresh()
   },
   data() {
@@ -60,8 +55,8 @@ export default {
       }
 
       this.checkType(val)
-
-      this.value = val
+      
+      // 不要直接修改 props
       this.refresh()
     }
   },
@@ -70,6 +65,11 @@ export default {
       return this.maxCount > 1
     },
     checkType(val) {
+      // 如果值为 null 或 undefined，不进行类型检查
+      if (val == null) {
+        return
+      }
+      
       if (this.maxCount == 1 && TypeHelper.isArray(val)) {
         throw 'maxCount=1时model不能为Array'
       }
@@ -81,6 +81,10 @@ export default {
       if (this.maxCount < 1) {
         throw 'maxCount必须>=1'
       }
+      
+      // 清空 fileList
+      this.fileList = []
+      
       if (this.value) {
         let urls = []
         if (TypeHelper.isString(this.value)) {
@@ -106,12 +110,29 @@ export default {
     handleChange({ file, fileList }) {
       this.fileList = fileList
 
+      if (file.status == 'done') {
+        // 处理上传成功
+        if (file.response && file.response.errno === 0) {
+          // 新格式：wangEditor格式
+          if (file.response.data && file.response.data.length > 0) {
+            file.url = file.response.data[0]
+          }
+        } else if (file.response && file.response.url) {
+          // 旧格式：兼容原有格式
+          file.url = file.response.url
+        }
+      }
+
       if (file.status == 'done' || file.status == 'removed') {
-        var urls = this.fileList.filter(x => x.status == 'done').map(x => x.url || x.response.url)
-        var newValue = this.maxCount == 1 ? urls[0] : urls
+        var urls = this.fileList.filter(x => x.status == 'done').map(x => x.url || (x.response && x.response.url))
+        var newValue = this.maxCount == 1 ? (urls[0] || '') : urls
         this.internelValue = newValue
         //双向绑定
         this.$emit('input', newValue)
+      } else if (file.status == 'error') {
+        // 处理上传失败
+        const errorMessage = file.response && file.response.message ? file.response.message : '文件上传失败'
+        this.$message.error(errorMessage)
       }
     }
   }

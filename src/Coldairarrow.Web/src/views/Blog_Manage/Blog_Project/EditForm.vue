@@ -102,11 +102,7 @@ export default {
       },
       visible: false,
       confirmLoading: false,
-      entity: {
-        Status: 'active',
-        IsFeatured: false,
-        SortOrder: 0
-      },
+      entity: this.getInitialEntity(),
       editor: null,
 
       rules: {
@@ -124,9 +120,8 @@ export default {
     }
   },
   methods: {
-    init() {
-      this.visible = true
-      this.entity = {
+    getInitialEntity() {
+      return {
         Status: 'active',
         IsFeatured: false,
         SortOrder: 0,
@@ -139,6 +134,10 @@ export default {
         WebsiteUrl: '',
         DifficultyLevel: 'intermediate'
       }
+    },
+    init() {
+      this.visible = true
+      this.entity = this.getInitialEntity()
 
       this.$nextTick(() => {
         this.$refs['form'].clearValidate()
@@ -156,7 +155,7 @@ export default {
       this.editor = new E('#editor')
 
       // 配置服务器端地址
-      this.editor.customConfig.uploadImgServer = '/Base_Manage/Upload/UploadFileByForm'
+      this.editor.customConfig.uploadImgServer = `${this.$rootUrl}/Base_Manage/Upload/UploadFileByForm`
       this.editor.customConfig.uploadImgHeaders = {
         Authorization: 'Bearer ' + TokenCache.getToken()
       }
@@ -164,6 +163,24 @@ export default {
       this.editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024 // 5M
       this.editor.customConfig.uploadImgMaxLength = 10
       this.editor.customConfig.uploadImgTimeout = 60000
+      
+      // 配置上传图片的钩子函数
+      this.editor.customConfig.uploadImgHooks = {
+        before: function (xhr, editor, files) {
+        },
+        success: function (xhr, editor, result) {
+          
+        },
+        fail: function (xhr, editor, result) {
+          editor.$message && editor.$message.error('图片上传失败')
+        },
+        error: function (xhr, editor) {
+          editor.$message && editor.$message.error('图片上传出错')
+        },
+        timeout: function (xhr, editor) {
+          editor.$message && editor.$message.error('图片上传超时')
+        }
+      }
 
       // 配置菜单
       this.editor.customConfig.menus = [
