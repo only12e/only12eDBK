@@ -19,40 +19,41 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="6" :sm="24">
+          <a-col :md="8" :sm="24">
             <a-form-item label="关键字">
-              <a-input v-model="queryParam.keyword" placeholder="标题、摘要、内容" />
+              <a-input v-model="queryParam.keyword" placeholder="标题、摘要、内容" 
+                       @pressEnter="handleSearch" allowClear />
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="24">
+          <a-col :md="4" :sm="24">
             <a-form-item label="分类">
-              <a-select v-model="queryParam.categoryId" placeholder="请选择分类" allowClear>
+              <a-select v-model="queryParam.categoryId" placeholder="分类" allowClear>
                 <a-select-option v-for="item in categories" :key="item.Id" :value="item.Id">
                   {{ item.Name }}
                 </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="24">
+          <a-col :md="4" :sm="24">
             <a-form-item label="状态">
-              <a-select v-model="queryParam.status" placeholder="请选择状态" allowClear>
+              <a-select v-model="queryParam.status" placeholder="状态" allowClear>
                 <a-select-option value="draft">草稿</a-select-option>
                 <a-select-option value="published">已发布</a-select-option>
                 <a-select-option value="hidden">隐藏</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="24">
+          <a-col :md="4" :sm="24">
             <a-form-item label="精选">
-              <a-select v-model="queryParam.isFeatured" placeholder="是否精选" allowClear>
+              <a-select v-model="queryParam.isFeatured" placeholder="精选" allowClear>
                 <a-select-option :value="1">是</a-select-option>
                 <a-select-option :value="0">否</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="24" :sm="24">
-            <a-button type="primary" @click="() => { this.pagination.current = 1; this.getDataList() }">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => (queryParam = {})">重置</a-button>
+          <a-col :md="4" :sm="24">
+            <a-button type="primary" @click="handleSearch">查询</a-button>
+            <a-button style="margin-left: 8px" @click="handleReset">重置</a-button>
             <a-button style="margin-left: 8px" @click="handleCategoryManage">分类管理</a-button>
           </a-col>
         </a-row>
@@ -60,8 +61,8 @@
     </div>
 
     <a-table ref="table" :columns="columns" :rowKey="row => row.Id" :dataSource="data" :pagination="pagination"
-      :loading="loading" @change="handleTableChange"
-      :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :bordered="true" size="small">
+      :loading="loading" @change="handleTableChange" :scroll="{ x: 1200, y: 600 }"
+      :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :bordered="true" size="middle">
       <span slot="status" slot-scope="text">
         <a-badge :status="text === 'published' ? 'success' : text === 'draft' ? 'default' : 'error'"
           :text="text === 'published' ? '已发布' : text === 'draft' ? '草稿' : '隐藏'" />
@@ -71,9 +72,11 @@
         <span v-else>-</span>
       </span>
       <span slot="stats" slot-scope="text, record">
-        <span>浏览: {{ record.ViewCount || 0 }}</span><br>
-        <span>点赞: {{ record.LikeCount || 0 }}</span><br>
-        <span>评论: {{ record.CommentCount || 0 }}</span>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 12px;"><a-icon type="eye" /> {{ formatNumber(record.ViewCount || 0) }}</span>
+          <span style="font-size: 12px;"><a-icon type="heart" /> {{ formatNumber(record.LikeCount || 0) }}</span>
+          <span style="font-size: 12px;"><a-icon type="message" /> {{ formatNumber(record.CommentCount || 0) }}</span>
+        </div>
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
@@ -175,7 +178,19 @@ const columns = [
   {
     title: '创建时间',
     dataIndex: 'CreatedAt',
-    width: 160
+    width: 160,
+    customRender: (text) => {
+      if (!text) return '-'
+      // 截取到分钟，格式：2025-09-05 10:30
+      const parts = text.split(' ')
+      if (parts.length >= 2) {
+        const timePart = parts[1].split(':')
+        if (timePart.length >= 2) {
+          return `${parts[0]} ${timePart[0]}:${timePart[1]}`
+        }
+      }
+      return text
+    }
   },
   {
     title: '操作',
@@ -221,8 +236,11 @@ export default {
       queryParam: {},
       pagination: {
         current: 1,
-        pageSize: 10,
-        showTotal: (total, range) => `总数:${total} 当前:${range[0]}-${range[1]}`
+        pageSize: 20,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        pageSizeOptions: ['10', '20', '50', '100'],
+        showTotal: (total, range) => `共 ${total} 条记录，显示第 ${range[0]}-${range[1]} 条`
       },
       selectedRowKeys: [],
 
@@ -367,6 +385,23 @@ export default {
     },
     handleCategorySave() {
       this.categoryVisible = false
+    },
+    handleSearch() {
+      this.pagination.current = 1
+      this.getDataList()
+    },
+    handleReset() {
+      this.queryParam = {}
+      this.pagination.current = 1
+      this.getDataList()
+    },
+    formatNumber(num) {
+      if (num >= 10000) {
+        return (num / 10000).toFixed(1) + 'w'
+      } else if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'k'
+      }
+      return num.toString()
     }
   }
 }

@@ -38,7 +38,7 @@
 
           <a-col :md="6" :sm="24">
             <a-card title="项目设置" size="small">
-              <a-form-model-item label="项目状态" prop="Status">
+              <a-form-model-item label="项目状态" prop="Status" :labelCol="{ span: 8 }" :wrapperCol="{ span: 16 }">
                 <a-select v-model="entity.Status">
                   <a-select-option value="active">进行中</a-select-option>
                   <a-select-option value="completed">已完成</a-select-option>
@@ -46,7 +46,7 @@
                 </a-select>
               </a-form-model-item>
 
-              <a-form-model-item label="难度级别" prop="DifficultyLevel">
+              <a-form-model-item label="难度级别" prop="DifficultyLevel" :labelCol="{ span: 8 }" :wrapperCol="{ span: 16 }">
                 <a-select v-model="entity.DifficultyLevel" placeholder="请选择难度">
                   <a-select-option value="beginner">初级</a-select-option>
                   <a-select-option value="intermediate">中级</a-select-option>
@@ -55,17 +55,17 @@
                 </a-select>
               </a-form-model-item>
 
-              <a-form-model-item label="排序权重">
+              <a-form-model-item label="排序权重" :labelCol="{ span: 8 }" :wrapperCol="{ span: 16 }">
                 <a-input-number v-model="entity.SortOrder" placeholder="数字越大越靠前" style="width: 100%" :min="0" />
               </a-form-model-item>
 
-              <a-form-model-item>
+              <a-form-model-item :wrapperCol="{ offset: 2, span: 22 }">
                 <a-checkbox v-model="entity.IsFeatured">
                   设为精选项目
                 </a-checkbox>
               </a-form-model-item>
 
-              <a-form-model-item label="封面图片">
+              <a-form-model-item label="封面图片" :labelCol="{ span: 8 }" :wrapperCol="{ span: 16 }">
                 <c-upload-img v-model="entity.CoverImage" :maxCount="1"></c-upload-img>
               </a-form-model-item>
             </a-card>
@@ -97,8 +97,8 @@ export default {
   data() {
     return {
       layout: {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 20 }
+        labelCol: { span: 6 },
+        wrapperCol: { span: 18 }
       },
       visible: false,
       confirmLoading: false,

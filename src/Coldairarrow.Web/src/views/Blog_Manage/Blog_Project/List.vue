@@ -188,7 +188,19 @@ const columns = [
   {
     title: '创建时间',
     dataIndex: 'CreatedAt',
-    width: 160
+    width: 160,
+    customRender: (text) => {
+      if (!text) return '-'
+      // 截取到分钟，格式：2025-09-05 10:30
+      const parts = text.split(' ')
+      if (parts.length >= 2) {
+        const timePart = parts[1].split(':')
+        if (timePart.length >= 2) {
+          return `${parts[0]} ${timePart[0]}:${timePart[1]}`
+        }
+      }
+      return text
+    }
   },
   {
     title: '操作',

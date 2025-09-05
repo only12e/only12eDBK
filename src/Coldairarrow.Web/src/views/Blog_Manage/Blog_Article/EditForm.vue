@@ -20,7 +20,7 @@
 
           <a-col :md="6" :sm="24">
             <a-card title="发布设置" size="small">
-              <a-form-model-item label="状态" prop="Status">
+              <a-form-model-item label="状态" prop="Status" :labelCol="{ span: 8 }" :wrapperCol="{ span: 16 }">
                 <a-select v-model="entity.Status">
                   <a-select-option value="draft">草稿</a-select-option>
                   <a-select-option value="published">发布</a-select-option>
@@ -28,7 +28,7 @@
                 </a-select>
               </a-form-model-item>
 
-              <a-form-model-item label="分类" prop="CategoryId">
+              <a-form-model-item label="分类" prop="CategoryId" :labelCol="{ span: 8 }" :wrapperCol="{ span: 16 }">
                 <a-select v-model="entity.CategoryId" placeholder="请选择分类">
                   <a-select-option v-for="item in categories" :key="item.Id" :value="item.Id">
                     {{ item.Name }}
@@ -36,13 +36,13 @@
                 </a-select>
               </a-form-model-item>
 
-              <a-form-model-item>
+              <a-form-model-item :wrapperCol="{ offset: 2, span: 22 }">
                 <a-checkbox v-model="entity.IsFeatured">
                   设为精选文章
                 </a-checkbox>
               </a-form-model-item>
 
-              <a-form-model-item label="封面图片">
+              <a-form-model-item label="封面图片" :labelCol="{ span: 8 }" :wrapperCol="{ span: 16 }">
                 <c-upload-img v-model="entity.CoverImage" :maxCount="1"></c-upload-img>
               </a-form-model-item>
             </a-card>
@@ -74,15 +74,12 @@ export default {
   data() {
     return {
       layout: {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 20 }
+        labelCol: { span: 6 },
+        wrapperCol: { span: 18 }
       },
       visible: false,
       confirmLoading: false,
-      entity: {
-        Status: 'draft',
-        IsFeatured: false
-      },
+      entity: this.getInitialEntity(),
       categories: [],
       editor: null,
 
@@ -100,9 +97,8 @@ export default {
     }
   },
   methods: {
-    init() {
-      this.visible = true
-      this.entity = {
+    getInitialEntity() {
+      return {
         Status: 'draft',
         IsFeatured: false,
         Title: '',
@@ -111,6 +107,10 @@ export default {
         CoverImage: '',
         CategoryId: null
       }
+    },
+    init() {
+      this.visible = true
+      this.entity = this.getInitialEntity()
 
       this.$nextTick(() => {
         this.$refs['form'].clearValidate()
@@ -130,7 +130,7 @@ export default {
       this.editor = new E('#editor')
 
       // 配置服务器端地址
-      this.editor.customConfig.uploadImgServer = '/Base_Manage/Upload/UploadFileByForm'
+      this.editor.customConfig.uploadImgServer = `${this.$rootUrl}/Base_Manage/Upload/UploadFileByForm`
       this.editor.customConfig.uploadImgHeaders = {
         Authorization: 'Bearer ' + TokenCache.getToken()
       }
