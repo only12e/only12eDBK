@@ -32,11 +32,11 @@ export default {
   },
   mounted() {
     if (this.maxCount == 1) {
-      this.value = this.value || ''
+      this.internalValue = this.value || ''
     } else {
-      this.value = this.value || []
+      this.internalValue = this.value || []
     }
-    this.checkType(this.value)
+    this.checkType(this.internalValue)
 
     this.refresh()
   },
@@ -47,13 +47,14 @@ export default {
       fileList: [],
       obj: {},
       headers: { Authorization: 'Bearer ' + TokenCache.getToken() },
+      internalValue: null,
     }
   },
   watch: {
     value(val) {
       this.checkType(val)
 
-      this.value = val
+      this.internalValue = val
       this.refresh()
     },
   },
@@ -70,13 +71,13 @@ export default {
       if (this.maxCount < 1) {
         throw 'maxCount必须>=1'
       }
-      if (this.value) {
+      if (this.internalValue) {
         let urls = []
 
-        if (TypeHelper.isString(this.value)) {
-          urls.push(this.value)
-        } else if (TypeHelper.isArray(this.value)) {
-          urls.push(...this.value)
+        if (TypeHelper.isString(this.internalValue)) {
+          urls.push(this.internalValue)
+        } else if (TypeHelper.isArray(this.internalValue)) {
+          urls.push(...this.internalValue)
         } else {
           throw 'value必须为字符串或数组'
         }

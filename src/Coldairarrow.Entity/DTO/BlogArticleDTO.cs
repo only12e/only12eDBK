@@ -656,4 +656,684 @@ namespace Coldairarrow.Entity.DTO
         [StringLength(255, MinimumLength = 6, ErrorMessage = "密码长度必须在6-255个字符之间")]
         public string NewPassword { get; set; }
     }
+
+    /// <summary>
+    /// 系统配置输入DTO
+    /// </summary>
+    public class BlogSystemConfigInputDTO
+    {
+        /// <summary>
+        /// 配置ID
+        /// </summary>
+        public int? Id { get; set; }
+
+        /// <summary>
+        /// 配置键名
+        /// </summary>
+        [Required(ErrorMessage = "配置键名不能为空")]
+        [StringLength(100, ErrorMessage = "配置键名长度不能超过100个字符")]
+        public string ConfigKey { get; set; }
+
+        /// <summary>
+        /// 配置值
+        /// </summary>
+        public string ConfigValue { get; set; }
+
+        /// <summary>
+        /// 配置说明
+        /// </summary>
+        [StringLength(255, ErrorMessage = "配置说明长度不能超过255个字符")]
+        public string Description { get; set; }
+    }
+
+    /// <summary>
+    /// 系统配置查询输入DTO
+    /// </summary>
+    public class BlogSystemConfigQueryInputDTO : PageInput
+    {
+        /// <summary>
+        /// 关键词搜索（配置键名、配置说明）
+        /// </summary>
+        public string Keyword { get; set; }
+
+        /// <summary>
+        /// 配置键名（精确匹配）
+        /// </summary>
+        public string ConfigKey { get; set; }
+
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public DateTime? StartTime { get; set; }
+
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        public DateTime? EndTime { get; set; }
+    }
+
+    /// <summary>
+    /// 批量更新配置输入DTO
+    /// </summary>
+    public class BlogSystemConfigBatchUpdateInputDTO
+    {
+        /// <summary>
+        /// 配置项列表
+        /// </summary>
+        [Required(ErrorMessage = "配置项不能为空")]
+        public List<ConfigItem> Configs { get; set; }
+    }
+
+    /// <summary>
+    /// 配置项
+    /// </summary>
+    public class ConfigItem
+    {
+        /// <summary>
+        /// 配置键名
+        /// </summary>
+        [Required(ErrorMessage = "配置键名不能为空")]
+        public string ConfigKey { get; set; }
+
+        /// <summary>
+        /// 配置值
+        /// </summary>
+        public string ConfigValue { get; set; }
+    }
+
+    /// <summary>
+    /// 数据统计总览DTO
+    /// </summary>
+    public class BlogStatisticsOverviewDTO
+    {
+        /// <summary>
+        /// 文章统计
+        /// </summary>
+        public ArticleStatistics Articles { get; set; }
+
+        /// <summary>
+        /// 项目统计
+        /// </summary>
+        public ProjectStatistics Projects { get; set; }
+
+        /// <summary>
+        /// 工具统计
+        /// </summary>
+        public ToolStatistics Tools { get; set; }
+
+        /// <summary>
+        /// 技术栈统计
+        /// </summary>
+        public TechnologyStatistics Technologies { get; set; }
+
+        /// <summary>
+        /// 评论统计
+        /// </summary>
+        public CommentStatistics Comments { get; set; }
+
+        /// <summary>
+        /// 用户统计
+        /// </summary>
+        public UserStatistics Users { get; set; }
+
+        /// <summary>
+        /// 访问统计
+        /// </summary>
+        public AccessStatistics Access { get; set; }
+    }
+
+    /// <summary>
+    /// 文章统计
+    /// </summary>
+    public class ArticleStatistics
+    {
+        /// <summary>
+        /// 总文章数
+        /// </summary>
+        public int TotalCount { get; set; }
+
+        /// <summary>
+        /// 已发布文章数
+        /// </summary>
+        public int PublishedCount { get; set; }
+
+        /// <summary>
+        /// 草稿数
+        /// </summary>
+        public int DraftCount { get; set; }
+
+        /// <summary>
+        /// 精选文章数
+        /// </summary>
+        public int FeaturedCount { get; set; }
+
+        /// <summary>
+        /// 总浏览数
+        /// </summary>
+        public int TotalViews { get; set; }
+
+        /// <summary>
+        /// 总点赞数
+        /// </summary>
+        public int TotalLikes { get; set; }
+
+        /// <summary>
+        /// 今日新增
+        /// </summary>
+        public int TodayCount { get; set; }
+
+        /// <summary>
+        /// 本月新增
+        /// </summary>
+        public int MonthCount { get; set; }
+    }
+
+    /// <summary>
+    /// 项目统计
+    /// </summary>
+    public class ProjectStatistics
+    {
+        /// <summary>
+        /// 总项目数
+        /// </summary>
+        public int TotalCount { get; set; }
+
+        /// <summary>
+        /// 进行中项目数
+        /// </summary>
+        public int ActiveCount { get; set; }
+
+        /// <summary>
+        /// 已完成项目数
+        /// </summary>
+        public int CompletedCount { get; set; }
+
+        /// <summary>
+        /// 已归档项目数
+        /// </summary>
+        public int ArchivedCount { get; set; }
+
+        /// <summary>
+        /// 精选项目数
+        /// </summary>
+        public int FeaturedCount { get; set; }
+
+        /// <summary>
+        /// 总浏览数
+        /// </summary>
+        public int TotalViews { get; set; }
+
+        /// <summary>
+        /// 总点赞数
+        /// </summary>
+        public int TotalLikes { get; set; }
+
+        /// <summary>
+        /// 今日新增
+        /// </summary>
+        public int TodayCount { get; set; }
+
+        /// <summary>
+        /// 本月新增
+        /// </summary>
+        public int MonthCount { get; set; }
+    }
+
+    /// <summary>
+    /// 工具统计
+    /// </summary>
+    public class ToolStatistics
+    {
+        /// <summary>
+        /// 总工具数
+        /// </summary>
+        public int TotalCount { get; set; }
+
+        /// <summary>
+        /// 推荐工具数
+        /// </summary>
+        public int RecommendedCount { get; set; }
+
+        /// <summary>
+        /// 免费工具数
+        /// </summary>
+        public int FreeCount { get; set; }
+
+        /// <summary>
+        /// 付费工具数
+        /// </summary>
+        public int PaidCount { get; set; }
+
+        /// <summary>
+        /// 今日新增
+        /// </summary>
+        public int TodayCount { get; set; }
+
+        /// <summary>
+        /// 本月新增
+        /// </summary>
+        public int MonthCount { get; set; }
+    }
+
+    /// <summary>
+    /// 技术栈统计
+    /// </summary>
+    public class TechnologyStatistics
+    {
+        /// <summary>
+        /// 总技术数
+        /// </summary>
+        public int TotalCount { get; set; }
+
+        /// <summary>
+        /// 精选技术数
+        /// </summary>
+        public int FeaturedCount { get; set; }
+
+        /// <summary>
+        /// 平均熟练度
+        /// </summary>
+        public decimal AverageProficiency { get; set; }
+
+        /// <summary>
+        /// 平均推荐度
+        /// </summary>
+        public decimal AverageRecommendation { get; set; }
+
+        /// <summary>
+        /// 今日新增
+        /// </summary>
+        public int TodayCount { get; set; }
+
+        /// <summary>
+        /// 本月新增
+        /// </summary>
+        public int MonthCount { get; set; }
+    }
+
+    /// <summary>
+    /// 评论统计
+    /// </summary>
+    public class CommentStatistics
+    {
+        /// <summary>
+        /// 总评论数
+        /// </summary>
+        public int TotalCount { get; set; }
+
+        /// <summary>
+        /// 待审核评论数
+        /// </summary>
+        public int PendingCount { get; set; }
+
+        /// <summary>
+        /// 已通过评论数
+        /// </summary>
+        public int ApprovedCount { get; set; }
+
+        /// <summary>
+        /// 已拒绝评论数
+        /// </summary>
+        public int RejectedCount { get; set; }
+
+        /// <summary>
+        /// 今日新增
+        /// </summary>
+        public int TodayCount { get; set; }
+
+        /// <summary>
+        /// 本月新增
+        /// </summary>
+        public int MonthCount { get; set; }
+    }
+
+    /// <summary>
+    /// 用户统计
+    /// </summary>
+    public class UserStatistics
+    {
+        /// <summary>
+        /// 总用户数
+        /// </summary>
+        public int TotalCount { get; set; }
+
+        /// <summary>
+        /// 活跃用户数
+        /// </summary>
+        public int ActiveCount { get; set; }
+
+        /// <summary>
+        /// 禁用用户数
+        /// </summary>
+        public int InactiveCount { get; set; }
+
+        /// <summary>
+        /// 管理员数
+        /// </summary>
+        public int AdminCount { get; set; }
+
+        /// <summary>
+        /// 今日新增
+        /// </summary>
+        public int TodayCount { get; set; }
+
+        /// <summary>
+        /// 本月新增
+        /// </summary>
+        public int MonthCount { get; set; }
+    }
+
+    /// <summary>
+    /// 访问统计
+    /// </summary>
+    public class AccessStatistics
+    {
+        /// <summary>
+        /// 总访问量
+        /// </summary>
+        public int TotalViews { get; set; }
+
+        /// <summary>
+        /// 总点赞数
+        /// </summary>
+        public int TotalLikes { get; set; }
+
+        /// <summary>
+        /// 今日访问量
+        /// </summary>
+        public int TodayViews { get; set; }
+
+        /// <summary>
+        /// 今日点赞数
+        /// </summary>
+        public int TodayLikes { get; set; }
+
+        /// <summary>
+        /// 本月访问量
+        /// </summary>
+        public int MonthViews { get; set; }
+
+        /// <summary>
+        /// 本月点赞数
+        /// </summary>
+        public int MonthLikes { get; set; }
+    }
+
+    /// <summary>
+    /// 趋势统计查询输入DTO
+    /// </summary>
+    public class BlogTrendStatisticsQueryDTO
+    {
+        /// <summary>
+        /// 统计类型：article文章/project项目/tool工具/technology技术栈/comment评论/user用户
+        /// </summary>
+        [Required(ErrorMessage = "统计类型不能为空")]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// 时间范围类型：day日/week周/month月/year年
+        /// </summary>
+        [Required(ErrorMessage = "时间范围类型不能为空")]
+        public string Period { get; set; }
+
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public DateTime? StartTime { get; set; }
+
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        public DateTime? EndTime { get; set; }
+
+        /// <summary>
+        /// 返回的数据点数量限制
+        /// </summary>
+        public int? Limit { get; set; } = 30;
+    }
+
+    /// <summary>
+    /// 趋势统计数据点
+    /// </summary>
+    public class TrendDataPoint
+    {
+        /// <summary>
+        /// 时间标签
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
+        /// 时间值
+        /// </summary>
+        public DateTime Time { get; set; }
+
+        /// <summary>
+        /// 数值
+        /// </summary>
+        public int Value { get; set; }
+    }
+
+    /// <summary>
+    /// 趋势统计结果DTO
+    /// </summary>
+    public class BlogTrendStatisticsDTO
+    {
+        /// <summary>
+        /// 统计类型
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// 时间范围类型
+        /// </summary>
+        public string Period { get; set; }
+
+        /// <summary>
+        /// 数据点列表
+        /// </summary>
+        public List<TrendDataPoint> DataPoints { get; set; }
+
+        /// <summary>
+        /// 总计
+        /// </summary>
+        public int Total { get; set; }
+
+        /// <summary>
+        /// 平均值
+        /// </summary>
+        public decimal Average { get; set; }
+
+        /// <summary>
+        /// 最大值
+        /// </summary>
+        public int Maximum { get; set; }
+
+        /// <summary>
+        /// 最小值
+        /// </summary>
+        public int Minimum { get; set; }
+    }
+
+    /// <summary>
+    /// 热门内容统计DTO
+    /// </summary>
+    public class BlogPopularContentDTO
+    {
+        /// <summary>
+        /// 热门文章列表
+        /// </summary>
+        public List<PopularItem> PopularArticles { get; set; }
+
+        /// <summary>
+        /// 热门项目列表
+        /// </summary>
+        public List<PopularItem> PopularProjects { get; set; }
+
+        /// <summary>
+        /// 热门工具列表
+        /// </summary>
+        public List<PopularItem> PopularTools { get; set; }
+
+        /// <summary>
+        /// 热门技术栈列表
+        /// </summary>
+        public List<PopularItem> PopularTechnologies { get; set; }
+    }
+
+    /// <summary>
+    /// 热门项目
+    /// </summary>
+    public class PopularItem
+    {
+        /// <summary>
+        /// ID
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// 标题/名称
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// 浏览数
+        /// </summary>
+        public int ViewCount { get; set; }
+
+        /// <summary>
+        /// 点赞数
+        /// </summary>
+        public int LikeCount { get; set; }
+
+        /// <summary>
+        /// 评论数
+        /// </summary>
+        public int CommentCount { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreatedAt { get; set; }
+    }
+
+    /// <summary>
+    /// 友情链接管理输入DTO
+    /// </summary>
+    public class BlogFriendlyLinkInputDTO
+    {
+        /// <summary>
+        /// 链接ID
+        /// </summary>
+        public int? Id { get; set; }
+
+        /// <summary>
+        /// 链接名称
+        /// </summary>
+        [Required(ErrorMessage = "链接名称不能为空")]
+        [StringLength(100, ErrorMessage = "链接名称长度不能超过100个字符")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 链接地址
+        /// </summary>
+        [Required(ErrorMessage = "链接地址不能为空")]
+        [StringLength(255, ErrorMessage = "链接地址长度不能超过255个字符")]
+        [Url(ErrorMessage = "请输入有效的URL地址")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// 链接描述
+        /// </summary>
+        [StringLength(500, ErrorMessage = "链接描述长度不能超过500个字符")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Logo图片URL
+        /// </summary>
+        [StringLength(255, ErrorMessage = "Logo图片URL长度不能超过255个字符")]
+        public string LogoUrl { get; set; }
+
+        /// <summary>
+        /// 状态：1启用/0禁用
+        /// </summary>
+        public int Status { get; set; } = 1;
+
+        /// <summary>
+        /// 排序权重
+        /// </summary>
+        public int SortOrder { get; set; } = 0;
+    }
+
+    /// <summary>
+    /// 友情链接查询输入DTO
+    /// </summary>
+    public class BlogFriendlyLinkQueryInputDTO : PageInput
+    {
+        /// <summary>
+        /// 关键词搜索（链接名称、描述）
+        /// </summary>
+        public string Keyword { get; set; }
+
+        /// <summary>
+        /// 状态筛选
+        /// </summary>
+        public int? Status { get; set; }
+
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public DateTime? StartTime { get; set; }
+
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        public DateTime? EndTime { get; set; }
+    }
+
+    /// <summary>
+    /// 友情链接批量状态更新输入DTO
+    /// </summary>
+    public class BlogFriendlyLinkBatchStatusInputDTO
+    {
+        /// <summary>
+        /// 链接ID列表
+        /// </summary>
+        [Required(ErrorMessage = "链接ID不能为空")]
+        public List<int> Ids { get; set; }
+
+        /// <summary>
+        /// 状态：1启用/0禁用
+        /// </summary>
+        [Required(ErrorMessage = "状态不能为空")]
+        public int Status { get; set; }
+    }
+
+    /// <summary>
+    /// 友情链接排序更新输入DTO
+    /// </summary>
+    public class BlogFriendlyLinkSortInputDTO
+    {
+        /// <summary>
+        /// 排序项列表
+        /// </summary>
+        [Required(ErrorMessage = "排序项不能为空")]
+        public List<SortItem> Items { get; set; }
+    }
+
+    /// <summary>
+    /// 排序项
+    /// </summary>
+    public class SortItem
+    {
+        /// <summary>
+        /// 链接ID
+        /// </summary>
+        [Required(ErrorMessage = "链接ID不能为空")]
+        public int Id { get; set; }
+
+        /// <summary>
+        /// 排序权重
+        /// </summary>
+        public int SortOrder { get; set; }
+    }
 }
