@@ -11,7 +11,7 @@
  Target Server Version : 80012 (8.0.12)
  File Encoding         : 65001
 
- Date: 05/09/2025 10:57:43
+ Date: 02/09/2025 18:27:04
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,7 @@ CREATE TABLE `base_action`  (
   `Icon` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
   `Sort` int(11) NOT NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_action
@@ -79,7 +79,7 @@ CREATE TABLE `base_appsecret`  (
   `AppSecret` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '应用密钥',
   `AppName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '应用名',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '应用密钥表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '应用密钥表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_appsecret
@@ -102,7 +102,7 @@ CREATE TABLE `base_buildtest`  (
   `Column4` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '列4',
   `Column5` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '列5',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '生成测试表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '生成测试表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_buildtest
@@ -121,7 +121,7 @@ CREATE TABLE `base_dblink`  (
   `ConnectionStr` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '连接字符串',
   `DbType` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '数据库类型',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据库连接表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据库连接表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_dblink
@@ -140,7 +140,7 @@ CREATE TABLE `base_department`  (
   `Name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门名',
   `ParentId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '上级部门Id',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_department
@@ -160,7 +160,7 @@ CREATE TABLE `base_role`  (
   `Deleted` tinyint(4) NOT NULL DEFAULT 0 COMMENT '否已删除',
   `RoleName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_role
@@ -180,7 +180,7 @@ CREATE TABLE `base_roleaction`  (
   `RoleId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户Id',
   `ActionId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限Id',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_roleaction
@@ -220,7 +220,7 @@ CREATE TABLE `base_user`  (
   `Birthday` date NULL DEFAULT NULL COMMENT '出生日期',
   `DepartmentId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所属部门Id',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_user
@@ -241,7 +241,7 @@ CREATE TABLE `base_userlog`  (
   `LogType` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志类型',
   `LogContent` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '日志内容',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_userlog
@@ -259,7 +259,7 @@ CREATE TABLE `base_userrole`  (
   `UserId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户Id',
   `RoleId` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色Id',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of base_userrole
@@ -268,283 +268,5 @@ INSERT INTO `base_userrole` VALUES ('1181927367719784448', '2019-10-09 21:40:18'
 INSERT INTO `base_userrole` VALUES ('1181927367719784449', '2019-10-09 21:40:18', NULL, 0, '1181922344629702656', '1180486275199668224');
 INSERT INTO `base_userrole` VALUES ('1181927783786352640', '2019-10-09 21:41:57', NULL, 0, '1181927783727632384', '1180819481383931904');
 INSERT INTO `base_userrole` VALUES ('1251792318642524160', '2020-04-19 16:38:41', NULL, 0, '1181928860648738816', '1180819481383931904');
-
--- ----------------------------
--- Table structure for blog_article_categories
--- ----------------------------
-DROP TABLE IF EXISTS `blog_article_categories`;
-CREATE TABLE `blog_article_categories`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分类ID，主键',
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '分类名称',
-  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '分类描述',
-  `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序权重，数字越大越靠前',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_article_categories
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_articles
--- ----------------------------
-DROP TABLE IF EXISTS `blog_articles`;
-CREATE TABLE `blog_articles`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章ID，主键',
-  `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '文章标题',
-  `summary` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '文章摘要/简介',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '文章内容，富文本',
-  `cover_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '封面图片URL',
-  `category_id` int(11) NULL DEFAULT NULL COMMENT '文章分类ID',
-  `author_id` int(11) NOT NULL COMMENT '作者ID，关联users表',
-  `status` enum('draft','published','hidden') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'draft' COMMENT '文章状态：草稿/已发布/隐藏',
-  `is_featured` tinyint(4) NULL DEFAULT 0 COMMENT '是否精选文章：1是/0否',
-  `view_count` int(11) NULL DEFAULT 0 COMMENT '浏览次数',
-  `like_count` int(11) NULL DEFAULT 0 COMMENT '点赞数量',
-  `comment_count` int(11) NULL DEFAULT 0 COMMENT '评论数量',
-  `published_at` timestamp NULL DEFAULT NULL COMMENT '发布时间',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `category_id`(`category_id`) USING BTREE,
-  INDEX `author_id`(`author_id`) USING BTREE,
-  INDEX `idx_articles_status`(`status`) USING BTREE,
-  INDEX `idx_articles_featured`(`is_featured`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_articles
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_comments
--- ----------------------------
-DROP TABLE IF EXISTS `blog_comments`;
-CREATE TABLE `blog_comments`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '评论ID，主键',
-  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '评论内容',
-  `user_id` int(11) NOT NULL COMMENT '评论用户ID',
-  `target_type` enum('article','project','tool','technology') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '评论目标类型：文章/项目/工具/技术栈',
-  `target_id` int(11) NOT NULL COMMENT '评论目标ID',
-  `parent_id` int(11) NULL DEFAULT NULL COMMENT '父评论ID，用于回复功能',
-  `like_count` int(11) NULL DEFAULT 0 COMMENT '评论点赞数',
-  `status` enum('approved','pending','rejected') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'approved' COMMENT '审核状态',
-  `ip_address` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '评论者IP地址',
-  `user_agent` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '浏览器信息',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '评论时间',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
-  INDEX `parent_id`(`parent_id`) USING BTREE,
-  INDEX `idx_comments_target`(`target_type`, `target_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_comments
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_friendly_links
--- ----------------------------
-DROP TABLE IF EXISTS `blog_friendly_links`;
-CREATE TABLE `blog_friendly_links`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '链接ID',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '链接名称',
-  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '链接地址',
-  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '链接描述',
-  `logo_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'Logo图片URL',
-  `status` tinyint(4) NULL DEFAULT 1 COMMENT '状态：1启用/0禁用',
-  `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序权重',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_friendly_links
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_likes
--- ----------------------------
-DROP TABLE IF EXISTS `blog_likes`;
-CREATE TABLE `blog_likes`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '点赞ID',
-  `user_id` int(11) NOT NULL COMMENT '点赞用户ID',
-  `target_type` enum('article','project','tool','technology','comment') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '点赞目标类型：文章/项目/工具/技术栈/评论',
-  `target_id` int(11) NOT NULL COMMENT '点赞目标ID',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '点赞时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `unique_like`(`user_id`, `target_type`, `target_id`) USING BTREE COMMENT '防止重复点赞'
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Fixed;
-
--- ----------------------------
--- Records of blog_likes
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_project_technologies
--- ----------------------------
-DROP TABLE IF EXISTS `blog_project_technologies`;
-CREATE TABLE `blog_project_technologies`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '关联ID',
-  `project_id` int(11) NOT NULL COMMENT '项目ID',
-  `technology_id` int(11) NOT NULL COMMENT '技术栈ID',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `project_id`(`project_id`) USING BTREE,
-  INDEX `technology_id`(`technology_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Fixed;
-
--- ----------------------------
--- Records of blog_project_technologies
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_projects
--- ----------------------------
-DROP TABLE IF EXISTS `blog_projects`;
-CREATE TABLE `blog_projects`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '项目ID，主键',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '项目名称',
-  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '项目简介描述',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '项目详细说明，富文本',
-  `cover_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '项目封面图片URL',
-  `demo_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '项目演示地址',
-  `github_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'GitHub仓库地址',
-  `website_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '其他相关网站地址',
-  `status` enum('active','completed','archived') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'active' COMMENT '项目状态：进行中/已完成/已归档',
-  `is_featured` tinyint(4) NULL DEFAULT 0 COMMENT '是否为热门项目：1是/0否',
-  `difficulty_level` enum('beginner','intermediate','advanced') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '项目难度级别',
-  `view_count` int(11) NULL DEFAULT 0 COMMENT '浏览次数',
-  `like_count` int(11) NULL DEFAULT 0 COMMENT '点赞数量',
-  `comment_count` int(11) NULL DEFAULT 0 COMMENT '评论数量',
-  `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序权重',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_projects_featured`(`is_featured`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_projects
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_system_configs
--- ----------------------------
-DROP TABLE IF EXISTS `blog_system_configs`;
-CREATE TABLE `blog_system_configs`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '配置ID',
-  `config_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '配置键名',
-  `config_value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '配置值',
-  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '配置说明',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `config_key`(`config_key`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_system_configs
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_technologies
--- ----------------------------
-DROP TABLE IF EXISTS `blog_technologies`;
-CREATE TABLE `blog_technologies`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '技术栈ID，主键',
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '技术名称，如React、Vue等',
-  `logo_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '技术Logo图片URL',
-  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '技术简短描述，用于列表展示',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '技术栈详细介绍，富文本，支持文字+图片',
-  `category` enum('frontend','backend','database','devtools','other') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '技术分类',
-  `proficiency_level` int(11) NULL DEFAULT 0 COMMENT '熟练度评分（0-100）',
-  `recommendation_level` int(11) NULL DEFAULT 0 COMMENT '推荐度评分（0-100）',
-  `is_featured` tinyint(4) NULL DEFAULT 0 COMMENT '是否在首页展示：1是/0否',
-  `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序权重',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_technologies_featured`(`is_featured`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_technologies
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_tools
--- ----------------------------
-DROP TABLE IF EXISTS `blog_tools`;
-CREATE TABLE `blog_tools`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '工具ID，主键',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '工具名称',
-  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '工具描述说明',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '工具详细介绍，富文本',
-  `cover_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '工具封面图片',
-  `icon_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '工具图标URL',
-  `official_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '官方网站地址',
-  `download_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '下载地址',
-  `category` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '工具分类，如编辑器、浏览器插件等',
-  `price_type` enum('free','paid','freemium') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'free' COMMENT '价格类型：免费/付费/免费增值',
-  `rating` decimal(2, 1) NULL DEFAULT 0.0 COMMENT '个人评分（0-5）',
-  `is_recommended` tinyint(4) NULL DEFAULT 0 COMMENT '是否推荐：1是/0否',
-  `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序权重',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_tools_recommended`(`is_recommended`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_tools
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_users
--- ----------------------------
-DROP TABLE IF EXISTS `blog_users`;
-CREATE TABLE `blog_users`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID，主键',
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '用户名，唯一，用于登录',
-  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '密码，加密存储',
-  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '邮箱地址，唯一',
-  `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '昵称，显示用',
-  `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '头像URL地址',
-  `role` enum('admin','user') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'user' COMMENT '用户角色：admin管理员/user普通用户',
-  `status` tinyint(4) NULL DEFAULT 1 COMMENT '账号状态：1启用/0禁用',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE,
-  UNIQUE INDEX `email`(`email`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_users
--- ----------------------------
-
--- ----------------------------
--- Table structure for blog_views
--- ----------------------------
-DROP TABLE IF EXISTS `blog_views`;
-CREATE TABLE `blog_views`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '浏览记录ID',
-  `user_id` int(11) NULL DEFAULT NULL COMMENT '用户ID，游客为NULL',
-  `target_type` enum('article','project','tool','technology') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '浏览目标类型：文章/项目/工具/技术栈',
-  `target_id` int(11) NOT NULL COMMENT '浏览目标ID',
-  `ip_address` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '访问者IP',
-  `user_agent` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '浏览器信息',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '浏览时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_target`(`target_type`, `target_id`) USING BTREE,
-  INDEX `idx_user_time`(`user_id`, `created_at`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of blog_views
--- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;
