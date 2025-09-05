@@ -89,6 +89,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
+        [ApiPermission("Blog_Config.Edit")]
         public async Task SaveData(BlogSystemConfigInputDTO input)
         {
             if (input.Id.HasValue && input.Id.Value > 0)
@@ -107,6 +108,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpPost]
+        [ApiPermission("Blog_Config.Edit")]
         public async Task DeleteData(List<int> ids)
         {
             await _systemConfigBus.DeleteDataAsync(ids);
@@ -118,6 +120,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
+        [ApiPermission("Blog_Config.Edit")]
         public async Task BatchUpdate(BlogSystemConfigBatchUpdateInputDTO input)
         {
             await _systemConfigBus.BatchUpdateAsync(input);
@@ -131,6 +134,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="description">配置说明</param>
         /// <returns></returns>
         [HttpPost]
+        [ApiPermission("Blog_Config.Edit")]
         public async Task SetConfigValue(string configKey, string configValue, string description = null)
         {
             await _systemConfigBus.SetConfigValueAsync(configKey, configValue, description);
@@ -142,6 +146,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="configKey">配置键</param>
         /// <returns></returns>
         [HttpPost]
+        [ApiPermission("Blog_Config.Edit")]
         public async Task DeleteConfig(string configKey)
         {
             await _systemConfigBus.DeleteConfigAsync(configKey);

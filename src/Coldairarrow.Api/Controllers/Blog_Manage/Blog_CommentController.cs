@@ -58,6 +58,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
+        [ApiPermission("Blog_Comment.Edit")]
         public async Task SaveData(BlogCommentInputDTO input)
         {
             if (input.Id.HasValue && input.Id.Value > 0)
@@ -76,6 +77,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpPost]
+        [ApiPermission("Blog_Comment.Delete")]
         public async Task DeleteData(List<int> ids)
         {
             await _commentBus.DeleteDataAsync(ids);
@@ -122,6 +124,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
+        [ApiPermission("Blog_Comment.Audit")]
         public async Task BatchApproval(BlogCommentBatchApprovalInputDTO input)
         {
             if (input.Action == "approve")
