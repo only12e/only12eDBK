@@ -3,25 +3,39 @@
     <!-- 总览卡片 -->
     <a-row :gutter="[16, 16]">
       <a-col :xl="6" :lg="8" :md="12" :sm="24">
-        <a-card :loading="overviewLoading" class="stat-card article-card">
+        <a-card class="stat-card article-card">
+          <template v-if="overviewLoading">
+            <a-skeleton active>
+              <a-skeleton-input style="width: 120px; height: 40px;" />
+              <div style="margin-top: 16px;">
+                <a-skeleton-input style="width: 80px; height: 20px;" />
+                <a-skeleton-input style="width: 60px; height: 20px; margin-left: 16px;" />
+              </div>
+              <div style="margin-top: 12px;">
+                <a-skeleton-input style="width: 100px; height: 20px;" />
+              </div>
+            </a-skeleton>
+          </template>
+          <template v-else>
           <a-statistic
             title="文章总数"
-            :value="(overview.Articles && overview.Articles.TotalCount) || 0"
+            :value="safeOverview.Articles.TotalCount || 0"
             :precision="0">
             <template #suffix>
               <a-icon type="file-text" style="color: #1890ff;" />
             </template>
           </a-statistic>
           <div class="stat-details">
-            <span class="stat-item">已发布: {{ (overview.Articles && overview.Articles.PublishedCount) || 0 }}</span>
-            <span class="stat-item">草稿: {{ (overview.Articles && overview.Articles.DraftCount) || 0 }}</span>
+            <span class="stat-item">已发布: {{ safeOverview.Articles.PublishedCount || 0 }}</span>
+            <span class="stat-item">草稿: {{ safeOverview.Articles.DraftCount || 0 }}</span>
           </div>
           <div class="stat-growth">
             <span class="growth-item">
               <a-icon type="arrow-up" />
-              今日新增: {{ (overview.Articles && overview.Articles.TodayCount) || 0 }}
+              今日新增: {{ safeOverview.Articles.TodayCount || 0 }}
             </span>
           </div>
+          </template>
         </a-card>
       </a-col>
 
@@ -29,20 +43,20 @@
         <a-card :loading="overviewLoading" class="stat-card project-card">
           <a-statistic
             title="项目总数"
-            :value="(overview.Projects && overview.Projects.TotalCount) || 0"
+            :value="safeOverview.Projects.TotalCount || 0"
             :precision="0">
             <template #suffix>
               <a-icon type="project" style="color: #52c41a;" />
             </template>
           </a-statistic>
           <div class="stat-details">
-            <span class="stat-item">进行中: {{ (overview.Projects && overview.Projects.ActiveCount) || 0 }}</span>
-            <span class="stat-item">已完成: {{ (overview.Projects && overview.Projects.CompletedCount) || 0 }}</span>
+            <span class="stat-item">进行中: {{ safeOverview.Projects.ActiveCount || 0 }}</span>
+            <span class="stat-item">已完成: {{ safeOverview.Projects.CompletedCount || 0 }}</span>
           </div>
           <div class="stat-growth">
             <span class="growth-item">
               <a-icon type="arrow-up" />
-              今日新增: {{ (overview.Projects && overview.Projects.TodayCount) || 0 }}
+              今日新增: {{ safeOverview.Projects.TodayCount || 0 }}
             </span>
           </div>
         </a-card>
@@ -52,20 +66,20 @@
         <a-card :loading="overviewLoading" class="stat-card tool-card">
           <a-statistic
             title="工具总数"
-            :value="(overview.Tools && overview.Tools.TotalCount) || 0"
+            :value="safeOverview.Tools.TotalCount || 0"
             :precision="0">
             <template #suffix>
               <a-icon type="tool" style="color: #fa8c16;" />
             </template>
           </a-statistic>
           <div class="stat-details">
-            <span class="stat-item">推荐: {{ (overview.Tools && overview.Tools.RecommendedCount) || 0 }}</span>
-            <span class="stat-item">免费: {{ (overview.Tools && overview.Tools.FreeCount) || 0 }}</span>
+            <span class="stat-item">推荐: {{ safeOverview.Tools.RecommendedCount || 0 }}</span>
+            <span class="stat-item">免费: {{ safeOverview.Tools.FreeCount || 0 }}</span>
           </div>
           <div class="stat-growth">
             <span class="growth-item">
               <a-icon type="arrow-up" />
-              今日新增: {{ (overview.Tools && overview.Tools.TodayCount) || 0 }}
+              今日新增: {{ safeOverview.Tools.TodayCount || 0 }}
             </span>
           </div>
         </a-card>
@@ -75,20 +89,20 @@
         <a-card :loading="overviewLoading" class="stat-card tech-card">
           <a-statistic
             title="技术栈总数"
-            :value="(overview.Technologies && overview.Technologies.TotalCount) || 0"
+            :value="safeOverview.Technologies.TotalCount || 0"
             :precision="0">
             <template #suffix>
               <a-icon type="code" style="color: #eb2f96;" />
             </template>
           </a-statistic>
           <div class="stat-details">
-            <span class="stat-item">精选: {{ (overview.Technologies && overview.Technologies.FeaturedCount) || 0 }}</span>
-            <span class="stat-item">平均熟练度: {{ (overview.Technologies && overview.Technologies.AverageProficiency) || 0 }}%</span>
+            <span class="stat-item">精选: {{ safeOverview.Technologies.FeaturedCount || 0 }}</span>
+            <span class="stat-item">平均熟练度: {{ safeOverview.Technologies.AverageProficiency || 0 }}%</span>
           </div>
           <div class="stat-growth">
             <span class="growth-item">
               <a-icon type="arrow-up" />
-              今日新增: {{ (overview.Technologies && overview.Technologies.TodayCount) || 0 }}
+              今日新增: {{ safeOverview.Technologies.TodayCount || 0 }}
             </span>
           </div>
         </a-card>
@@ -100,20 +114,20 @@
         <a-card :loading="overviewLoading" class="stat-card comment-card">
           <a-statistic
             title="评论总数"
-            :value="(overview.Comments && overview.Comments.TotalCount) || 0"
+            :value="safeOverview.Comments.TotalCount || 0"
             :precision="0">
             <template #suffix>
               <a-icon type="message" style="color: #722ed1;" />
             </template>
           </a-statistic>
           <div class="stat-details">
-            <span class="stat-item">已通过: {{ (overview.Comments && overview.Comments.ApprovedCount) || 0 }}</span>
-            <span class="stat-item">待审核: {{ (overview.Comments && overview.Comments.PendingCount) || 0 }}</span>
+            <span class="stat-item">已通过: {{ safeOverview.Comments.ApprovedCount || 0 }}</span>
+            <span class="stat-item">待审核: {{ safeOverview.Comments.PendingCount || 0 }}</span>
           </div>
           <div class="stat-growth">
             <span class="growth-item">
               <a-icon type="arrow-up" />
-              今日新增: {{ (overview.Comments && overview.Comments.TodayCount) || 0 }}
+              今日新增: {{ safeOverview.Comments.TodayCount || 0 }}
             </span>
           </div>
         </a-card>
@@ -123,20 +137,20 @@
         <a-card :loading="overviewLoading" class="stat-card user-card">
           <a-statistic
             title="用户总数"
-            :value="(overview.Users && overview.Users.TotalCount) || 0"
+            :value="safeOverview.Users.TotalCount || 0"
             :precision="0">
             <template #suffix>
               <a-icon type="user" style="color: #13c2c2;" />
             </template>
           </a-statistic>
           <div class="stat-details">
-            <span class="stat-item">活跃: {{ (overview.Users && overview.Users.ActiveCount) || 0 }}</span>
-            <span class="stat-item">管理员: {{ (overview.Users && overview.Users.AdminCount) || 0 }}</span>
+            <span class="stat-item">活跃: {{ safeOverview.Users.ActiveCount || 0 }}</span>
+            <span class="stat-item">管理员: {{ safeOverview.Users.AdminCount || 0 }}</span>
           </div>
           <div class="stat-growth">
             <span class="growth-item">
               <a-icon type="arrow-up" />
-              今日新增: {{ (overview.Users && overview.Users.TodayCount) || 0 }}
+              今日新增: {{ safeOverview.Users.TodayCount || 0 }}
             </span>
           </div>
         </a-card>
@@ -146,20 +160,20 @@
         <a-card :loading="overviewLoading" class="stat-card access-card">
           <a-statistic
             title="总访问量"
-            :value="(overview.Access && overview.Access.TotalViews) || 0"
+            :value="safeOverview.Access.TotalViews || 0"
             :precision="0">
             <template #suffix>
               <a-icon type="eye" style="color: #f5222d;" />
             </template>
           </a-statistic>
           <div class="stat-details">
-            <span class="stat-item">总点赞: {{ (overview.Access && overview.Access.TotalLikes) || 0 }}</span>
-            <span class="stat-item">今日访问: {{ (overview.Access && overview.Access.TodayViews) || 0 }}</span>
+            <span class="stat-item">总点赞: {{ safeOverview.Access.TotalLikes || 0 }}</span>
+            <span class="stat-item">今日访问: {{ safeOverview.Access.TodayViews || 0 }}</span>
           </div>
           <div class="stat-growth">
             <span class="growth-item">
               <a-icon type="heart" />
-              今日点赞: {{ (overview.Access && overview.Access.TodayLikes) || 0 }}
+              今日点赞: {{ safeOverview.Access.TodayLikes || 0 }}
             </span>
           </div>
         </a-card>
@@ -169,10 +183,16 @@
         <a-card class="stat-card action-card">
           <div class="quick-actions">
             <h4>快速操作</h4>
-            <a-button-group style="width: 100%;">
+            <a-button-group style="width: 100%; margin-bottom: 12px;">
               <a-button type="primary" @click="refreshData" :loading="overviewLoading">
                 <a-icon type="reload" />
                 刷新数据
+              </a-button>
+            </a-button-group>
+            <a-button-group style="width: 100%;">
+              <a-button type="default" @click="exportData">
+                <a-icon type="download" />
+                导出数据
               </a-button>
             </a-button-group>
             <div style="margin-top: 12px;">
@@ -223,46 +243,110 @@
     <!-- 热门内容 -->
     <a-row :gutter="[16, 16]" style="margin-top: 24px;" v-if="popularContent && ((popularContent.PopularArticles && popularContent.PopularArticles.length > 0) || (popularContent.PopularProjects && popularContent.PopularProjects.length > 0))">
       <a-col :xl="12" :lg="24" :md="24" :sm="24">
-        <a-card title="热门文章" :loading="popularLoading">
-          <a-list
-            v-if="popularContent.PopularArticles && popularContent.PopularArticles.length > 0"
-            item-layout="horizontal"
-            :data-source="popularContent.PopularArticles">
-            <a-list-item slot="renderItem" slot-scope="item">
-              <a-list-item-meta>
-                <div slot="title" class="popular-item-title">{{ item.Title }}</div>
-                <div slot="description">
-                  <span class="stat-tag">浏览: {{ item.ViewCount }}</span>
-                  <span class="stat-tag">点赞: {{ item.LikeCount }}</span>
-                  <span class="stat-tag">评论: {{ item.CommentCount }}</span>
-                  <span class="stat-tag">{{ formatDate(item.CreatedAt) }}</span>
+        <a-card class="popular-articles-card" :loading="popularLoading">
+          <div slot="title" class="card-title-with-icon">
+            <a-icon type="fire" class="title-icon" />
+            <span class="title-text">热门文章</span>
+            <div class="title-badge">
+              <span class="badge-text">TOP</span>
+              <span class="badge-count">5</span>
+            </div>
+          </div>
+          
+          <div v-if="popularContent.PopularArticles && popularContent.PopularArticles.length > 0" class="popular-content">
+            <div 
+              v-for="(item, index) in popularContent.PopularArticles" 
+              :key="index" 
+              class="popular-item popular-article-item"
+              @click="handleArticleClick(item)">
+              <div class="item-header">
+                <div class="rank-badge">
+                  <a-icon v-if="index === 0" type="crown" class="crown-icon" />
+                  <span v-else class="rank-number">#{{ index + 1 }}</span>
                 </div>
-              </a-list-item-meta>
-            </a-list-item>
-          </a-list>
-          <a-empty v-else description="暂无热门文章" />
+                <div class="item-content">
+                  <div class="item-title">{{ item.Title }}</div>
+                  <div class="item-meta">
+                    <div class="meta-stats">
+                      <span class="stat-item view-stat">
+                        <a-icon type="eye" />
+                        {{ item.ViewCount || 0 }}
+                      </span>
+                      <span class="stat-item like-stat">
+                        <a-icon type="heart" />
+                        {{ item.LikeCount || 0 }}
+                      </span>
+                      <span class="stat-item comment-stat">
+                        <a-icon type="message" />
+                        {{ item.CommentCount || 0 }}
+                      </span>
+                    </div>
+                    <div class="meta-date">
+                      {{ formatDate(item.CreatedAt) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else class="empty-state">
+            <a-icon type="file-text" class="empty-icon" />
+            <p class="empty-text">暂无热门文章</p>
+          </div>
         </a-card>
       </a-col>
 
       <a-col :xl="12" :lg="24" :md="24" :sm="24">
-        <a-card title="热门项目" :loading="popularLoading">
-          <a-list
-            v-if="popularContent.PopularProjects && popularContent.PopularProjects.length > 0"
-            item-layout="horizontal"
-            :data-source="popularContent.PopularProjects">
-            <a-list-item slot="renderItem" slot-scope="item">
-              <a-list-item-meta>
-                <div slot="title" class="popular-item-title">{{ item.Title }}</div>
-                <div slot="description">
-                  <span class="stat-tag">浏览: {{ item.ViewCount }}</span>
-                  <span class="stat-tag">点赞: {{ item.LikeCount }}</span>
-                  <span class="stat-tag">评论: {{ item.CommentCount }}</span>
-                  <span class="stat-tag">{{ formatDate(item.CreatedAt) }}</span>
+        <a-card class="popular-projects-card" :loading="popularLoading">
+          <div slot="title" class="card-title-with-icon">
+            <a-icon type="trophy" class="title-icon" />
+            <span class="title-text">热门项目</span>
+            <div class="title-badge">
+              <span class="badge-text">TOP</span>
+              <span class="badge-count">5</span>
+            </div>
+          </div>
+          
+          <div v-if="popularContent.PopularProjects && popularContent.PopularProjects.length > 0" class="popular-content">
+            <div 
+              v-for="(item, index) in popularContent.PopularProjects" 
+              :key="index" 
+              class="popular-item popular-project-item"
+              @click="handleProjectClick(item)">
+              <div class="item-header">
+                <div class="rank-badge">
+                  <a-icon v-if="index === 0" type="crown" class="crown-icon" />
+                  <span v-else class="rank-number">#{{ index + 1 }}</span>
                 </div>
-              </a-list-item-meta>
-            </a-list-item>
-          </a-list>
-          <a-empty v-else description="暂无热门项目" />
+                <div class="item-content">
+                  <div class="item-title">{{ item.Title }}</div>
+                  <div class="item-meta">
+                    <div class="meta-stats">
+                      <span class="stat-item view-stat">
+                        <a-icon type="eye" />
+                        {{ item.ViewCount || 0 }}
+                      </span>
+                      <span class="stat-item like-stat">
+                        <a-icon type="heart" />
+                        {{ item.LikeCount || 0 }}
+                      </span>
+                      <span class="stat-item comment-stat">
+                        <a-icon type="message" />
+                        {{ item.CommentCount || 0 }}
+                      </span>
+                    </div>
+                    <div class="meta-date">
+                      {{ formatDate(item.CreatedAt) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else class="empty-state">
+            <a-icon type="project" class="empty-icon" />
+            <p class="empty-text">暂无热门项目</p>
+          </div>
         </a-card>
       </a-col>
     </a-row>
@@ -451,21 +535,72 @@ export default {
       popularModalLoading: false,
       
       chart: null,
-      modalChart: null
+      modalChart: null,
+      
+      refreshInterval: null,
+      autoRefresh: false,
+      skeletonLoading: true
+    }
+  },
+  
+  computed: {
+    safeOverview() {
+      return {
+        Articles: this.overview.Articles || {},
+        Projects: this.overview.Projects || {},
+        Tools: this.overview.Tools || {},
+        Technologies: this.overview.Technologies || {},
+        Comments: this.overview.Comments || {},
+        Users: this.overview.Users || {},
+        Access: this.overview.Access || {}
+      }
+    },
+    
+    chartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          duration: 1000,
+          easing: 'easeInOutQuart'
+        }
+      }
     }
   },
   mounted() {
     this.loadData()
+    window.addEventListener('resize', this.handleResize)
   },
   beforeDestroy() {
-    if (this.chart) {
-      this.chart.dispose()
-    }
-    if (this.modalChart) {
-      this.modalChart.dispose()
-    }
+    this.cleanupResources()
   },
+  
   methods: {
+    cleanupResources() {
+      if (this.chart) {
+        this.chart.dispose()
+        this.chart = null
+      }
+      if (this.modalChart) {
+        this.modalChart.dispose()
+        this.modalChart = null
+      }
+      if (this.refreshInterval) {
+        clearInterval(this.refreshInterval)
+        this.refreshInterval = null
+      }
+      
+      window.removeEventListener('resize', this.handleResize)
+    },
+    
+    handleResize() {
+      if (this.chart) {
+        this.chart.resize()
+      }
+      if (this.modalChart) {
+        this.modalChart.resize()
+      }
+    },
     async loadData() {
       await Promise.all([
         this.getOverview(),
@@ -520,73 +655,157 @@ export default {
     },
     
     renderChart() {
+      if (!this.trendData || !this.trendData.DataPoints || this.trendData.DataPoints.length === 0) {
+        return
+      }
+      
       const chartDom = document.getElementById('trendChart')
-      if (!chartDom || !this.trendData || !this.trendData.DataPoints) return
+      if (!chartDom) return
       
-      if (this.chart) {
-        this.chart.dispose()
-      }
-      
-      this.chart = echarts.init(chartDom)
-      
-      const dataPoints = this.trendData.DataPoints
-      const dates = dataPoints.map(item => {
-        const date = new Date(item.Date || item.Time)
-        return date.toLocaleDateString('zh-CN')
-      })
-      const values = dataPoints.map(item => item.Value)
-      
-      const option = {
-        title: {
-          text: `${this.getTypeText(this.trendQuery.type)}${this.getPeriodText(this.trendQuery.period)}趋势统计`,
-          left: 'center'
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross'
-          }
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: dates,
-          axisLabel: {
-            rotate: 45
-          }
-        },
-        yAxis: {
-          type: 'value',
-          minInterval: 1
-        },
-        series: [{
-          name: '数量',
-          type: 'line',
-          smooth: true,
-          data: values,
-          areaStyle: {
-            opacity: 0.3
-          },
-          itemStyle: {
-            color: '#1890ff'
-          },
-          lineStyle: {
-            color: '#1890ff'
-          }
-        }]
-      }
-      
-      this.chart.setOption(option)
-      
-      window.addEventListener('resize', () => {
+      try {
         if (this.chart) {
-          this.chart.resize()
+          this.chart.dispose()
+          this.chart = null
         }
-      })
+        
+        this.chart = echarts.init(chartDom)
+        
+        const dataPoints = this.trendData.DataPoints
+        const dates = dataPoints.map(item => {
+          const date = new Date(item.Date || item.Time)
+          return date.toLocaleDateString('zh-CN')
+        })
+        const values = dataPoints.map(item => item.Value)
+        
+        const option = {
+          title: {
+            text: `${this.getTypeText(this.trendQuery.type)}${this.getPeriodText(this.trendQuery.period)}趋势统计`,
+            left: 'center',
+            textStyle: {
+              fontSize: 16,
+              fontWeight: 'normal',
+              color: '#262626'
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross'
+            },
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#e6f7ff',
+            borderWidth: 1,
+            textStyle: {
+              color: '#262626'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: dates,
+            axisLabel: {
+              rotate: 45,
+              color: '#666'
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#e8e8e8'
+              }
+            }
+          },
+          yAxis: {
+            type: 'value',
+            minInterval: 1,
+            axisLabel: {
+              color: '#666'
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#e8e8e8'
+              }
+            },
+            splitLine: {
+              lineStyle: {
+                color: '#f0f0f0'
+              }
+            }
+          },
+          series: [{
+            name: '数量',
+            type: 'line',
+            smooth: true,
+            data: values,
+            areaStyle: {
+              opacity: 0.3,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(24, 144, 255, 0.3)' },
+                { offset: 1, color: 'rgba(24, 144, 255, 0.05)' }
+              ])
+            },
+            itemStyle: {
+              color: '#1890ff'
+            },
+            lineStyle: {
+              color: '#1890ff',
+              width: 2
+            },
+            symbol: 'circle',
+            symbolSize: 6
+          }],
+          animation: true,
+          animationDuration: 1000,
+          animationEasing: 'cubicOut'
+        }
+        
+        this.chart.setOption(option)
+        
+        // 添加图表点击事件
+        this.chart.on('click', (params) => {
+          this.$message.info(`${params.name}: ${params.value}`)
+        })
+        
+      } catch (error) {
+        console.error('图表渲染失败:', error)
+        this.$message.error('图表渲染失败')
+      }
     },
     
     refreshData() {
       this.loadData()
+    },
+    
+    exportData() {
+      try {
+        const exportData = {
+          统计概览: this.safeOverview,
+          趋势数据: this.trendData,
+          热门内容: this.popularContent,
+          导出时间: new Date().toLocaleString('zh-CN')
+        }
+        
+        const dataStr = JSON.stringify(exportData, null, 2)
+        const dataBlob = new Blob([dataStr], { type: 'application/json' })
+        const url = URL.createObjectURL(dataBlob)
+        
+        const link = document.createElement('a')
+        link.href = url
+        link.download = `统计数据_${new Date().toLocaleDateString('zh-CN').replace(/\//g, '-')}.json`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+        
+        this.$message.success('数据导出成功')
+      } catch (error) {
+        console.error('导出失败:', error)
+        this.$message.error('数据导出失败')
+      }
     },
     
     showTrendModal() {
@@ -721,6 +940,14 @@ export default {
         'month': '月'
       }
       return periodMap[period] || period
+    },
+    
+    handleArticleClick(article) {
+      // this.$message.info(`点击了文章：${article.Title}`)
+    },
+    
+    handleProjectClick(project) {
+      // this.$message.info(`点击了项目：${project.Title}`)
     }
   }
 }
@@ -932,6 +1159,361 @@ export default {
     }
   }
   
+  // 热门内容卡片样式
+  .popular-articles-card, .popular-projects-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      transform: translateY(-4px);
+    }
+    
+    .ant-card-head {
+      background: #ffffff;
+      border-bottom: 3px solid #f0f0f0;
+      padding: 16px 24px;
+      
+      .card-title-with-icon {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #262626;
+        gap: 12px;
+        
+        .title-icon {
+          font-size: 20px;
+          color: #1890ff;
+          filter: drop-shadow(0 2px 4px rgba(24, 144, 255, 0.3));
+          animation: pulse 2s infinite;
+        }
+        
+        .title-text {
+          font-size: 18px;
+          font-weight: 700;
+          flex: 1;
+          letter-spacing: 0.5px;
+          color: #1a1a1a;
+        }
+        
+        .title-badge {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          
+          .badge-text {
+            background: linear-gradient(45deg, #ff4757, #ff3838);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 71, 87, 0.2);
+            box-shadow: 0 3px 8px rgba(255, 71, 87, 0.4);
+            letter-spacing: 0.8px;
+            line-height: 1.2;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+          }
+          
+          .badge-count {
+            background: linear-gradient(45deg, #1890ff, #40a9ff);
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 50%;
+            border: 3px solid rgba(24, 144, 255, 0.2);
+            min-width: 32px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Monaco', 'Menlo', monospace;
+            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+          }
+        }
+      }
+      
+      .ant-card-extra {
+        .ant-btn-link {
+          color: #666;
+          border: 1px solid #d9d9d9;
+          border-radius: 6px;
+          padding: 4px 12px;
+          
+          &:hover {
+            color: #1890ff;
+            background: #f0f8ff;
+            border-color: #40a9ff;
+          }
+        }
+      }
+    }
+  }
+  
+  .popular-articles-card .ant-card-head {
+    border-bottom: 3px solid #1890ff;
+    
+    .title-icon {
+      color: #ff4757;
+    }
+    
+    .title-badge {
+      .badge-count {
+        background: linear-gradient(45deg, #1890ff, #40a9ff);
+      }
+    }
+  }
+  
+  .popular-projects-card .ant-card-head {
+    border-bottom: 3px solid #52c41a;
+    
+    .title-icon {
+      color: #fa8c16;
+    }
+    
+    .title-badge {
+      .badge-text {
+        background: linear-gradient(45deg, #fa8c16, #ff9500);
+        border-color: rgba(250, 140, 22, 0.2);
+        box-shadow: 0 3px 8px rgba(250, 140, 22, 0.4);
+      }
+      
+      .badge-count {
+        background: linear-gradient(45deg, #52c41a, #73d13d);
+        border-color: rgba(82, 196, 26, 0.2);
+        box-shadow: 0 4px 12px rgba(82, 196, 26, 0.4);
+      }
+    }
+  }
+  
+  // 热门内容列表
+  .popular-content {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+  
+  .popular-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    background: linear-gradient(45deg, #fafbff, #f0f8ff);
+    border-radius: 12px;
+    border: 1px solid #e6f4ff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, #1890ff, #40a9ff);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+    
+    &:hover {
+      background: linear-gradient(45deg, #e6f7ff, #bae7ff);
+      border-color: #40a9ff;
+      box-shadow: 0 4px 16px rgba(24, 144, 255, 0.15);
+      transform: translateX(8px) scale(1.02);
+      
+      &::before {
+        transform: scaleY(1);
+      }
+      
+      .item-action .anticon {
+        transform: translateX(4px);
+        color: #1890ff;
+      }
+    }
+    
+    .item-header {
+      display: flex;
+      align-items: flex-start;
+      flex: 1;
+      gap: 16px;
+    }
+    
+    .rank-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #ffd53e, #ff7c00);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(255, 124, 0, 0.3);
+      flex-shrink: 0;
+      
+      .crown-icon {
+        font-size: 16px;
+        color: #fff700;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+      }
+      
+      .rank-number {
+        font-family: 'Monaco', 'Menlo', monospace;
+      }
+    }
+    
+    .item-content {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .item-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #262626;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.3s ease;
+    }
+    
+    .item-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    
+    .meta-stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+      padding: 4px 8px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      border: 1px solid #e6f0ff;
+      transition: all 0.3s ease;
+      
+      .anticon {
+        font-size: 12px;
+      }
+      
+      &.view-stat {
+        .anticon {
+          color: #1890ff;
+        }
+        
+        &:hover {
+          background: #e6f7ff;
+          border-color: #1890ff;
+        }
+      }
+      
+      &.like-stat {
+        .anticon {
+          color: #f5222d;
+        }
+        
+        &:hover {
+          background: #fff1f0;
+          border-color: #f5222d;
+        }
+      }
+      
+      &.comment-stat {
+        .anticon {
+          color: #52c41a;
+        }
+        
+        &:hover {
+          background: #f6ffed;
+          border-color: #52c41a;
+        }
+      }
+    }
+    
+    .meta-date {
+      font-size: 12px;
+      color: #999;
+      white-space: nowrap;
+      padding: 4px 8px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 8px;
+    }
+    
+    .item-action {
+      display: flex;
+      align-items: center;
+      margin-left: 16px;
+      flex-shrink: 0;
+      
+      .anticon {
+        font-size: 16px;
+        color: #bfbfbf;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+  
+  .popular-project-item {
+    &::before {
+      background: linear-gradient(to bottom, #52c41a, #73d13d);
+    }
+    
+    &:hover {
+      background: linear-gradient(45deg, #f6ffed, #d9f7be);
+      border-color: #52c41a;
+      box-shadow: 0 4px 16px rgba(82, 196, 26, 0.15);
+      
+      .item-action .anticon {
+        color: #52c41a;
+      }
+    }
+  }
+  
+  // 空状态样式
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #bfbfbf;
+    
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.6;
+    }
+    
+    .empty-text {
+      font-size: 14px;
+      margin: 0;
+      opacity: 0.8;
+    }
+  }
+
   // 热门内容样式优化
   .popular-item-title {
     color: #262626;
@@ -1063,10 +1645,28 @@ export default {
   }
   
   // 响应式优化
+  @media (max-width: 1200px) {
+    .statistics-dashboard .ant-col {
+      margin-bottom: 16px;
+    }
+    
+    .popular-content {
+      max-height: 300px;
+    }
+  }
+  
   @media (max-width: 768px) {
+    .statistics-dashboard {
+      padding: 0 8px;
+    }
+    
     .stat-card {
       height: auto;
       min-height: 140px;
+      
+      .ant-card-body {
+        padding: 16px;
+      }
       
       .ant-statistic-content {
         font-size: 24px;
@@ -1074,27 +1674,136 @@ export default {
       
       .stat-details .stat-item {
         margin-right: 8px;
-        margin-bottom: 4px;
-        display: block;
-        width: fit-content;
+        margin-bottom: 8px;
+        display: inline-block;
+        width: auto;
+        font-size: 12px;
+      }
+      
+      .stat-growth .growth-item {
+        font-size: 12px;
       }
     }
     
-    .ant-col {
-      margin-bottom: 16px;
+    .popular-item {
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      
+      .item-header {
+        gap: 12px;
+      }
+      
+      .rank-badge {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+      }
+      
+      .item-title {
+        font-size: 14px;
+      }
+      
+      .meta-stats {
+        gap: 8px;
+      }
+      
+      .stat-item {
+        padding: 2px 6px;
+        font-size: 11px;
+      }
+    }
+    
+    .quick-actions {
+      .ant-btn-group {
+        .ant-btn {
+          font-size: 12px;
+          padding: 4px 8px;
+          height: auto;
+        }
+      }
+    }
+    
+    #trendChart, #trendModalChart {
+      height: 300px !important;
     }
   }
   
   @media (max-width: 576px) {
+    .statistics-dashboard {
+      padding: 0 4px;
+    }
+    
     .ant-card {
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       border-radius: 8px;
     }
     
     .stat-card {
       .ant-card-body {
+        padding: 12px;
+      }
+      
+      .ant-statistic-title {
+        font-size: 13px;
+      }
+      
+      .ant-statistic-content {
+        font-size: 20px;
+      }
+    }
+    
+    .popular-item {
+      padding: 8px 12px;
+      
+      .item-header {
+        gap: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .meta-stats {
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      
+      .item-action {
+        margin-left: 8px;
+      }
+    }
+    
+    .ant-modal {
+      margin: 0;
+      max-width: 100vw;
+      
+      .ant-modal-body {
         padding: 16px;
       }
+    }
+    
+    #trendChart, #trendModalChart {
+      height: 250px !important;
+    }
+  }
+  
+  // 小屏设备优化
+  @media (max-width: 480px) {
+    .popular-item .item-header {
+      .rank-badge {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+      }
+      
+      .item-title {
+        font-size: 13px;
+        -webkit-line-clamp: 1;
+      }
+    }
+    
+    .stat-details .stat-item {
+      display: block;
+      margin-bottom: 4px;
+      width: fit-content;
     }
   }
 }
@@ -1112,6 +1821,17 @@ export default {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
   }
 }
 
