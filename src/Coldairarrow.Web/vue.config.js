@@ -51,7 +51,8 @@ const vueConfig = {
     }
   },
   devServer: {
-    port: process.env.VUE_APP_DevPort
+    port: process.env.VUE_APP_DevPort,
+    host: '0.0.0.0'
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     // proxy: {
     //   '/api': {

@@ -225,7 +225,7 @@ export default {
       queryParam: {},
       pagination: {
         current: 1,
-        pageSize: 20,
+        pageSize: 10,
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['10', '20', '50', '100'],
@@ -263,6 +263,7 @@ export default {
     handleTableChange(pagination, filters, sorter) {
       const pager = { ...this.pagination }
       pager.current = pagination.current
+      pager.pageSize = pagination.pageSize
       this.pagination = pager
       this.getDataList()
     },

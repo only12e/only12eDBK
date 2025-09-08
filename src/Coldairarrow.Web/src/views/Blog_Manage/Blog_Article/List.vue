@@ -4,6 +4,7 @@
       <a-button v-if="hasPerm('Blog_Article.Add')" type="primary" icon="plus" @click="handleAdd()">新建文章</a-button>
       <a-button v-if="hasPerm('Blog_Article.Delete')" type="primary" icon="minus" @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()" :loading="loading">删除</a-button>
+      <a-button icon="setting" @click="handleCategoryManage()">分类管理</a-button>
       <a-dropdown v-if="hasSelected()">
         <a-menu slot="overlay" @click="handleBatchAction">
           <a-menu-item key="published">批量发布</a-menu-item>
@@ -54,7 +55,6 @@
           <a-col :md="4" :sm="24">
             <a-button type="primary" @click="handleSearch">查询</a-button>
             <a-button style="margin-left: 8px" @click="handleReset">重置</a-button>
-            <a-button style="margin-left: 8px" @click="handleCategoryManage">分类管理</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -249,7 +249,7 @@ export default {
       queryParam: {},
       pagination: {
         current: 1,
-        pageSize: 20,
+        pageSize: 10,
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['10', '20', '50', '100'],
@@ -300,6 +300,7 @@ export default {
     handleTableChange(pagination, filters, sorter) {
       const pager = { ...this.pagination }
       pager.current = pagination.current
+      pager.pageSize = pagination.pageSize
       this.pagination = pager
       this.getDataList()
     },
@@ -382,18 +383,32 @@ export default {
         content: '删除分类可能影响已有文章，确认删除?',
         onOk: () => {
           return DeleteCategory([id]).then(resJson => {
-            this.$message.success('操作成功!')
-            this.getCategories()
+            if (resJson.Success) {
+              this.$message.success('删除成功!')
+              this.getCategories()
+            } else {
+              this.$message.error(resJson.Msg || '删除失败')
+            }
+          }).catch(error => {
+            this.$message.error('删除失败，请稍后重试')
+            console.error('删除分类错误:', error)
           })
         }
       })
     },
     handleCategoryFormSave() {
       SaveCategory(this.categoryForm).then(resJson => {
-        this.$message.success('操作成功!')
-        this.categoryFormVisible = false
-        this.categoryForm = {}
-        this.getCategories()
+        if (resJson.Success) {
+          this.$message.success('保存成功!')
+          this.categoryFormVisible = false
+          this.categoryForm = {}
+          this.getCategories()
+        } else {
+          this.$message.error(resJson.Msg || '保存失败')
+        }
+      }).catch(error => {
+        this.$message.error('保存失败，请稍后重试')
+        console.error('保存分类错误:', error)
       })
     },
     handleCategorySave() {

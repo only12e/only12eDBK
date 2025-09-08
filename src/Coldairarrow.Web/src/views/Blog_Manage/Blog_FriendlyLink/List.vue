@@ -188,7 +188,7 @@ export default {
       queryParam: {},
       pagination: {
         current: 1,
-        pageSize: 20,
+        pageSize: 10,
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['10', '20', '50', '100'],
@@ -228,6 +228,7 @@ export default {
       
       const pager = { ...this.pagination }
       pager.current = pagination.current
+      pager.pageSize = pagination.pageSize
       this.pagination = pager
       this.getDataList()
     },
@@ -318,7 +319,7 @@ export default {
         // 退出排序模式，恢复分页
         this.pagination = {
           current: 1,
-          pageSize: 20,
+          pageSize: 10,
           showSizeChanger: true,
           showQuickJumper: true,
           pageSizeOptions: ['10', '20', '50', '100'],

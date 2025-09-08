@@ -96,10 +96,20 @@ export default {
 
       if (id) {
         this.$http.post('/Base_Manage/Base_User/GetTheData', { id: id }).then(resJson => {
-          this.entity = resJson.Data
-          if (this.entity['Birthday']) {
-            this.entity['Birthday'] = moment(this.entity['Birthday'])
+          if (resJson.Success) {
+            this.entity = { ...resJson.Data }
+            if (this.entity.Birthday) {
+              this.entity.Birthday = moment(this.entity.Birthday)
+            }
+            if (this.entity.RoleIdList) {
+              this.entity.RoleIdList = [...this.entity.RoleIdList]
+            }
+          } else {
+            this.$message.error(resJson.Msg || '获取用户数据失败')
           }
+        }).catch(error => {
+          this.$message.error('获取用户数据失败')
+          console.error('获取用户数据错误:', error)
         })
       }
     },

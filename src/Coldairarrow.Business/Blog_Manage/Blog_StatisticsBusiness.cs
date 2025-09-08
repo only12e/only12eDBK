@@ -489,8 +489,8 @@ namespace Coldairarrow.Business.Blog_Manage
                         break;
                 }
 
-                var data = await query.ToListAsync();
-                var count = data.Where(x => dateSelector(x) >= current && dateSelector(x) <= periodEnd).Count();
+                // 优化：直接在数据库层面进行时间范围过滤，避免加载所有数据到内存
+                var count = await GetCountByDateRangeAsync(query, current, periodEnd);
 
                 dataPoints.Add(new TrendDataPoint
                 {
@@ -510,6 +510,46 @@ namespace Coldairarrow.Business.Blog_Manage
             }
 
             return dataPoints;
+        }
+
+        /// <summary>
+        /// 根据日期范围获取数据数量（优化版本，直接在数据库层面过滤）
+        /// </summary>
+        private async Task<int> GetCountByDateRangeAsync<T>(IQueryable<T> query, DateTime startTime, DateTime endTime) where T : class
+        {
+            // 根据实体类型进行不同的处理
+            if (typeof(T) == typeof(Blog_Article))
+            {
+                var articleQuery = query as IQueryable<Blog_Article>;
+                return await articleQuery.Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime).CountAsync();
+            }
+            else if (typeof(T) == typeof(Blog_Project))
+            {
+                var projectQuery = query as IQueryable<Blog_Project>;
+                return await projectQuery.Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime).CountAsync();
+            }
+            else if (typeof(T) == typeof(Blog_Tool))
+            {
+                var toolQuery = query as IQueryable<Blog_Tool>;
+                return await toolQuery.Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime).CountAsync();
+            }
+            else if (typeof(T) == typeof(Blog_Technology))
+            {
+                var techQuery = query as IQueryable<Blog_Technology>;
+                return await techQuery.Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime).CountAsync();
+            }
+            else if (typeof(T) == typeof(Blog_Comment))
+            {
+                var commentQuery = query as IQueryable<Blog_Comment>;
+                return await commentQuery.Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime).CountAsync();
+            }
+            else if (typeof(T) == typeof(Blog_User))
+            {
+                var userQuery = query as IQueryable<Blog_User>;
+                return await userQuery.Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime).CountAsync();
+            }
+
+            return 0;
         }
 
         #endregion

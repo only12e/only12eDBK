@@ -121,12 +121,19 @@ export default {
           this.$refs['form'].clearValidate()
         })
         
-        GetTheData({ id }).then(resJson => {
-          this.entity = {
-            ...resJson.Data,
-            Password: '',
-            ConfirmPassword: ''
+        GetTheData(id).then(resJson => {
+          if (resJson.Success) {
+            this.entity = {
+              ...resJson.Data,
+              Password: '',
+              ConfirmPassword: ''
+            }
+          } else {
+            this.$message.error(resJson.Msg || '获取用户数据失败')
           }
+        }).catch(error => {
+          this.$message.error('获取用户数据失败')
+          console.error('获取用户数据错误:', error)
         })
       } else {
         this.init()
