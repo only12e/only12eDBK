@@ -183,26 +183,18 @@
         <a-card class="stat-card action-card">
           <div class="quick-actions">
             <h4>快速操作</h4>
-            <a-button-group style="width: 100%; margin-bottom: 12px;">
-              <a-button type="primary" @click="refreshData" :loading="overviewLoading">
+            <div class="action-buttons">
+              <a-button type="primary" @click="refreshData" :loading="overviewLoading" class="action-btn">
                 <a-icon type="reload" />
                 刷新数据
               </a-button>
-            </a-button-group>
-            <a-button-group style="width: 100%;">
-              <a-button type="default" @click="exportData">
+              <a-button type="default" @click="exportData" class="action-btn">
                 <a-icon type="download" />
                 导出数据
               </a-button>
-            </a-button-group>
-            <div style="margin-top: 12px;">
-              <a-button type="link" @click="showTrendModal">
+              <a-button type="default" @click="showTrendModal" class="action-btn">
                 <a-icon type="line-chart" />
                 趋势分析
-              </a-button>
-              <a-button type="link" @click="showPopularModal">
-                <a-icon type="fire" />
-                热门内容
               </a-button>
             </div>
           </div>
@@ -210,9 +202,24 @@
       </a-col>
     </a-row>
 
+    <a-row :gutter="[16, 16]" style="margin-top: 16px;">
+      <a-col :xl="24" :lg="24" :md="24" :sm="24">
+        <blog-visit-card 
+          :blog-url="blogUrl"
+          :today-visits="safeOverview.Access.TodayViews || 0"
+          :online-users="safeOverview.Users.ActiveCount || 0"
+          :is-horizontal="true"
+          @visit-tracked="handleVisitTracked"
+          @preview-opened="handlePreviewOpened"
+          @quick-visit="handleQuickVisit"
+          class="horizontal-blog-card"
+        />
+      </a-col>
+    </a-row>
+
     <!-- 趋势图表区域 -->
     <a-row :gutter="[16, 16]" style="margin-top: 24px;">
-      <a-col :span="24">
+      <a-col :xl="16" :lg="24" :md="24" :sm="24">
         <a-card title="趋势统计" :loading="trendLoading">
           <div slot="extra">
             <a-select v-model="trendQuery.type" style="width: 120px; margin-right: 8px;" @change="getTrendData">
@@ -231,133 +238,65 @@
           </div>
           
           <div v-if="trendData && trendData.DataPoints && trendData.DataPoints.length > 0">
-            <div id="trendChart" style="width: 100%; height: 400px;"></div>
+            <div id="trendChart" style="width: 100%; height: 450px;"></div>
           </div>
           <a-empty v-else description="暂无趋势数据">
             <a-button slot="description" type="primary" @click="getTrendData">刷新数据</a-button>
           </a-empty>
         </a-card>
       </a-col>
-    </a-row>
-
-    <!-- 热门内容 -->
-    <a-row :gutter="[16, 16]" style="margin-top: 24px;" v-if="popularContent && ((popularContent.PopularArticles && popularContent.PopularArticles.length > 0) || (popularContent.PopularProjects && popularContent.PopularProjects.length > 0))">
-      <a-col :xl="12" :lg="24" :md="24" :sm="24">
-        <a-card class="popular-articles-card" :loading="popularLoading">
-          <div slot="title" class="card-title-with-icon">
-            <a-icon type="fire" class="title-icon" />
-            <span class="title-text">热门文章</span>
-            <div class="title-badge">
-              <span class="badge-text">TOP</span>
-              <span class="badge-count">5</span>
+      
+      <a-col :xl="8" :lg="24" :md="24" :sm="24">
+        <a-card title="数据汇总" class="summary-card">
+          <div class="summary-stats">
+            <div class="summary-item">
+              <div class="summary-icon">
+                <a-icon type="file-text" style="color: #1890ff;" />
+              </div>
+              <div class="summary-content">
+                <div class="summary-title">内容总数</div>
+                <div class="summary-value">
+                  {{ (safeOverview.Articles.TotalCount || 0) + (safeOverview.Projects.TotalCount || 0) }}
+                </div>
+                <div class="summary-desc">文章与项目</div>
+              </div>
             </div>
-          </div>
-          
-          <div v-if="popularContent.PopularArticles && popularContent.PopularArticles.length > 0" class="popular-content">
-            <div 
-              v-for="(item, index) in popularContent.PopularArticles" 
-              :key="index" 
-              class="popular-item popular-article-item"
-              @click="handleArticleClick(item)">
-              <div class="item-header">
-                <div class="rank-badge">
-                  <a-icon v-if="index === 0" type="crown" class="crown-icon" />
-                  <span v-else class="rank-number">#{{ index + 1 }}</span>
+            
+            <div class="summary-item">
+              <div class="summary-icon">
+                <a-icon type="eye" style="color: #52c41a;" />
+              </div>
+              <div class="summary-content">
+                <div class="summary-title">总浏览量</div>
+                <div class="summary-value">{{ safeOverview.Access.TotalViews || 0 }}</div>
+                <div class="summary-desc">累计访问次数</div>
+              </div>
+            </div>
+            
+            <div class="summary-item">
+              <div class="summary-icon">
+                <a-icon type="user" style="color: #fa8c16;" />
+              </div>
+              <div class="summary-content">
+                <div class="summary-title">活跃用户</div>
+                <div class="summary-value">{{ safeOverview.Users.ActiveCount || 0 }}</div>
+                <div class="summary-desc">当前在线用户</div>
+              </div>
+            </div>
+            
+            <div class="summary-item">
+              <div class="summary-icon">
+                <a-icon type="message" style="color: #722ed1;" />
+              </div>
+              <div class="summary-content">
+                <div class="summary-title">用户互动</div>
+                <div class="summary-value">
+                  {{ (safeOverview.Access.TotalLikes || 0) + (safeOverview.Comments.TotalCount || 0) }}
                 </div>
-                <div class="item-content">
-                  <div class="item-title">{{ item.Title }}</div>
-                  <div class="item-meta">
-                    <div class="meta-stats">
-                      <span class="stat-item view-stat">
-                        <a-icon type="eye" />
-                        {{ item.ViewCount || 0 }}
-                      </span>
-                      <span class="stat-item like-stat">
-                        <a-icon type="heart" />
-                        {{ item.LikeCount || 0 }}
-                      </span>
-                      <span class="stat-item comment-stat">
-                        <a-icon type="message" />
-                        {{ item.CommentCount || 0 }}
-                      </span>
-                    </div>
-                    <div class="meta-date">
-                      {{ formatDate(item.CreatedAt) }}
-                    </div>
-                  </div>
-                </div>
+                <div class="summary-desc">点赞与评论</div>
               </div>
             </div>
           </div>
-          <div v-else class="empty-state">
-            <a-icon type="file-text" class="empty-icon" />
-            <p class="empty-text">暂无热门文章</p>
-          </div>
-        </a-card>
-      </a-col>
-
-      <a-col :xl="12" :lg="24" :md="24" :sm="24">
-        <a-card class="popular-projects-card" :loading="popularLoading">
-          <div slot="title" class="card-title-with-icon">
-            <a-icon type="trophy" class="title-icon" />
-            <span class="title-text">热门项目</span>
-            <div class="title-badge">
-              <span class="badge-text">TOP</span>
-              <span class="badge-count">5</span>
-            </div>
-          </div>
-          
-          <div v-if="popularContent.PopularProjects && popularContent.PopularProjects.length > 0" class="popular-content">
-            <div 
-              v-for="(item, index) in popularContent.PopularProjects" 
-              :key="index" 
-              class="popular-item popular-project-item"
-              @click="handleProjectClick(item)">
-              <div class="item-header">
-                <div class="rank-badge">
-                  <a-icon v-if="index === 0" type="crown" class="crown-icon" />
-                  <span v-else class="rank-number">#{{ index + 1 }}</span>
-                </div>
-                <div class="item-content">
-                  <div class="item-title">{{ item.Title }}</div>
-                  <div class="item-meta">
-                    <div class="meta-stats">
-                      <span class="stat-item view-stat">
-                        <a-icon type="eye" />
-                        {{ item.ViewCount || 0 }}
-                      </span>
-                      <span class="stat-item like-stat">
-                        <a-icon type="heart" />
-                        {{ item.LikeCount || 0 }}
-                      </span>
-                      <span class="stat-item comment-stat">
-                        <a-icon type="message" />
-                        {{ item.CommentCount || 0 }}
-                      </span>
-                    </div>
-                    <div class="meta-date">
-                      {{ formatDate(item.CreatedAt) }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-else class="empty-state">
-            <a-icon type="project" class="empty-icon" />
-            <p class="empty-text">暂无热门项目</p>
-          </div>
-        </a-card>
-      </a-col>
-    </a-row>
-    
-    <!-- 无数据时的提示 -->
-    <a-row :gutter="[16, 16]" style="margin-top: 24px;" v-else-if="!popularLoading">
-      <a-col :span="24">
-        <a-card>
-          <a-empty description="暂无热门内容数据">
-            <a-button slot="description" type="primary" @click="getPopularContent">刷新数据</a-button>
-          </a-empty>
         </a-card>
       </a-col>
     </a-row>
@@ -415,98 +354,22 @@
       </div>
     </a-modal>
 
-    <!-- 热门内容详情模态框 -->
-    <a-modal
-      title="热门内容详情"
-      :visible="popularModalVisible"
-      @cancel="popularModalVisible = false"
-      :footer="null"
-      :width="1000">
-      <a-spin :spinning="popularModalLoading">
-        <a-tabs v-if="popularModalData" defaultActiveKey="articles">
-          <a-tab-pane key="articles" tab="热门文章">
-            <a-list
-              item-layout="horizontal"
-              :data-source="popularModalData.PopularArticles || []">
-              <a-list-item slot="renderItem" slot-scope="item">
-                <a-list-item-meta>
-                  <div slot="title" class="popular-item-title">{{ item.Title }}</div>
-                  <div slot="description">
-                    <span class="stat-tag">浏览: {{ item.ViewCount }}</span>
-                    <span class="stat-tag">点赞: {{ item.LikeCount }}</span>
-                    <span class="stat-tag">评论: {{ item.CommentCount }}</span>
-                    <span class="stat-tag">{{ formatDate(item.CreatedAt) }}</span>
-                  </div>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </a-tab-pane>
-          <a-tab-pane key="projects" tab="热门项目">
-            <a-list
-              item-layout="horizontal"
-              :data-source="popularModalData.PopularProjects || []">
-              <a-list-item slot="renderItem" slot-scope="item">
-                <a-list-item-meta>
-                  <div slot="title" class="popular-item-title">{{ item.Title }}</div>
-                  <div slot="description">
-                    <span class="stat-tag">浏览: {{ item.ViewCount }}</span>
-                    <span class="stat-tag">点赞: {{ item.LikeCount }}</span>
-                    <span class="stat-tag">评论: {{ item.CommentCount }}</span>
-                    <span class="stat-tag">{{ formatDate(item.CreatedAt) }}</span>
-                  </div>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </a-tab-pane>
-          <a-tab-pane key="tools" tab="热门工具">
-            <a-list
-              item-layout="horizontal"
-              :data-source="popularModalData.PopularTools || []">
-              <a-list-item slot="renderItem" slot-scope="item">
-                <a-list-item-meta>
-                  <div slot="title" class="popular-item-title">{{ item.Title }}</div>
-                  <div slot="description">
-                    <span class="stat-tag">浏览: {{ item.ViewCount }}</span>
-                    <span class="stat-tag">点赞: {{ item.LikeCount }}</span>
-                    <span class="stat-tag">评论: {{ item.CommentCount }}</span>
-                    <span class="stat-tag">{{ formatDate(item.CreatedAt) }}</span>
-                  </div>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </a-tab-pane>
-          <a-tab-pane key="technologies" tab="热门技术">
-            <a-list
-              item-layout="horizontal"
-              :data-source="popularModalData.PopularTechnologies || []">
-              <a-list-item slot="renderItem" slot-scope="item">
-                <a-list-item-meta>
-                  <div slot="title" class="popular-item-title">{{ item.Title }}</div>
-                  <div slot="description">
-                    <span class="stat-tag">浏览: {{ item.ViewCount }}</span>
-                    <span class="stat-tag">点赞: {{ item.LikeCount }}</span>
-                    <span class="stat-tag">评论: {{ item.CommentCount }}</span>
-                    <span class="stat-tag">{{ formatDate(item.CreatedAt) }}</span>
-                  </div>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </a-tab-pane>
-        </a-tabs>
-        <a-empty v-else description="暂无数据" />
-      </a-spin>
-    </a-modal>
   </div>
 </template>
 
 <script>
-import { GetOverview, GetTrendStatistics, GetPopularContent } from '@/api/blog_statistics'
+import { GetOverview, GetTrendStatistics } from '@/api/blog_statistics'
+import BlogVisitCard from '@/components/BlogVisitCard.vue'
 import * as echarts from 'echarts'
 
 export default {
   name: 'BlogStatistics',
+  components: {
+    BlogVisitCard
+  },
   data() {
     return {
+      blogUrl: 'https://Only12eDBK.com', // 配置你的博客地址
       overview: {},
       overviewLoading: true,
       
@@ -518,9 +381,6 @@ export default {
         limit: 30
       },
       
-      popularContent: null,
-      popularLoading: false,
-      
       trendModalVisible: false,
       trendModalData: null,
       trendModalLoading: false,
@@ -529,10 +389,6 @@ export default {
         period: 'day',
         limit: 30
       },
-      
-      popularModalVisible: false,
-      popularModalData: null,
-      popularModalLoading: false,
       
       chart: null,
       modalChart: null,
@@ -604,8 +460,7 @@ export default {
     async loadData() {
       await Promise.all([
         this.getOverview(),
-        this.getTrendData(),
-        this.getPopularContent()
+        this.getTrendData()
       ])
     },
     
@@ -637,20 +492,6 @@ export default {
         this.$message.error('获取趋势数据失败')
       } finally {
         this.trendLoading = false
-      }
-    },
-    
-    async getPopularContent() {
-      try {
-        this.popularLoading = true
-        const res = await GetPopularContent(5)
-        if (res.Success) {
-          this.popularContent = res.Data || {}
-        }
-      } catch (error) {
-        this.$message.error('获取热门内容失败')
-      } finally {
-        this.popularLoading = false
       }
     },
     
@@ -785,7 +626,6 @@ export default {
         const exportData = {
           统计概览: this.safeOverview,
           趋势数据: this.trendData,
-          热门内容: this.popularContent,
           导出时间: new Date().toLocaleString('zh-CN')
         }
         
@@ -813,11 +653,6 @@ export default {
       this.getTrendModalData()
     },
     
-    showPopularModal() {
-      this.popularModalVisible = true
-      this.getPopularModalData()
-    },
-    
     async getTrendModalData() {
       try {
         this.trendModalLoading = true
@@ -832,20 +667,6 @@ export default {
         this.$message.error('获取趋势数据失败')
       } finally {
         this.trendModalLoading = false
-      }
-    },
-    
-    async getPopularModalData() {
-      try {
-        this.popularModalLoading = true
-        const res = await GetPopularContent(20)
-        if (res.Success) {
-          this.popularModalData = res.Data
-        }
-      } catch (error) {
-        this.$message.error('获取热门内容失败')
-      } finally {
-        this.popularModalLoading = false
       }
     },
     
@@ -948,6 +769,27 @@ export default {
     
     handleProjectClick(project) {
       // this.$message.info(`点击了项目：${project.Title}`)
+    },
+    
+    // 博客访问相关事件处理
+    handleVisitTracked(data) {
+      this.$message.success('博客访问已记录')
+      console.log('访问跟踪:', data)
+      
+      // 可以在这里调用API记录访问统计
+      // trackVisit(data)
+    },
+    
+    handlePreviewOpened(data) {
+      this.$message.info('预览模式已开启')
+      console.log('预览打开:', data)
+    },
+    
+    handleQuickVisit(data) {
+      console.log('快速访问:', data)
+      
+      // 可以在这里更新访问统计
+      // updateQuickVisitStats(data)
     }
   }
 }
@@ -1017,7 +859,7 @@ export default {
       }
     }
     
-    // 不同卡片的主题色彩和边框
+    /* 不同卡片的主题色彩和边框 */
     &.article-card {
       border-top: 4px solid #1890ff;
       
@@ -1078,24 +920,47 @@ export default {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
+      height: 180px;
       
       .ant-card-body {
         padding: 24px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
       
       .quick-actions {
         h4 {
           color: white;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
-          margin-bottom: 16px;
+          margin-bottom: 12px;
           text-align: center;
         }
         
-        .ant-btn {
+        .action-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        
+        .action-btn {
+          width: 100%;
+          height: 32px;
           border-radius: 6px;
           font-weight: 500;
+          font-size: 11px;
           transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 8px;
+          
+          .anticon {
+            margin-right: 4px;
+            font-size: 12px;
+          }
           
           &:not(.ant-btn-link) {
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -1106,16 +971,21 @@ export default {
               background: rgba(255, 255, 255, 0.2);
               border-color: rgba(255, 255, 255, 0.5);
               transform: translateY(-1px);
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            
+            &:active {
+              transform: translateY(0);
             }
           }
           
-          &.ant-btn-link {
-            color: rgba(255, 255, 255, 0.9);
+          &.ant-btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
             
             &:hover {
-              color: white;
-              background: rgba(255, 255, 255, 0.1);
-              border-radius: 4px;
+              background: rgba(255, 255, 255, 0.3);
+              border-color: rgba(255, 255, 255, 0.6);
             }
           }
         }
@@ -1123,7 +993,7 @@ export default {
     }
   }
   
-  // 卡片通用样式
+  /* 卡片通用样式 */
   .ant-card {
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -1159,400 +1029,74 @@ export default {
     }
   }
   
-  // 热门内容卡片样式
-  .popular-articles-card, .popular-projects-card {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-    
-    &:hover {
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-      transform: translateY(-4px);
-    }
-    
-    .ant-card-head {
-      background: #ffffff;
-      border-bottom: 3px solid #f0f0f0;
-      padding: 16px 24px;
-      
-      .card-title-with-icon {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: #262626;
-        gap: 12px;
-        
-        .title-icon {
-          font-size: 20px;
-          color: #1890ff;
-          filter: drop-shadow(0 2px 4px rgba(24, 144, 255, 0.3));
-          animation: pulse 2s infinite;
-        }
-        
-        .title-text {
-          font-size: 18px;
-          font-weight: 700;
-          flex: 1;
-          letter-spacing: 0.5px;
-          color: #1a1a1a;
-        }
-        
-        .title-badge {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 4px;
-          
-          .badge-text {
-            background: linear-gradient(45deg, #ff4757, #ff3838);
-            color: white;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 3px 10px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 71, 87, 0.2);
-            box-shadow: 0 3px 8px rgba(255, 71, 87, 0.4);
-            letter-spacing: 0.8px;
-            line-height: 1.2;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-          }
-          
-          .badge-count {
-            background: linear-gradient(45deg, #1890ff, #40a9ff);
-            color: white;
-            font-size: 16px;
-            font-weight: 800;
-            padding: 6px 12px;
-            border-radius: 50%;
-            border: 3px solid rgba(24, 144, 255, 0.2);
-            min-width: 32px;
-            min-height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Monaco', 'Menlo', monospace;
-            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-          }
-        }
-      }
-      
-      .ant-card-extra {
-        .ant-btn-link {
-          color: #666;
-          border: 1px solid #d9d9d9;
-          border-radius: 6px;
-          padding: 4px 12px;
-          
-          &:hover {
-            color: #1890ff;
-            background: #f0f8ff;
-            border-color: #40a9ff;
-          }
-        }
-      }
-    }
-  }
-  
-  .popular-articles-card .ant-card-head {
-    border-bottom: 3px solid #1890ff;
-    
-    .title-icon {
-      color: #ff4757;
-    }
-    
-    .title-badge {
-      .badge-count {
-        background: linear-gradient(45deg, #1890ff, #40a9ff);
-      }
-    }
-  }
-  
-  .popular-projects-card .ant-card-head {
-    border-bottom: 3px solid #52c41a;
-    
-    .title-icon {
-      color: #fa8c16;
-    }
-    
-    .title-badge {
-      .badge-text {
-        background: linear-gradient(45deg, #fa8c16, #ff9500);
-        border-color: rgba(250, 140, 22, 0.2);
-        box-shadow: 0 3px 8px rgba(250, 140, 22, 0.4);
-      }
-      
-      .badge-count {
-        background: linear-gradient(45deg, #52c41a, #73d13d);
-        border-color: rgba(82, 196, 26, 0.2);
-        box-shadow: 0 4px 12px rgba(82, 196, 26, 0.4);
-      }
-    }
-  }
-  
-  // 热门内容列表
-  .popular-content {
-    max-height: 400px;
-    overflow-y: auto;
-    padding: 8px 0;
-  }
-  
-  .popular-item {
-    display: flex;
-    align-items: center;
-    padding: 16px 20px;
-    margin-bottom: 12px;
-    background: linear-gradient(45deg, #fafbff, #f0f8ff);
-    border-radius: 12px;
-    border: 1px solid #e6f4ff;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(to bottom, #1890ff, #40a9ff);
-      transform: scaleY(0);
-      transition: transform 0.3s ease;
-    }
-    
-    &:hover {
-      background: linear-gradient(45deg, #e6f7ff, #bae7ff);
-      border-color: #40a9ff;
-      box-shadow: 0 4px 16px rgba(24, 144, 255, 0.15);
-      transform: translateX(8px) scale(1.02);
-      
-      &::before {
-        transform: scaleY(1);
-      }
-      
-      .item-action .anticon {
-        transform: translateX(4px);
-        color: #1890ff;
-      }
-    }
-    
-    .item-header {
+  /* 数据汇总卡片样式 */
+  .summary-card {
+    .summary-stats {
       display: flex;
-      align-items: flex-start;
-      flex: 1;
-      gap: 16px;
+      flex-direction: column;
+      gap: 20px;
     }
     
-    .rank-badge {
+    .summary-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: linear-gradient(45deg, #ffd53e, #ff7c00);
-      color: white;
-      font-weight: 700;
-      font-size: 14px;
-      box-shadow: 0 2px 8px rgba(255, 124, 0, 0.3);
-      flex-shrink: 0;
-      
-      .crown-icon {
-        font-size: 16px;
-        color: #fff700;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-      }
-      
-      .rank-number {
-        font-family: 'Monaco', 'Menlo', monospace;
-      }
-    }
-    
-    .item-content {
-      flex: 1;
-      min-width: 0;
-    }
-    
-    .item-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #262626;
-      margin-bottom: 8px;
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      transition: color 0.3s ease;
-    }
-    
-    .item-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    
-    .meta-stats {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      color: #666;
-      font-weight: 500;
-      padding: 4px 8px;
-      background: rgba(255, 255, 255, 0.8);
+      padding: 16px;
+      background: linear-gradient(45deg, #fafbff, #f0f8ff);
       border-radius: 12px;
-      border: 1px solid #e6f0ff;
+      border: 1px solid #e6f4ff;
       transition: all 0.3s ease;
       
-      .anticon {
-        font-size: 12px;
+      &:hover {
+        background: linear-gradient(45deg, #e6f7ff, #bae7ff);
+        border-color: #40a9ff;
+        box-shadow: 0 4px 16px rgba(24, 144, 255, 0.1);
+        transform: translateY(-2px);
       }
       
-      &.view-stat {
+      .summary-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.8);
+        margin-right: 16px;
+        flex-shrink: 0;
+        
         .anticon {
-          color: #1890ff;
+          font-size: 24px;
+        }
+      }
+      
+      .summary-content {
+        flex: 1;
+        
+        .summary-title {
+          font-size: 14px;
+          color: #666;
+          margin-bottom: 4px;
+          font-weight: 500;
         }
         
-        &:hover {
-          background: #e6f7ff;
-          border-color: #1890ff;
-        }
-      }
-      
-      &.like-stat {
-        .anticon {
-          color: #f5222d;
+        .summary-value {
+          font-size: 24px;
+          font-weight: 700;
+          color: #262626;
+          margin-bottom: 4px;
+          font-family: 'Monaco', 'Menlo', monospace;
         }
         
-        &:hover {
-          background: #fff1f0;
-          border-color: #f5222d;
-        }
-      }
-      
-      &.comment-stat {
-        .anticon {
-          color: #52c41a;
-        }
-        
-        &:hover {
-          background: #f6ffed;
-          border-color: #52c41a;
+        .summary-desc {
+          font-size: 12px;
+          color: #999;
+          font-weight: 400;
         }
       }
     }
-    
-    .meta-date {
-      font-size: 12px;
-      color: #999;
-      white-space: nowrap;
-      padding: 4px 8px;
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 8px;
-    }
-    
-    .item-action {
-      display: flex;
-      align-items: center;
-      margin-left: 16px;
-      flex-shrink: 0;
-      
-      .anticon {
-        font-size: 16px;
-        color: #bfbfbf;
-        transition: all 0.3s ease;
-      }
-    }
   }
   
-  .popular-project-item {
-    &::before {
-      background: linear-gradient(to bottom, #52c41a, #73d13d);
-    }
-    
-    &:hover {
-      background: linear-gradient(45deg, #f6ffed, #d9f7be);
-      border-color: #52c41a;
-      box-shadow: 0 4px 16px rgba(82, 196, 26, 0.15);
-      
-      .item-action .anticon {
-        color: #52c41a;
-      }
-    }
-  }
-  
-  // 空状态样式
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    color: #bfbfbf;
-    
-    .empty-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-      opacity: 0.6;
-    }
-    
-    .empty-text {
-      font-size: 14px;
-      margin: 0;
-      opacity: 0.8;
-    }
-  }
-
-  // 热门内容样式优化
-  .popular-item-title {
-    color: #262626;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 1.4;
-    margin-bottom: 6px;
-    transition: color 0.3s ease;
-    
-    &:hover {
-      color: #1890ff;
-      cursor: pointer;
-    }
-  }
-  
-  .stat-tag {
-    display: inline-block;
-    margin-right: 12px;
-    padding: 4px 8px;
-    background: linear-gradient(45deg, #f0f2f5, #e6f7ff);
-    border-radius: 4px;
-    font-size: 12px;
-    color: #666;
-    font-weight: 500;
-    border: 1px solid #d9d9d9;
-    transition: all 0.3s ease;
-    
-    &:hover {
-      background: linear-gradient(45deg, #e6f7ff, #bae7ff);
-      color: #1890ff;
-      border-color: #40a9ff;
-    }
-    
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-  
-  // 列表项样式
+  /* 列表项样式 */
   .ant-list-item {
     padding: 16px 20px;
     border-radius: 8px;
@@ -1567,7 +1111,7 @@ export default {
     }
   }
   
-  // 空状态样式
+  /* 空状态样式 */
   .ant-empty {
     margin: 60px 0;
     
@@ -1583,7 +1127,7 @@ export default {
     }
   }
   
-  // 弹窗样式优化
+  /* 弹窗样式优化 */
   .ant-modal {
     .ant-modal-header {
       border-radius: 8px 8px 0 0;
@@ -1601,7 +1145,7 @@ export default {
     }
   }
   
-  // 标签页样式
+  /* 标签页样式 */
   .ant-tabs {
     .ant-tabs-bar {
       border-bottom: 2px solid #f0f0f0;
@@ -1624,12 +1168,12 @@ export default {
     }
   }
   
-  // 加载动画优化
+  /* 加载动画优化 */
   .ant-spin-container {
     transition: opacity 0.3s ease;
   }
   
-  // 按钮组样式
+  /* 按钮组样式 */
   .ant-btn-group {
     .ant-btn {
       border-radius: 0;
@@ -1644,14 +1188,10 @@ export default {
     }
   }
   
-  // 响应式优化
+  /* 响应式优化 */
   @media (max-width: 1200px) {
     .statistics-dashboard .ant-col {
       margin-bottom: 16px;
-    }
-    
-    .popular-content {
-      max-height: 300px;
     }
   }
   
@@ -1683,42 +1223,27 @@ export default {
       .stat-growth .growth-item {
         font-size: 12px;
       }
-    }
-    
-    .popular-item {
-      padding: 12px 16px;
-      margin-bottom: 8px;
       
-      .item-header {
-        gap: 12px;
-      }
-      
-      .rank-badge {
-        width: 28px;
-        height: 28px;
-        font-size: 12px;
-      }
-      
-      .item-title {
-        font-size: 14px;
-      }
-      
-      .meta-stats {
-        gap: 8px;
-      }
-      
-      .stat-item {
-        padding: 2px 6px;
-        font-size: 11px;
-      }
-    }
-    
-    .quick-actions {
-      .ant-btn-group {
-        .ant-btn {
-          font-size: 12px;
-          padding: 4px 8px;
-          height: auto;
+      &.action-card {
+        height: auto;
+        
+        .ant-card-body {
+          padding: 16px;
+        }
+        
+        .action-buttons {
+          gap: 8px;
+        }
+        
+        .action-btn {
+          height: 32px;
+          font-size: 11px;
+          padding: 0 6px;
+          
+          .anticon {
+            font-size: 12px;
+            margin-right: 4px;
+          }
         }
       }
     }
@@ -1752,25 +1277,6 @@ export default {
       }
     }
     
-    .popular-item {
-      padding: 8px 12px;
-      
-      .item-header {
-        gap: 8px;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .meta-stats {
-        flex-wrap: wrap;
-        gap: 4px;
-      }
-      
-      .item-action {
-        margin-left: 8px;
-      }
-    }
-    
     .ant-modal {
       margin: 0;
       max-width: 100vw;
@@ -1784,31 +1290,9 @@ export default {
       height: 250px !important;
     }
   }
-  
-  // 小屏设备优化
-  @media (max-width: 480px) {
-    .popular-item .item-header {
-      .rank-badge {
-        width: 24px;
-        height: 24px;
-        font-size: 10px;
-      }
-      
-      .item-title {
-        font-size: 13px;
-        -webkit-line-clamp: 1;
-      }
-    }
-    
-    .stat-details .stat-item {
-      display: block;
-      margin-bottom: 4px;
-      width: fit-content;
-    }
-  }
 }
 
-// 全局动画效果
+/* 全局动画效果 */
 .statistics-dashboard {
   animation: fadeInUp 0.6s ease-out;
 }
@@ -1835,7 +1319,7 @@ export default {
   }
 }
 
-// 图表动画
+/* 图表动画 */
 #trendChart, #trendModalChart {
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -1845,7 +1329,7 @@ export default {
   }
 }
 
-// 滚动条样式优化
+/* 滚动条样式优化 */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
