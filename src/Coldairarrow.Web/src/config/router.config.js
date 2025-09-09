@@ -7,6 +7,11 @@ import { UserLayout, PageView, BlankLayout } from '@/layouts'
  */
 export const constantRouterMap = [
   {
+    path: '/',
+    redirect: process.env.VUE_APP_DesktopPath || '/welcome',
+    hidden: true
+  },
+  {
     path: '/Home',
     component: UserLayout,
     redirect: '/Home/Login',
@@ -30,12 +35,6 @@ export const constantRouterMap = [
         component: () => import('@/views/Home/Introduce')
       }
     ]
-  },
-  {
-    path: '/blog-website',
-    name: 'BlogWebsite',
-    component: () => import('@/views/BlogWebsite/Index.vue'),
-    hidden: true
   },
   {
     path: '/404',

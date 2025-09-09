@@ -251,7 +251,6 @@ namespace Coldairarrow.Business.Blog_Manage
             var user = await GetEntityAsync(userId);
             if (user != null)
             {
-                user.LastLoginAt = DateTime.Now;
                 await UpdateAsync(user);
             }
         }

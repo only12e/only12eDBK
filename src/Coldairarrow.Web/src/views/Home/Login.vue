@@ -133,6 +133,7 @@ export default {
                 localStorage.removeItem('userName')
                 localStorage.removeItem('password')
               }
+              this.$message.success('欢迎您！')
               this.$router.push({ path: '/' })
             } else {
               this.$message.error(resJson.Msg)
