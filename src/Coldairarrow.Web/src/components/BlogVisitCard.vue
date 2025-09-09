@@ -133,25 +133,19 @@ export default {
     visitBlog() {
       this.visiting = true
       try {
-        // 构建内部博客路由URL - 使用完整路径避免路由嵌套问题
-        const currentOrigin = window.location.origin
-        const currentPort = window.location.port
-        const baseUrl = currentPort ? `${currentOrigin}` : currentOrigin
-        const blogUrl = `${baseUrl}/#/blog-website`
-        
-        // 直接在当前窗口导航而不是打开新窗口，避免路由嵌套
+        // 直接在当前窗口导航到博客首页
         this.$router.push('/blog-website')
-        this.$message.success('正在跳转到博客首页...')
+        this.$message.success('欢迎来到博客网站！')
         
         // 模拟访问统计更新
         this.$emit('visit-tracked', {
           type: 'blog_home_visit',
           timestamp: new Date(),
-          url: blogUrl,
+          url: '/blog-website',
           from: 'admin_dashboard'
         })
       } catch (error) {
-        this.$message.error('打开博客首页失败')
+        this.$message.error('跳转博客首页失败')
         console.error('访问博客失败:', error)
       } finally {
         setTimeout(() => {
@@ -177,7 +171,7 @@ export default {
     quickVisit(link) {
       // 快速访问直接跳转到博客页面
       this.$router.push('/blog-website')
-      this.$message.success(`正在跳转到博客${link.label}...`)
+      this.$message.success(`欢迎访问博客${link.label}！`)
       
       this.$emit('quick-visit', {
         type: 'quick',
