@@ -46,7 +46,7 @@
           <div class="nav-wrapper">
             <div class="nav-item" v-for="item in navItems" :key="item.key" 
                  :class="{ active: activeNav === item.key }" 
-                 @click="activeNav = item.key">
+                 @click="handleNavClick(item)">
               <a-icon :type="item.icon" />
               <span>{{ item.label }}</span>
             </div>
@@ -83,12 +83,9 @@
                 </div>
                 <div class="stat-content">
                   <div class="stat-value">
-                    <a-skeleton-button 
-                      v-if="statsLoading" 
-                      :style="{ width: '60px', height: '24px' }" 
-                      active 
-                      size="small"
-                    />
+                    <div v-if="statsLoading" class="loading-placeholder">
+                      <div class="loading-bar"></div>
+                    </div>
                     <span v-else>{{ stat.value }}</span>
                   </div>
                   <div class="stat-label">{{ stat.label }}</div>
@@ -162,18 +159,15 @@
             
             <div class="feature-stats">
               <span class="feature-stat">
-                <a-skeleton-button 
-                  v-if="featuresLoading" 
-                  :style="{ width: '80px', height: '20px' }" 
-                  active 
-                  size="small"
-                />
+                <div v-if="featuresLoading" class="loading-placeholder">
+                  <div class="loading-bar small"></div>
+                </div>
                 <span v-else>{{ feature.count }}</span>
               </span>
               <span class="feature-meta">{{ feature.meta }}</span>
             </div>
             
-            <button class="feature-btn glass-btn" :disabled="featuresLoading">
+            <button class="feature-btn glass-btn" :disabled="featuresLoading" @click="handleFeatureClick(index)">
               <span>探索更多</span>
               <a-icon type="arrow-right" />
               <div class="btn-bg"></div>
@@ -280,7 +274,7 @@ export default {
       
       navItems: [
         { key: 'home', label: '首页', icon: 'home' },
-        { key: 'articles', label: '技术文章', icon: 'file-text' },
+        { key: 'articles', label: '技术文章', icon: 'file-text', route: '/blog-website/articles' },
         { key: 'projects', label: '项目展示', icon: 'project' },
         { key: 'tools', label: '工具推荐', icon: 'tool' },
       ],
@@ -365,6 +359,35 @@ export default {
     goToAdmin() {
       this.$router.push('/')
       this.$message.success('正在跳转到管理后台...')
+    },
+    
+    // 处理导航点击
+    handleNavClick(item) {
+      this.activeNav = item.key
+      
+      if (item.route) {
+        this.$router.push(item.route)
+      } else if (item.key === 'home') {
+        // 刷新当前页面或滚动到顶部
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } else {
+        // 其他导航项暂时显示提示
+        this.$message.info(`${item.label}功能即将上线，敬请期待！`)
+      }
+    },
+    
+    // 处理特色内容点击
+    handleFeatureClick(index) {
+      if (index === 0) {
+        // 技术文章
+        this.$router.push('/blog-website/articles')
+      } else if (index === 1) {
+        // 项目展示
+        this.$message.info('项目展示功能即将上线，敬请期待！')
+      } else if (index === 2) {
+        // 工具推荐
+        this.$message.info('工具推荐功能即将上线，敬请期待！')
+      }
     },
     
     initMouseEffect() {
@@ -1461,6 +1484,34 @@ export default {
   }
   to {
     transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+// 自定义加载占位符样式
+.loading-placeholder {
+  display: inline-block;
+  
+  .loading-bar {
+    height: 20px;
+    width: 60px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 400% 100%;
+    border-radius: 4px;
+    animation: loading-shimmer 1.4s ease infinite;
+    
+    &.small {
+      width: 40px;
+      height: 14px;
+    }
   }
 }
 

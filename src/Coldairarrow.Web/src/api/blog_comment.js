@@ -11,7 +11,9 @@ const api = {
   BatchApproval: '/Blog_Manage/Blog_Comment/BatchApproval',
   GetCommentCountByStatus: '/Blog_Manage/Blog_Comment/GetCommentCountByStatus',
   GetRepliesByParentId: '/Blog_Manage/Blog_Comment/GetRepliesByParentId',
-  LikeComment: '/Blog_Manage/Blog_Comment/LikeComment'
+  LikeComment: '/Blog_Manage/Blog_Comment/LikeComment',
+  PostComment: '/Blog_Manage/Blog_Comment/PostComment',
+  GetArticleComments: '/Blog_Manage/Blog_Comment/GetArticleComments'
 }
 
 export function GetDataList(parameter) {
@@ -99,5 +101,26 @@ export function LikeComment(commentId) {
     url: api.LikeComment,
     method: 'post',
     params: { commentId }
+  })
+}
+
+export function PostComment(parameter) {
+  return axios({
+    url: api.PostComment,
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function GetArticleComments(articleId, page = 1, pageSize = 10) {
+  return axios({
+    url: api.GetArticleComments,
+    method: 'get',
+    params: { 
+      targetType: 'article',
+      targetId: articleId,
+      PageIndex: page,
+      PageRows: pageSize
+    }
   })
 }

@@ -45,5 +45,17 @@ export const constantRouterMap = [
     name: 'BlogWebsite',
     component: () => import('@/views/BlogWebsite/Index'),
     hidden: true
+  },
+  {
+    path: '/blog-website/articles',
+    name: 'BlogArticles',
+    component: () => import('@/views/BlogWebsite/Articles'),
+    hidden: true
+  },
+  {
+    path: '/blog-website/articles/:id',
+    name: 'BlogArticleDetail',
+    component: () => import('@/views/BlogWebsite/ArticleDetail'),
+    hidden: true
   }
 ]

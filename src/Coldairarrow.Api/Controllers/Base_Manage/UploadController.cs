@@ -25,29 +25,29 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         public IActionResult UploadFileByForm(IFormFile file)
         {
             if (file == null || file.Length == 0)
-                return JsonContent(new { 
+                return Ok(new { 
                     errno = 1,
                     message = "未选择文件或文件为空" 
-                }.ToJson());
+                });
 
             // 验证文件类型
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp" };
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
             if (!allowedExtensions.Contains(extension))
             {
-                return JsonContent(new { 
+                return Ok(new { 
                     errno = 1,
                     message = "不支持的文件类型" 
-                }.ToJson());
+                });
             }
 
             // 验证文件大小 (5MB)
             if (file.Length > 5 * 1024 * 1024)
             {
-                return JsonContent(new { 
+                return Ok(new { 
                     errno = 1,
                     message = "文件大小不能超过5MB" 
-                }.ToJson());
+                });
             }
 
             try
@@ -57,8 +57,24 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
                 string fileName = $"{Guid.NewGuid():N}{extension}";
                 string relativePath = $"/Upload/{dateFolder}/{fileName}";
                 
-                // 使用基类方法获取物理路径
-                string physicalPath = GetAbsolutePath($"~{relativePath}");
+                // 获取物理路径，避免使用可能有问题的基类方法
+                var webHostEnvironment = HttpContext.RequestServices.GetService<IWebHostEnvironment>();
+                string webRootPath = webHostEnvironment?.WebRootPath;
+                
+                // 如果WebRootPath为空，使用ContentRootPath + wwwroot
+                if (string.IsNullOrEmpty(webRootPath))
+                {
+                    webRootPath = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot");
+                }
+                
+                // 构建物理路径
+                string cleanPath = relativePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar);
+                string physicalPath = Path.Combine(webRootPath, cleanPath);
+                
+                // 调试信息
+                Console.WriteLine($"relativePath: {relativePath}");
+                Console.WriteLine($"webRootPath: {webRootPath}");
+                Console.WriteLine($"physicalPath: {physicalPath}");
                 
                 // 确保目录存在
                 string dir = Path.GetDirectoryName(physicalPath);
@@ -82,26 +98,23 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
                 
                 string fullUrl = $"{baseUrl}{relativePath}";
                 
-                // 返回成功结果
-                var result = new
+                // 返回成功结果，直接返回URL字符串
+                return Ok(new
                 {
                     errno = 0,
                     data = new[] { fullUrl },
-                    // 兼容原有格式
+                    url = fullUrl,
                     name = file.FileName,
                     status = "done",
-                    thumbUrl = fullUrl,
-                    url = fullUrl
-                };
-
-                return JsonContent(result.ToJson());
+                    thumbUrl = fullUrl
+                });
             }
             catch (Exception ex)
             {
-                return JsonContent(new { 
+                return Ok(new { 
                     errno = 1,
                     message = $"文件上传失败：{ex.Message}" 
-                }.ToJson());
+                });
             }
         }
     }

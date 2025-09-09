@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//g/Project/only12eDBK/src/Coldairarrow.Entity/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

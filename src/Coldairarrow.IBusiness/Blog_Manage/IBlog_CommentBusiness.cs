@@ -21,5 +21,6 @@ namespace Coldairarrow.IBusiness.Blog_Manage
         Task<int> GetCommentCountByStatusAsync(string status);
         Task<List<Blog_Comment>> GetRepliesByParentIdAsync(int parentId);
         Task LikeCommentAsync(int commentId);
+        Task<int> GetRepliesCountAsync(int parentId);
     }
 }

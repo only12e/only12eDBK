@@ -174,6 +174,48 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
             await _commentBus.LikeCommentAsync(commentId);
         }
 
+        /// <summary>
+        /// 发表评论（公共接口）
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task PostComment(BlogCommentInputDTO input)
+        {
+            // 设置IP地址和用户代理
+            input.IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            input.UserAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+            
+            // 直接设置为已通过状态，不需要审核
+            input.Status = "approved";
+            
+            await _commentBus.AddDataAsync(input);
+        }
+
+        /// <summary>
+        /// 获取文章评论（带分页）
+        /// </summary>
+        /// <param name="targetType">目标类型</param>
+        /// <param name="targetId">目标ID</param>
+        /// <param name="PageIndex">页码</param>
+        /// <param name="PageRows">每页数量</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<PageResult<Blog_Comment>> GetArticleComments(string targetType, int targetId, int PageIndex = 1, int PageRows = 10)
+        {
+            var input = new BlogCommentQueryInputDTO
+            {
+                TargetType = targetType,
+                TargetId = targetId,
+                Status = "approved", // 获取已通过的评论
+                IsTopLevel = true,   // 只获取顶级评论，回复通过GetRepliesByParentId获取
+                PageIndex = PageIndex,
+                PageRows = PageRows
+            };
+            
+            return await _commentBus.GetDataListAsync(input);
+        }
+
         #endregion
     }
 }

@@ -109,7 +109,7 @@ namespace Coldairarrow.Business.Blog_Manage
                 TargetType = input.TargetType,
                 TargetId = input.TargetId,
                 ParentId = input.ParentId,
-                Status = input.Status ?? "pending", // 默认待审核
+                Status = input.Status ?? "approved", // 默认直接通过，不需要审核
                 IpAddress = input.IpAddress,
                 UserAgent = input.UserAgent,
                 LikeCount = 0,
@@ -228,6 +228,13 @@ namespace Coldairarrow.Business.Blog_Manage
                 comment.UpdatedAt = DateTime.Now;
                 await UpdateAsync(comment);
             }
+        }
+
+        public async Task<int> GetRepliesCountAsync(int parentId)
+        {
+            return await GetIQueryable()
+                        .Where(x => x.ParentId == parentId && x.Status == "approved")
+                        .CountAsync();
         }
 
         #endregion

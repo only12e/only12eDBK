@@ -83,6 +83,12 @@ namespace Coldairarrow.Entity.Blog_Manage
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
+        /// <summary>
+        /// 回复数量（计算属性，不存储在数据库中）
+        /// </summary>
+        [NotMapped]
+        public int ReplyCount { get; set; } = 0;
+
         // 导航属性
         /// <summary>
         /// 评论用户信息
