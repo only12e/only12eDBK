@@ -82,7 +82,15 @@
                   <a-icon :type="stat.icon" />
                 </div>
                 <div class="stat-content">
-                  <div class="stat-value">{{ stat.value }}</div>
+                  <div class="stat-value">
+                    <a-skeleton-button 
+                      v-if="statsLoading" 
+                      :style="{ width: '60px', height: '24px' }" 
+                      active 
+                      size="small"
+                    />
+                    <span v-else>{{ stat.value }}</span>
+                  </div>
                   <div class="stat-label">{{ stat.label }}</div>
                 </div>
               </div>
@@ -125,6 +133,20 @@
         <div class="section-header">
           <h2 class="section-title">精选内容</h2>
           <p class="section-subtitle">发现更多精彩内容</p>
+          
+          <!-- 数据刷新按钮 -->
+          <div class="section-actions">
+            <a-button 
+              type="primary" 
+              ghost 
+              :loading="loading" 
+              @click="refreshData"
+              class="refresh-btn glass-btn"
+            >
+              <a-icon type="reload" />
+              <!-- <span>刷新数据</span> -->
+            </a-button>
+          </div>
         </div>
         
         <div class="features-grid">
@@ -139,11 +161,19 @@
             <p class="feature-description">{{ feature.description }}</p>
             
             <div class="feature-stats">
-              <span class="feature-stat">{{ feature.count }}</span>
+              <span class="feature-stat">
+                <a-skeleton-button 
+                  v-if="featuresLoading" 
+                  :style="{ width: '80px', height: '20px' }" 
+                  active 
+                  size="small"
+                />
+                <span v-else>{{ feature.count }}</span>
+              </span>
               <span class="feature-meta">{{ feature.meta }}</span>
             </div>
             
-            <button class="feature-btn glass-btn">
+            <button class="feature-btn glass-btn" :disabled="featuresLoading">
               <span>探索更多</span>
               <a-icon type="arrow-right" />
               <div class="btn-bg"></div>
@@ -167,7 +197,7 @@
             </h2>
             
             <p class="about-description">
-              专注于Web开发、移动应用开发和技术架构设计。通过这个博客，
+              通过这个博客，
               我希望能够分享自己的技术经验，记录学习成长的点点滴滴，
               同时也希望能够帮助到更多有需要的开发者。
             </p>
@@ -178,16 +208,16 @@
                 <div class="tech-tags">
                   <span class="tech-tag glass-card">Vue.js</span>
                   <span class="tech-tag glass-card">JavaScript</span>
-                  <span class="tech-tag glass-card">TypeScript</span>
+                  <span class="tech-tag glass-card">React</span>
                 </div>
               </div>
               
               <div class="tech-category">
                 <h4>后端技术</h4>
                 <div class="tech-tags">
-                  <span class="tech-tag glass-card">C#/.NET</span>
-                  <span class="tech-tag glass-card">SQL Server</span>
-                  <span class="tech-tag glass-card">Redis</span>
+                  <span class="tech-tag glass-card">.NET</span>
+                  <span class="tech-tag glass-card">Java/SpringBoot</span>
+                  <span class="tech-tag glass-card">Mysql</span>
                 </div>
               </div>
             </div>
@@ -219,7 +249,7 @@
             <a-icon type="global" />
             <span>OnlyBlog</span>
           </div>
-          <p class="footer-text">&copy; 2024 OnlyBlog. All rights reserved.</p>
+          <p class="footer-text">&copy; 2025 OnlyBlog. All rights reserved.</p>
         </div>
         
         <div class="footer-links">
@@ -233,58 +263,104 @@
 </template>
 
 <script>
+import { GetOverview, GetPopularContent } from '@/api/blog_statistics'
+import { GetFeaturedArticles, GetLatestArticles } from '@/api/blog_article'
+import { GetFeaturedProjects, GetLatestProjects } from '@/api/blog_project'
+
 export default {
   name: 'BlogWebsiteIndex',
   data() {
     return {
       activeNav: 'home',
+      loading: true,
+      statsLoading: true,
+      featuresLoading: true,
+      error: null,
+      dataLoadTime: null,
+      
       navItems: [
         { key: 'home', label: '首页', icon: 'home' },
         { key: 'articles', label: '技术文章', icon: 'file-text' },
         { key: 'projects', label: '项目展示', icon: 'project' },
         { key: 'tools', label: '工具推荐', icon: 'tool' },
-        { key: 'about', label: '关于我', icon: 'user' },
-        { key: 'contact', label: '联系', icon: 'mail' }
       ],
+      
+      // 统计数据
       stats: [
-        { icon: 'file-text', value: '42', label: '技术文章' },
-        { icon: 'project', value: '18', label: '项目展示' },
-        { icon: 'eye', value: '12.5K', label: '总访问' },
-        { icon: 'heart', value: '956', label: '获得点赞' }
+        { icon: 'file-text', value: '0', label: '技术文章' },
+        { icon: 'project', value: '0', label: '项目展示' },
+        { icon: 'eye', value: '0', label: '总访问' },
+        { icon: 'heart', value: '0', label: '获得点赞' }
       ],
+      
+      // 特色内容
       features: [
         {
           icon: 'file-text',
           title: '技术文章',
           description: '分享前端开发、后端技术、数据库优化等方面的技术文章和实战经验',
-          count: '42篇文章',
-          meta: '持续更新'
+          count: '加载中...',
+          meta: '持续更新',
+          items: []
         },
         {
           icon: 'project',
           title: '项目展示',
           description: '展示个人开发的各种项目，包括开源项目、实战项目和技术Demo',
-          count: '18个项目',
-          meta: '源码开放'
+          count: '加载中...',
+          meta: '源码开放',
+          items: []
         },
         {
           icon: 'tool',
           title: '工具推荐',
           description: '推荐各种实用的开发工具、在线服务和资源网站',
           count: '精选工具',
-          meta: '定期更新'
+          meta: '定期更新',
+          items: []
         }
       ],
+      
       contacts: [
-        { type: 'email', icon: 'mail', label: '邮箱联系', desc: '技术交流' },
-        { type: 'github', icon: 'github', label: 'GitHub', desc: '开源项目' },
-        { type: 'wechat', icon: 'wechat', label: '微信交流', desc: '即时沟通' },
-        { type: 'qq', icon: 'qq', label: 'QQ交流', desc: '在线咨询' }
+        { type: 'email', icon: 'mail', label: '邮箱联系：zhansfai@Outlook.com', desc: '技术交流' },
+        { type: 'github', icon: 'github', label: 'GitHub：zhansfai@Outlook.com', desc: '开源项目' },
+        // { type: 'wechat', icon: 'wechat', label: '微信交流', desc: '即时沟通' },
+        { type: 'qq', icon: 'qq', label: 'QQ交流：3458719294', desc: '在线咨询' }
       ],
+      
       // 粒子随机数生成器
-      Math: Math
+      Math: Math,
+      
+      // 实际数据
+      overview: {},
+      featuredArticles: [],
+      latestArticles: [],
+      featuredProjects: [],
+      latestProjects: [],
+      popularContent: []
     }
   },
+  
+  computed: {
+    // 安全的统计数据访问
+    safeOverview() {
+      return {
+        Articles: this.overview.Articles || { TotalCount: 0, PublishedCount: 0, DraftCount: 0, TodayCount: 0 },
+        Projects: this.overview.Projects || { TotalCount: 0, ActiveCount: 0, CompletedCount: 0, TodayCount: 0 },
+        Tools: this.overview.Tools || { TotalCount: 0, RecommendedCount: 0, FreeCount: 0, TodayCount: 0 },
+        Technologies: this.overview.Technologies || { TotalCount: 0, FeaturedCount: 0, AverageProficiency: 0, TodayCount: 0 },
+        Comments: this.overview.Comments || { TotalCount: 0, ApprovedCount: 0, PendingCount: 0, TodayCount: 0 },
+        Users: this.overview.Users || { TotalCount: 0, ActiveCount: 0, AdminCount: 0, TodayCount: 0 },
+        Access: this.overview.Access || { TotalViews: 0, TotalLikes: 0, TodayViews: 0, TodayLikes: 0 }
+      }
+    }
+  },
+  
+  async mounted() {
+    this.initMouseEffect()
+    await this.loadAllData()
+  },
+  
   methods: {
     goToAdmin() {
       this.$router.push('/')
@@ -305,11 +381,173 @@ export default {
           shape.style.transform = `translate(${xOffset}px, ${yOffset}px)`
         })
       })
+    },
+    
+    // 加载所有数据
+    async loadAllData() {
+      const startTime = Date.now()
+      this.loading = true
+      this.error = null
+      
+      try {
+        // 并行加载多个数据源
+        const results = await Promise.allSettled([
+          this.loadOverview(),
+          this.loadFeaturedContent(),
+          this.loadPopularContent()
+        ])
+        
+        // 检查是否有失败的请求
+        const failedRequests = results.filter(result => result.status === 'rejected')
+        if (failedRequests.length > 0) {
+          console.warn('部分数据加载失败:', failedRequests)
+          this.$message.warning(`${failedRequests.length} 个数据源加载失败，部分内容可能不完整`)
+        }
+        
+        this.dataLoadTime = Date.now() - startTime
+        console.log(`数据加载完成，耗时 ${this.dataLoadTime}ms`)
+        
+      } catch (error) {
+        console.error('数据加载失败:', error)
+        this.error = error.message || '数据加载失败'
+        this.$message.error('部分数据加载失败，请刷新页面重试')
+      } finally {
+        this.loading = false
+      }
+    },
+    
+    // 加载统计概览
+    async loadOverview() {
+      try {
+        this.statsLoading = true
+        const response = await GetOverview()
+        
+        if (response.Success && response.Data) {
+          this.overview = response.Data
+          this.updateStats()
+        } else {
+          throw new Error(response.Message || '获取统计数据失败')
+        }
+      } catch (error) {
+        this.handleDataError(error.message, '统计概览')
+        // 设置默认值，确保界面不会崩溃
+        this.stats = this.stats.map(stat => ({ ...stat, value: '0' }))
+      } finally {
+        this.statsLoading = false
+      }
+    },
+    
+    // 加载特色内容
+    async loadFeaturedContent() {
+      try {
+        this.featuresLoading = true
+        
+        // 并行加载文章和项目数据
+        const [articlesRes, projectsRes] = await Promise.allSettled([
+          GetFeaturedArticles(6),
+          GetFeaturedProjects(6)
+        ])
+        
+        // 处理文章数据
+        if (articlesRes.status === 'fulfilled' && articlesRes.value.Success) {
+          this.featuredArticles = articlesRes.value.Data || []
+          this.features[0].items = this.featuredArticles
+          this.features[0].count = `${this.featuredArticles.length}篇精选`
+        } else {
+          this.handleDataError('获取精选文章失败', '特色内容')
+          this.features[0].count = '0篇精选'
+        }
+        
+        // 处理项目数据
+        if (projectsRes.status === 'fulfilled' && projectsRes.value.Success) {
+          this.featuredProjects = projectsRes.value.Data || []
+          this.features[1].items = this.featuredProjects
+          this.features[1].count = `${this.featuredProjects.length}个精选`
+        } else {
+          this.handleDataError('获取精选项目失败', '特色内容')
+          this.features[1].count = '0个精选'
+        }
+        
+      } catch (error) {
+        this.handleDataError(error.message, '特色内容')
+      } finally {
+        this.featuresLoading = false
+      }
+    },
+    
+    // 加载热门内容
+    async loadPopularContent() {
+      try {
+        const response = await GetPopularContent(10)
+        
+        if (response.Success && response.Data) {
+          this.popularContent = response.Data
+        } else {
+          throw new Error(response.Message || '获取热门内容失败')
+        }
+      } catch (error) {
+        this.handleDataError(error.message, '热门内容')
+        this.popularContent = []
+      }
+    },
+    
+    // 更新统计数据显示
+    updateStats() {
+      const overview = this.safeOverview
+      
+      this.stats = [
+        { 
+          icon: 'file-text', 
+          value: this.formatNumber(overview.Articles.TotalCount), 
+          label: '技术文章' 
+        },
+        { 
+          icon: 'project', 
+          value: this.formatNumber(overview.Projects.TotalCount), 
+          label: '项目展示' 
+        },
+        { 
+          icon: 'eye', 
+          value: this.formatNumber(overview.Access.TotalViews), 
+          label: '总访问' 
+        },
+        { 
+          icon: 'heart', 
+          value: this.formatNumber(overview.Access.TotalLikes), 
+          label: '获得点赞' 
+        }
+      ]
+    },
+    
+    // 格式化数字显示
+    formatNumber(num) {
+      if (num >= 10000) {
+        return (num / 1000).toFixed(1) + 'K'
+      } else if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'K'
+      }
+      return num.toString()
+    },
+    
+    // 刷新数据
+    async refreshData() {
+      this.$message.loading('正在刷新数据...', 0.5)
+      await this.loadAllData()
+      
+      if (!this.error) {
+        this.$message.success(`数据已刷新 (${this.dataLoadTime}ms)`)
+      }
+    },
+    
+    // 处理数据加载错误
+    handleDataError(errorMessage, context = '') {
+      console.error(`${context} 数据加载错误:`, errorMessage)
+      
+      // 可以在这里添加错误上报逻辑
+      if (process.env.NODE_ENV === 'development') {
+        this.$message.error(`${context}: ${errorMessage}`)
+      }
     }
-  },
-  
-  mounted() {
-    this.initMouseEffect()
   }
 }
 </script>
@@ -855,6 +1093,7 @@ export default {
   .section-header {
     text-align: center;
     margin-bottom: 80px;
+    position: relative;
     
     .section-title {
       font-size: 48px;
@@ -866,7 +1105,23 @@ export default {
     .section-subtitle {
       font-size: 18px;
       color: var(--text-secondary);
-      margin: 0;
+      margin: 0 0 32px 0;
+    }
+    
+    .section-actions {
+      display: flex;
+      justify-content: center;
+      
+      .refresh-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+        
+        .anticon {
+          font-size: 14px;
+        }
+      }
     }
   }
   
