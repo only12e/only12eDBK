@@ -239,6 +239,23 @@ namespace Coldairarrow.Business.Blog_Manage
                         .FirstOrDefaultAsync();
         }
 
+        public async Task<Blog_User> GetUserByUsernameOrEmailAsync(string usernameOrEmail)
+        {
+            return await GetIQueryable()
+                        .Where(x => x.Username == usernameOrEmail || x.Email == usernameOrEmail)
+                        .FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateLastLoginTimeAsync(int userId)
+        {
+            var user = await GetEntityAsync(userId);
+            if (user != null)
+            {
+                user.LastLoginAt = DateTime.Now;
+                await UpdateAsync(user);
+            }
+        }
+
         public async Task<bool> CheckUsernameExistsAsync(string username, int? excludeId = null)
         {
             var q = GetIQueryable().Where(x => x.Username == username);

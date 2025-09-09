@@ -587,6 +587,21 @@ namespace Coldairarrow.Entity.DTO
         /// 账号状态：1启用/0禁用
         /// </summary>
         public int Status { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime? CreatedAt { get; set; }
+
+        /// <summary>
+        /// 名字（用于注册时的显示名称，会与姓氏组合存储到 Nickname 字段）
+        /// </summary>
+        public string FirstName { get; set; }
+
+        /// <summary>
+        /// 姓氏（用于注册时的显示名称，会与名字组合存储到 Nickname 字段）
+        /// </summary>
+        public string LastName { get; set; }
     }
 
     /// <summary>

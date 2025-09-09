@@ -568,5 +568,19 @@ namespace Coldairarrow.Util
             else
                 return false;
         }
+
+        /// <summary>
+        /// 验证邮箱地址格式是否正确
+        /// </summary>
+        /// <param name="email">邮箱地址</param>
+        /// <returns></returns>
+        public static bool IsEmail(this string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return false;
+
+            string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            return Regex.IsMatch(email, pattern);
+        }
     }
 }

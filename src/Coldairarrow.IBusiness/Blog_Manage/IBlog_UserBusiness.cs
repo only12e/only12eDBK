@@ -22,6 +22,8 @@ namespace Coldairarrow.IBusiness.Blog_Manage
         Task ResetPasswordAsync(int userId, string newPassword);
         Task<Blog_User> GetUserByUsernameAsync(string username);
         Task<Blog_User> GetUserByEmailAsync(string email);
+        Task<Blog_User> GetUserByUsernameOrEmailAsync(string usernameOrEmail);
+        Task UpdateLastLoginTimeAsync(int userId);
         Task<bool> CheckUsernameExistsAsync(string username, int? excludeId = null);
         Task<bool> CheckEmailExistsAsync(string email, int? excludeId = null);
     }

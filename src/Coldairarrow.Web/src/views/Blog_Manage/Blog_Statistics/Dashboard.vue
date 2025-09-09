@@ -369,7 +369,7 @@ export default {
   },
   data() {
     return {
-      blogUrl: 'https://Only12eDBK.com', // 配置你的博客地址
+      blogUrl: 'https://blog.only12edbk.com', // 修改为博客网站的正确地址
       overview: {},
       overviewLoading: true,
       

@@ -11,7 +11,7 @@
  Target Server Version : 80012 (8.0.12)
  File Encoding         : 65001
 
- Date: 08/09/2025 13:51:46
+ Date: 09/09/2025 10:40:34
 */
 
 SET NAMES utf8mb4;
@@ -59,22 +59,26 @@ INSERT INTO `base_action` VALUES ('1188801341661646848', '2019-10-28 20:55:01', 
 INSERT INTO `base_action` VALUES ('1188801341661646849', '2019-10-28 20:55:01', NULL, 0, '1178957553778823168', 2, '改', NULL, 'Base_Action.Edit', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('1188801341661646850', '2019-10-28 20:55:01', NULL, 0, '1178957553778823168', 2, '删', NULL, 'Base_Action.Delete', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('1193158266167758848', '2019-11-09 21:27:53', 'Admin', 0, NULL, 0, '首页', NULL, NULL, 1, 'home', 0);
-INSERT INTO `base_action` VALUES ('1193158630615027712', '2019-11-09 21:29:20', 'Admin', 0, '1193158266167758848', 1, '框架介绍', '/Home/Introduce', NULL, 0, NULL, 0);
-INSERT INTO `base_action` VALUES ('1193158780011941888', '2019-11-09 21:29:55', 'Admin', 0, '1193158266167758848', 1, '运营统计', '/Home/Statis', NULL, 0, NULL, 0);
+INSERT INTO `base_action` VALUES ('1193158630615027712', '2019-11-09 21:29:20', 'Admin', 0, '1193158266167758848', 1, '介绍', '/Home/Introduce', NULL, 0, NULL, 0);
 INSERT INTO `base_action` VALUES ('1251792477787000832', '2020-04-19 16:39:19', NULL, 0, '1182652266117599232', 2, '增', NULL, 'Base_User.Add', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('1251792477787000833', '2020-04-19 16:39:19', NULL, 0, '1182652266117599232', 2, '改', NULL, 'Base_User.Edit', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('1251792477787000834', '2020-04-19 16:39:19', NULL, 0, '1182652266117599232', 2, '删', NULL, 'Base_User.Delete', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('1251792721769664512', '2020-04-19 16:40:17', 'Admin', 0, '1178957405992521728', 1, '操作日志', '/Base_Manage/Base_UserLog/List', NULL, 0, NULL, 23);
+INSERT INTO `base_action` VALUES ('1964931379573559296', '2025-09-08 13:58:42', NULL, 0, 'BLOG_COMMENT_MENU', 2, '编辑评论', NULL, 'Blog_Comment.Edit', 1, NULL, 0);
+INSERT INTO `base_action` VALUES ('1964931379573559297', '2025-09-08 13:58:42', NULL, 0, 'BLOG_COMMENT_MENU', 2, '评论审核', NULL, 'Blog_Comment.Approve', 1, NULL, 0);
+INSERT INTO `base_action` VALUES ('1964931379573559298', '2025-09-08 13:58:42', NULL, 0, 'BLOG_COMMENT_MENU', 2, '删除评论', NULL, 'Blog_Comment.Delete', 1, NULL, 0);
+INSERT INTO `base_action` VALUES ('1964931379573559299', '2025-09-08 13:58:42', NULL, 0, 'BLOG_COMMENT_MENU', 2, '新建评论', NULL, 'Blog_Comment.Add', 1, NULL, 0);
+INSERT INTO `base_action` VALUES ('1965239825674014720', '2025-09-09 10:24:21', NULL, 0, 'BLOG_CONFIG_MENU', 2, '修改配置', NULL, 'Blog_Config.Edit', 1, NULL, 0);
+INSERT INTO `base_action` VALUES ('1965239825674014721', '2025-09-09 10:24:21', NULL, 0, 'BLOG_CONFIG_MENU', 2, '添加配置', NULL, 'Blog_SystemConfig.Add', 1, NULL, 0);
+INSERT INTO `base_action` VALUES ('1965239825674014722', '2025-09-09 10:24:21', NULL, 0, 'BLOG_CONFIG_MENU', 2, '删除配置', NULL, 'Blog_SystemConfig.Delete', 1, NULL, 0);
+INSERT INTO `base_action` VALUES ('1965239825674014723', '2025-09-09 10:24:21', NULL, 0, 'BLOG_CONFIG_MENU', 2, '批量更新配置', NULL, 'Blog_SystemConfig.BatchUpdate', 1, NULL, 0);
+INSERT INTO `base_action` VALUES ('1965239825674014724', '2025-09-09 10:24:21', NULL, 0, 'BLOG_CONFIG_MENU', 2, '给配置设置值', NULL, 'Blog_SystemConfig.SetValue', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_ARTICLE_ADD', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_ARTICLE_MENU', 2, '新增文章', NULL, 'Blog_Article.Add', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_ARTICLE_DELETE', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_ARTICLE_MENU', 2, '删除文章', NULL, 'Blog_Article.Delete', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_ARTICLE_EDIT', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_ARTICLE_MENU', 2, '编辑文章', NULL, 'Blog_Article.Edit', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_ARTICLE_MENU', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_MAIN_MENU', 1, '文章管理', '/Blog_Manage/Blog_Article/List', NULL, 1, NULL, 10);
 INSERT INTO `base_action` VALUES ('BLOG_ARTICLE_PUBLISH', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_ARTICLE_MENU', 2, '发布文章', NULL, 'Blog_Article.Publish', 1, NULL, 0);
-INSERT INTO `base_action` VALUES ('BLOG_COMMENT_AUDIT', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_COMMENT_MENU', 2, '评论审核', NULL, 'Blog_Comment.Audit', 1, NULL, 0);
-INSERT INTO `base_action` VALUES ('BLOG_COMMENT_DELETE', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_COMMENT_MENU', 2, '删除评论', NULL, 'Blog_Comment.Delete', 1, NULL, 0);
-INSERT INTO `base_action` VALUES ('BLOG_COMMENT_EDIT', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_COMMENT_MENU', 2, '编辑评论', NULL, 'Blog_Comment.Edit', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_COMMENT_MENU', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_MAIN_MENU', 1, '评论管理', '/Blog_Manage/Blog_Comment/List', NULL, 1, NULL, 50);
-INSERT INTO `base_action` VALUES ('BLOG_CONFIG_EDIT', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_CONFIG_MENU', 2, '修改配置', NULL, 'Blog_Config.Edit', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_CONFIG_MENU', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_MAIN_MENU', 1, '博客配置', '/Blog_Manage/Blog_Config/List', NULL, 1, NULL, 70);
 INSERT INTO `base_action` VALUES ('BLOG_LINK_ADD', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_LINK_MENU', 2, '新增链接', NULL, 'Blog_FriendlyLink.Add', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_LINK_DELETE', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_LINK_MENU', 2, '删除链接', NULL, 'Blog_FriendlyLink.Delete', 1, NULL, 0);
@@ -85,7 +89,7 @@ INSERT INTO `base_action` VALUES ('BLOG_PROJECT_ADD', '2025-09-05 11:03:08', 'Ad
 INSERT INTO `base_action` VALUES ('BLOG_PROJECT_DELETE', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_PROJECT_MENU', 2, '删除项目', NULL, 'Blog_Project.Delete', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_PROJECT_EDIT', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_PROJECT_MENU', 2, '编辑项目', NULL, 'Blog_Project.Edit', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_PROJECT_MENU', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_MAIN_MENU', 1, '项目管理', '/Blog_Manage/Blog_Project/List', NULL, 1, NULL, 20);
-INSERT INTO `base_action` VALUES ('BLOG_STATS_MENU', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_MAIN_MENU', 1, '数据统计', '/Blog_Manage/Blog_Statistics/Dashboard', NULL, 1, NULL, 90);
+INSERT INTO `base_action` VALUES ('BLOG_STATS_MENU', '2025-09-05 11:03:08', 'Admin', 0, '1193158266167758848', 1, '数据统计', '/Blog_Manage/Blog_Statistics/Dashboard', NULL, 1, NULL, 90);
 INSERT INTO `base_action` VALUES ('BLOG_TECH_ADD', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_TECH_MENU', 2, '新增技术栈', NULL, 'Blog_Technology.Add', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_TECH_DELETE', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_TECH_MENU', 2, '删除技术栈', NULL, 'Blog_Technology.Delete', 1, NULL, 0);
 INSERT INTO `base_action` VALUES ('BLOG_TECH_EDIT', '2025-09-05 11:03:08', 'Admin', 0, 'BLOG_TECH_MENU', 2, '编辑技术栈', NULL, 'Blog_Technology.Edit', 1, NULL, 0);
@@ -200,7 +204,7 @@ CREATE TABLE `base_role`  (
 -- Records of base_role
 -- ----------------------------
 INSERT INTO `base_role` VALUES ('1180486275199668224', '2019-10-05 22:13:55', NULL, 0, '超级管理员');
-INSERT INTO `base_role` VALUES ('1180819481383931904', '2019-10-06 20:17:57', NULL, 0, '部门管理员');
+INSERT INTO `base_role` VALUES ('1180819481383931904', '2019-10-06 20:17:57', NULL, 0, '用户');
 
 -- ----------------------------
 -- Table structure for base_roleaction
@@ -222,21 +226,51 @@ CREATE TABLE `base_roleaction`  (
 INSERT INTO `base_roleaction` VALUES ('1188801858282459136', '2019-10-28 20:57:04', NULL, 0, '1180486275199668224', '1182654049414025216');
 INSERT INTO `base_roleaction` VALUES ('1188801858282459137', '2019-10-28 20:57:04', NULL, 0, '1180486275199668224', '1182654208411701248');
 INSERT INTO `base_roleaction` VALUES ('1188801858282459138', '2019-10-28 20:57:04', NULL, 0, '1180486275199668224', '1183370665412005888');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540544', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188044797802188800');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540545', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188044797802188801');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540546', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1182652433302556672');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540547', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1178957405992521728');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540548', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188801109783744512');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540549', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188801109783744513');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540550', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188801109783744514');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540551', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1182652266117599232');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540552', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188800845714558976');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540553', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188800845714558977');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540554', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188800845714558978');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540555', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1182652367447789568');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540556', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188801057778569216');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540557', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188801057778569217');
-INSERT INTO `base_roleaction` VALUES ('1188801984434540558', '2019-10-28 20:57:34', NULL, 0, '1180819481383931904', '1188801057778569218');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552768', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1188044797802188800');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552769', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1188044797802188801');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552770', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1188800845714558976');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552771', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1188800845714558977');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552772', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1188800845714558978');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552773', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1193158266167758848');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552774', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_STATS_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552775', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_MAIN_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552776', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_ARTICLE_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552777', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_PROJECT_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552778', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_TOOL_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552779', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_TECH_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552780', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_COMMENT_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552781', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_USER_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552782', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_CONFIG_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552783', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_LINK_MENU');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552784', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_ARTICLE_ADD');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552785', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_ARTICLE_EDIT');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552786', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_ARTICLE_DELETE');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552787', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_ARTICLE_PUBLISH');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552788', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_PROJECT_ADD');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552789', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_PROJECT_EDIT');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552790', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_PROJECT_DELETE');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552791', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_TOOL_ADD');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552792', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_TOOL_EDIT');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552793', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_TOOL_DELETE');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552794', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_TECH_ADD');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552795', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_TECH_EDIT');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552796', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_TECH_DELETE');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552797', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964931379573559296');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552798', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964931379573559297');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552799', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964931379573559298');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552800', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964931379573559299');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552801', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_USER_ADD');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552802', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_USER_EDIT');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552803', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_USER_DELETE');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552804', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_USER_STATUS');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552805', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964930733755600896');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552806', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964930733755600897');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552807', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964930733755600898');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552808', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964930733755600899');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552809', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', '1964930733755600900');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552810', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_LINK_ADD');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552811', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_LINK_EDIT');
+INSERT INTO `base_roleaction` VALUES ('1964958559787552812', '2025-09-08 15:46:42', NULL, 0, '1180819481383931904', 'BLOG_LINK_DELETE');
 INSERT INTO `base_roleaction` VALUES ('BLOG_PERM_175704138801', '2025-09-05 11:03:08', 'Admin', 0, '1180486275199668224', 'BLOG_MAIN_MENU');
 INSERT INTO `base_roleaction` VALUES ('BLOG_PERM_175704138802', '2025-09-05 11:03:08', 'Admin', 0, '1180486275199668224', 'BLOG_ARTICLE_MENU');
 INSERT INTO `base_roleaction` VALUES ('BLOG_PERM_175704138803', '2025-09-05 11:03:08', 'Admin', 0, '1180486275199668224', 'BLOG_ARTICLE_ADD');
@@ -380,6 +414,21 @@ INSERT INTO `base_userlog` VALUES ('1963873532005847040', '2025-09-05 15:55:12',
 INSERT INTO `base_userlog` VALUES ('1963873598791749632', '2025-09-05 15:55:28', 'Admin', '超级管理员', '博客管理', '修改项目:个人博客系统');
 INSERT INTO `base_userlog` VALUES ('1963906045231239168', '2025-09-05 18:04:23', 'Admin', '超级管理员', '系统用户管理', '添加用户:ff');
 INSERT INTO `base_userlog` VALUES ('1963906045352873984', '2025-09-05 18:04:23', 'Admin', '超级管理员', '系统用户管理', '添加用户:ff');
+INSERT INTO `base_userlog` VALUES ('1964931858248503296', '2025-09-08 14:00:36', 'Admin', '超级管理员', '博客管理', '修改项目:个人博客系统');
+INSERT INTO `base_userlog` VALUES ('1964940676214820864', '2025-09-08 14:35:39', 'Admin', '超级管理员', '博客管理', '添加文章:测试');
+INSERT INTO `base_userlog` VALUES ('1964942467732082688', '2025-09-08 14:42:46', 'Admin', '超级管理员', '博客管理', '修改文章:Vue.js vs React vs Angular 2025年对比分析');
+INSERT INTO `base_userlog` VALUES ('1964958395807043584', '2025-09-08 15:46:03', 'Admin', '超级管理员', '系统用户管理', '修改用户:超级管理员');
+INSERT INTO `base_userlog` VALUES ('1964958395878346752', '2025-09-08 15:46:03', 'Admin', '超级管理员', '系统用户管理', '修改用户:超级管理员');
+INSERT INTO `base_userlog` VALUES ('1964958411594403840', '2025-09-08 15:46:07', 'Admin', '超级管理员', '系统用户管理', '修改用户:ff');
+INSERT INTO `base_userlog` VALUES ('1964958411644735488', '2025-09-08 15:46:07', 'Admin', '超级管理员', '系统用户管理', '修改用户:ff');
+INSERT INTO `base_userlog` VALUES ('1964958516691079168', '2025-09-08 15:46:32', 'Admin', '超级管理员', '系统角色管理', '修改角色:部门管理员');
+INSERT INTO `base_userlog` VALUES ('1964958516766576640', '2025-09-08 15:46:32', 'Admin', '超级管理员', '系统角色管理', '修改角色:部门管理员');
+INSERT INTO `base_userlog` VALUES ('1964958559846273024', '2025-09-08 15:46:42', 'Admin', '超级管理员', '系统角色管理', '修改角色:用户');
+INSERT INTO `base_userlog` VALUES ('1964958559896604672', '2025-09-08 15:46:43', 'Admin', '超级管理员', '系统角色管理', '修改角色:用户');
+INSERT INTO `base_userlog` VALUES ('1964958591462936576', '2025-09-08 15:46:50', 'Admin', '超级管理员', '系统用户管理', '修改用户:ff');
+INSERT INTO `base_userlog` VALUES ('1964958591509073920', '2025-09-08 15:46:50', 'Admin', '超级管理员', '系统用户管理', '修改用户:ff');
+INSERT INTO `base_userlog` VALUES ('1965230564483010560', '2025-09-09 09:47:33', 'Admin', '超级管理员', '博客管理', '修改项目:个人博客系统');
+INSERT INTO `base_userlog` VALUES ('1965230580912099328', '2025-09-09 09:47:37', 'Admin', '超级管理员', '博客管理', '修改文章:深入理解Vue.js响应式系统');
 
 -- ----------------------------
 -- Table structure for base_userrole
@@ -402,6 +451,8 @@ INSERT INTO `base_userrole` VALUES ('1181927367719784448', '2019-10-09 21:40:18'
 INSERT INTO `base_userrole` VALUES ('1181927367719784449', '2019-10-09 21:40:18', NULL, 0, '1181922344629702656', '1180486275199668224');
 INSERT INTO `base_userrole` VALUES ('1181927783786352640', '2019-10-09 21:41:57', NULL, 0, '1181927783727632384', '1180819481383931904');
 INSERT INTO `base_userrole` VALUES ('1251792318642524160', '2020-04-19 16:38:41', NULL, 0, '1181928860648738816', '1180819481383931904');
+INSERT INTO `base_userrole` VALUES ('1964958395710574592', '2025-09-08 15:46:03', NULL, 0, 'Admin', '1180486275199668224');
+INSERT INTO `base_userrole` VALUES ('1964958591429382144', '2025-09-08 15:46:50', NULL, 0, '1963906044644036608', '1180819481383931904');
 
 -- ----------------------------
 -- Table structure for blog_article_categories
@@ -414,7 +465,7 @@ CREATE TABLE `blog_article_categories`  (
   `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序权重，数字越大越靠前',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客文章分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_article_categories
@@ -422,7 +473,6 @@ CREATE TABLE `blog_article_categories`  (
 INSERT INTO `blog_article_categories` VALUES (1, '技术分享', '分享各种编程技术和开发经验', 10, '2025-09-05 10:00:00');
 INSERT INTO `blog_article_categories` VALUES (2, '项目实践', '记录项目开发过程和经验总结', 20, '2025-09-05 10:00:00');
 INSERT INTO `blog_article_categories` VALUES (3, '工具推荐', '推荐实用的开发工具和软件', 15, '2025-09-05 10:00:00');
-INSERT INTO `blog_article_categories` VALUES (5, '份数', '冯绍峰', 0, '2025-09-05 13:32:40');
 
 -- ----------------------------
 -- Table structure for blog_articles
@@ -449,15 +499,15 @@ CREATE TABLE `blog_articles`  (
   INDEX `author_id`(`author_id`) USING BTREE,
   INDEX `idx_articles_status`(`status`) USING BTREE,
   INDEX `idx_articles_featured`(`is_featured`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客文章表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_articles
 -- ----------------------------
-INSERT INTO `blog_articles` VALUES (1, '深入理解Vue.js响应式系统', 'Vue.js的响应式系统是其核心特性之一，本文将深入解析其实现原理', '<h1>Vue.js响应式系统详解</h1><p>Vue.js的响应式系统基于Object.defineProperty()或Proxy API实现...</p><h2>响应式原理</h2><p>当你把一个普通的JavaScript对象传入Vue实例作为data选项，Vue将遍历此对象所有的property，并使用Object.defineProperty把这些property全部转为getter/setter。</p><img src=\"/images/articles/vue-reactivity.png\" alt=\"Vue响应式原理图\"><h2>源码分析</h2><pre><code>// 响应式核心代码示例\nfunction defineReactive(obj, key, val) {\n  const dep = new Dep()\n  Object.defineProperty(obj, key, {\n    get() {\n      dep.depend()\n      return val\n    },\n    set(newVal) {\n      val = newVal\n      dep.notify()\n    }\n  })\n}\n</code></pre>', 'http://localhost:5000/Upload/2025/09/05/a01255ca4df3490fa79c3d600cd02a6e.jpg', 1, 1, 'hidden', 1, 156, 23, 8, '2025-09-05 10:30:00', '2025-09-05 10:20:00', '2025-09-05 15:55:12');
+INSERT INTO `blog_articles` VALUES (1, '深入理解Vue.js响应式系统', 'Vue.js的响应式系统是其核心特性之一，本文将深入解析其实现原理', '<h1>Vue.js响应式系统详解</h1><p>Vue.js的响应式系统基于Object.defineProperty()或Proxy API实现...</p><h2>响应式原理</h2><p>当你把一个普通的JavaScript对象传入Vue实例作为data选项，Vue将遍历此对象所有的property，并使用Object.defineProperty把这些property全部转为getter/setter。</p><img src=\"/images/articles/vue-reactivity.png\" alt=\"Vue响应式原理图\"><h2>源码分析</h2><pre><code>// 响应式核心代码示例\nfunction defineReactive(obj, key, val) {\n  const dep = new Dep()\n  Object.defineProperty(obj, key, {\n    get() {\n      dep.depend()\n      return val\n    },\n    set(newVal) {\n      val = newVal\n      dep.notify()\n    }\n  })\n}\n</code></pre>', 'http://localhost:5000/Upload/2025/09/05/a01255ca4df3490fa79c3d600cd02a6e.jpg', 1, 1, 'hidden', 1, 156, 23, 8, '2025-09-05 10:30:00', '2025-09-05 10:20:00', '2025-09-09 09:47:37');
 INSERT INTO `blog_articles` VALUES (2, '使用Node.js构建RESTful API最佳实践', '分享在Node.js中构建RESTful API的经验和最佳实践', '<h1>Node.js RESTful API最佳实践</h1><p>构建一个高质量的RESTful API需要遵循一些最佳实践...</p><h2>项目结构</h2><p>良好的项目结构是成功项目的基础：</p><pre><code>project/\n├── controllers/\n├── models/\n├── routes/\n├── middleware/\n├── utils/\n└── app.js\n</code></pre><h2>错误处理</h2><p>统一的错误处理机制非常重要：</p><pre><code>// 全局错误处理中间件\napp.use((err, req, res, next) =&gt; {\n  res.status(err.status || 500).json({\n    message: err.message,\n    stack: process.env.NODE_ENV === \'development\' ? err.stack : {}\n  })\n})\n</code></pre>', 'http://localhost:5000/Upload/2025/09/05/3205f10bb44547aaafb1740652694ca5.jpg', 1, 2, 'published', 1, 89, 15, 5, '2025-09-05 11:00:00', '2025-09-05 10:50:00', '2025-09-05 15:53:38');
 INSERT INTO `blog_articles` VALUES (7, 'Docker容器化部署完整指南', '从Docker基础到生产环境部署的完整实战教程', '<h1>Docker容器化部署完整指南</h1>\r\n<p>Docker已经成为现代应用部署的标准工具，本文将带你从零开始掌握Docker容器化部署。</p>\r\n<h2>Docker基础概念</h2>\r\n<ul>\r\n<li><strong>镜像(Image)</strong>：只读的模板</li>\r\n<li><strong>容器(Container)</strong>：镜像的运行实例</li>\r\n<li><strong>仓库(Repository)</strong>：存储镜像的地方</li>\r\n</ul>\r\n<h2>Dockerfile最佳实践</h2>\r\n<pre><code># 使用多阶段构建\r\nFROM node:16-alpine AS builder\r\nWORKDIR /app\r\nCOPY package*.json ./\r\nRUN npm ci --only=production\r\n\r\nFROM nginx:alpine\r\nCOPY --from=builder /app/dist /usr/share/nginx/html\r\nEXPOSE 80\r\nCMD [\"nginx\", \"-g\", \"daemon off;\"]</code></pre>\r\n<h2>Docker Compose编排</h2>\r\n<pre><code>version: \"3.8\"\r\nservices:\r\n  web:\r\n    build: .\r\n    ports:\r\n      - \"3000:3000\"\r\n    environment:\r\n      - NODE_ENV=production\r\n  db:\r\n    image: mysql:8.0\r\n    environment:\r\n      - MYSQL_ROOT_PASSWORD=password</code></pre>\r\n<h2>生产环境部署</h2>\r\n<p>在生产环境中，我们需要考虑容器编排、负载均衡、监控等问题。</p>', '/images/covers/docker-deploy.jpg', 3, 1, 'published', 1, 298, 31, 14, '2025-09-05 17:00:00', '2025-09-05 16:30:00', '2025-09-05 17:00:00');
-INSERT INTO `blog_articles` VALUES (8, 'Vue.js vs React vs Angular 2025年对比分析', '三大前端框架的深度对比分析，帮你选择最适合的技术栈', '<h1>Vue.js vs React vs Angular 2025年对比分析</h1>\n<p>前端框架的选择往往决定了项目的技术方向。本文将从多个维度对比Vue.js、React和Angular。</p>\n<h2>学习曲线对比</h2>\n<table>\n<tbody><tr><th>框架</th><th>学习难度</th><th>上手时间</th><th>适合人群</th></tr>\n<tr><td>Vue.js</td><td>易</td><td>1-2周</td><td>初学者、快速开发</td></tr>\n<tr><td>React</td><td>中</td><td>2-4周</td><td>有JS基础的开发者</td></tr>\n<tr><td>Angular</td><td>难</td><td>1-2月</td><td>大型项目、企业级开发</td></tr>\n</tbody></table>\n<h2>性能对比</h2>\n<ul>\n<li><strong>Vue.js</strong>：轻量级，虚拟DOM，响应式系统优秀</li>\n<li><strong>React</strong>：虚拟DOM，Fiber架构，性能优异</li>\n<li><strong>Angular</strong>：变更检测机制，大型应用性能稳定</li>\n</ul>\n<h2>生态系统</h2>\n<h3>Vue.js生态</h3>\n<ul>\n<li>Vue Router：路由管理</li>\n<li>Vuex/Pinia：状态管理</li>\n<li>Nuxt.js：服务端渲染</li>\n</ul>\n<h3>React生态</h3>\n<ul>\n<li>React Router：路由管理</li>\n<li>Redux/Zustand：状态管理</li>\n<li>Next.js：全栈框架</li>\n</ul>\n<h2>选择建议</h2>\n<p>根据项目需求和团队情况选择合适的框架是关键。</p>', '/images/covers/framework-compare.jpg', 5, 2, 'published', 1, 445, 38, 21, '2025-09-05 18:00:00', '2025-09-05 17:45:00', '2025-09-05 13:36:53');
+INSERT INTO `blog_articles` VALUES (8, 'Vue.js vs React vs Angular 2025年对比分析', '三大前端框架的深度对比分析，帮你选择最适合的技术栈', '<h1>Vue.js vs React vs Angular 2025年对比分析</h1>\n<p>前端框架的选择往往决定了项目的技术方向。本文将从多个维度对比Vue.js、React和Angular。</p>\n<h2>学习曲线对比</h2>\n<table>\n<tbody><tr><th>框架</th><th>学习难度</th><th>上手时间</th><th>适合人群</th></tr>\n<tr><td>Vue.js</td><td>易</td><td>1-2周</td><td>初学者、快速开发</td></tr>\n<tr><td>React</td><td>中</td><td>2-4周</td><td>有JS基础的开发者</td></tr>\n<tr><td>Angular</td><td>难</td><td>1-2月</td><td>大型项目、企业级开发</td></tr>\n</tbody></table>\n<h2>性能对比</h2>\n<ul>\n<li><strong>Vue.js</strong>：轻量级，虚拟DOM，响应式系统优秀</li>\n<li><strong>React</strong>：虚拟DOM，Fiber架构，性能优异</li>\n<li><strong>Angular</strong>：变更检测机制，大型应用性能稳定</li>\n</ul>\n<h2>生态系统</h2>\n<h3>Vue.js生态</h3>\n<ul>\n<li>Vue Router：路由管理</li>\n<li>Vuex/Pinia：状态管理</li>\n<li>Nuxt.js：服务端渲染</li>\n</ul>\n<h3>React生态</h3>\n<ul>\n<li>React Router：路由管理</li>\n<li>Redux/Zustand：状态管理</li>\n<li>Next.js：全栈框架</li>\n</ul>\n<h2>选择建议</h2>\n<p>根据项目需求和团队情况选择合适的框架是关键。</p>', '/images/covers/framework-compare.jpg', 2, 2, 'published', 1, 445, 38, 21, '2025-09-05 18:00:00', '2025-09-05 17:45:00', '2025-09-08 14:42:46');
 INSERT INTO `blog_articles` VALUES (9, 'ChatGPT在软件开发中的应用实践', '探索AI助手如何改变传统的软件开发流程', '<h1>ChatGPT在软件开发中的应用实践</h1>\r\n<p>AI技术的快速发展正在深刻改变软件开发行业，ChatGPT等AI助手已成为开发者的得力工具。</p>\r\n<h2>代码生成与补全</h2>\r\n<p>ChatGPT可以根据自然语言描述生成代码：</p>\r\n<blockquote>\r\n<p>提示：请帮我写一个JavaScript函数，用于计算数组中所有数字的平均值</p>\r\n</blockquote>\r\n<pre><code>function calculateAverage(numbers) {\r\n    if (numbers.length === 0) return 0;\r\n    const sum = numbers.reduce((acc, num) => acc + num, 0);\r\n    return sum / numbers.length;\r\n}</code></pre>\r\n<h2>代码审查与优化</h2>\r\n<p>AI可以帮助发现代码中的潜在问题：</p>\r\n<ul>\r\n<li>性能瓶颈识别</li>\r\n<li>安全漏洞检测</li>\r\n<li>代码规范检查</li>\r\n<li>重构建议</li>\r\n</ul>\r\n<h2>测试用例生成</h2>\r\n<p>AI可以自动生成单元测试：</p>\r\n<pre><code>describe(\"calculateAverage\", () => {\r\n    test(\"should return 0 for empty array\", () => {\r\n        expect(calculateAverage([])).toBe(0);\r\n    });\r\n    \r\n    test(\"should calculate correct average\", () => {\r\n        expect(calculateAverage([1, 2, 3, 4, 5])).toBe(3);\r\n    });\r\n});</code></pre>\r\n<h2>文档编写</h2>\r\n<p>AI可以帮助生成技术文档、API文档等。</p>\r\n<h2>使用建议</h2>\r\n<ul>\r\n<li>验证AI生成的代码</li>\r\n<li>理解代码逻辑</li>\r\n<li>结合人工审查</li>\r\n<li>保持学习态度</li>\r\n</ul>', '/images/covers/ai-development.jpg', 1, 1, 'published', 1, 367, 42, 18, '2025-09-05 19:00:00', '2025-09-05 18:30:00', '2025-09-05 19:00:00');
 INSERT INTO `blog_articles` VALUES (6, 'Redis缓存策略与最佳实践', '深入探讨Redis在项目中的缓存策略和性能优化技巧', '<h1>Redis缓存策略与最佳实践</h1>\n<p>Redis作为内存数据库，在缓存场景中有着广泛的应用。合理的缓存策略能显著提升系统性能。</p>\n<h2>常见缓存模式</h2>\n<h3>1. Cache-Aside（旁路缓存）</h3>\n<ul>\n<li>读取：先查缓存，缓存没有再查数据库</li>\n<li>写入：先写数据库，再删除缓存</li>\n</ul>\n<h3>2. Write-Through（写穿透）</h3>\n<p>同时写入缓存和数据库，保证数据一致性。</p>\n<h3>3. Write-Behind（写回）</h3>\n<p>只写缓存，异步批量写入数据库。</p>\n<h2>缓存策略实现</h2>\n<pre><code>@Service\npublic class UserService {\n    @Cacheable(value = \"users\", key = \"#id\")\n    public User getUserById(Long id) {\n        return userRepository.findById(id);\n    }\n    \n    @CacheEvict(value = \"users\", key = \"#user.id\")\n    public void updateUser(User user) {\n        userRepository.save(user);\n    }\n}</code></pre>\n<h2>性能优化技巧</h2>\n<ul>\n<li>合理设置过期时间</li>\n<li>使用Pipeline批量操作</li>\n<li>选择合适的数据结构</li>\n<li>监控内存使用情况</li>\n</ul>', NULL, 1, 1, 'published', 0, 156, 22, 6, '2025-09-05 16:00:00', '2025-09-05 15:45:00', '2025-09-05 13:35:08');
 INSERT INTO `blog_articles` VALUES (5, 'Spring Boot微服务架构实践', '基于Spring Boot构建微服务架构的完整实践指南', '<h1>Spring Boot微服务架构实践</h1>\r\n<p>微服务架构是当前企业级应用开发的主流架构模式，Spring Boot为微服务开发提供了强大的支持。</p>\r\n<h2>微服务架构优势</h2>\r\n<ul>\r\n<li>服务独立部署</li>\r\n<li>技术栈多样化</li>\r\n<li>团队开发效率高</li>\r\n<li>容错性强</li>\r\n</ul>\r\n<h2>核心组件</h2>\r\n<h3>1. 服务注册与发现</h3>\r\n<pre><code>@SpringBootApplication\r\n@EnableEurekaClient\r\npublic class UserServiceApplication {\r\n    public static void main(String[] args) {\r\n        SpringApplication.run(UserServiceApplication.class, args);\r\n    }\r\n}</code></pre>\r\n<h3>2. 服务网关</h3>\r\n<p>使用Spring Cloud Gateway实现统一的API网关，提供路由、限流、安全等功能。</p>\r\n<h3>3. 配置中心</h3>\r\n<p>通过Spring Cloud Config实现集中化的配置管理。</p>', '/images/covers/spring-boot.jpg', 1, 1, 'published', 1, 187, 15, 8, '2025-09-05 15:00:00', '2025-09-05 14:30:00', '2025-09-05 15:00:00');
@@ -490,12 +540,12 @@ CREATE TABLE `blog_comments`  (
   INDEX `user_id`(`user_id`) USING BTREE,
   INDEX `parent_id`(`parent_id`) USING BTREE,
   INDEX `idx_comments_target`(`target_type`, `target_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客评论表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_comments
 -- ----------------------------
-INSERT INTO `blog_comments` VALUES (1, '这篇文章对Vue响应式系统的解释很清晰，特别是源码分析部分！', 2, 'article', 1, NULL, 5, 'approved', '192.168.1.100', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', '2025-09-05 12:00:00', '2025-09-05 12:00:00');
+INSERT INTO `blog_comments` VALUES (1, '这篇文章对Vue响应式系统的解释很清晰，特别是源码分析部分！', 2, 'article', 1, NULL, 5, 'approved', '192.168.1.100', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', '2025-09-05 12:00:00', '2025-09-09 09:47:21');
 INSERT INTO `blog_comments` VALUES (2, '感谢分享，对我理解Vue的实现原理很有帮助', 3, 'article', 1, NULL, 3, 'approved', '192.168.1.101', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', '2025-09-05 12:30:00', '2025-09-05 12:30:00');
 INSERT INTO `blog_comments` VALUES (4, '博客系统的UI设计很棒，源码什么时候开源？', 3, 'project', 1, NULL, 2, 'approved', '192.168.1.103', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', '2025-09-05 13:30:00', '2025-09-05 13:30:00');
 INSERT INTO `blog_comments` VALUES (5, 'VS Code确实是最好用的编辑器之一，插件生态丰富', 2, 'tool', 1, NULL, 4, 'approved', '192.168.1.104', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', '2025-09-05 14:00:00', '2025-09-05 14:00:00');
@@ -514,14 +564,13 @@ CREATE TABLE `blog_friendly_links`  (
   `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序权重',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客友情链接表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_friendly_links
 -- ----------------------------
-INSERT INTO `blog_friendly_links` VALUES (1, '掘金', 'https://juejin.cn', '一个帮助开发者成长的社区', '/images/links/juejin.png', 1, 10, '2025-09-05 10:00:00');
-INSERT INTO `blog_friendly_links` VALUES (2, 'GitHub', 'https://github.com', '全球最大的代码托管平台', '/images/links/github.png', 1, 20, '2025-09-05 10:05:00');
-INSERT INTO `blog_friendly_links` VALUES (3, 'Vue.js官网', 'https://vuejs.org', 'Vue.js官方网站', '/images/links/vue.png', 1, 30, '2025-09-05 10:10:00');
+INSERT INTO `blog_friendly_links` VALUES (2, 'GitHub', 'https://github.com', '全球最大的代码托管平台', 'http://192.168.124.23:5000/Upload/2025/09/09/9b5a77b1b6184051983e1e456fdf412c.png', 1, 20, '2025-09-05 10:05:00');
+INSERT INTO `blog_friendly_links` VALUES (3, 'Vue.js官网', 'https://cn.vuejs.org/', 'Vue.js官方网站', 'http://192.168.124.23:5000/Upload/2025/09/09/3f993fb1f8d644e995ee496709f0a19b.png', 1, 30, '2025-09-05 10:10:00');
 
 -- ----------------------------
 -- Table structure for blog_likes
@@ -535,7 +584,7 @@ CREATE TABLE `blog_likes`  (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '点赞时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `unique_like`(`user_id`, `target_type`, `target_id`) USING BTREE COMMENT '防止重复点赞'
-) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '用户点赞表' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of blog_likes
@@ -561,7 +610,7 @@ CREATE TABLE `blog_project_technologies`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `project_id`(`project_id`) USING BTREE,
   INDEX `technology_id`(`technology_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客技术栈和项目链接表' ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of blog_project_technologies
@@ -597,14 +646,16 @@ CREATE TABLE `blog_projects`  (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_projects_featured`(`is_featured`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客项目表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_projects
 -- ----------------------------
-INSERT INTO `blog_projects` VALUES (1, '个人博客系统', '基于Vue.js和Node.js开发的全栈个人博客系统', '<h1>个人博客系统</h1><p>这是一个功能完整的个人博客系统，包含文章管理、用户评论、分类标签等功能。</p><h2>技术栈</h2><ul><li>前端：Vue.js + Element UI</li><li>后端：Node.js + Express</li><li>数据库：MySQL</li></ul><h2>主要功能</h2><ul><li>文章发布和管理</li><li>用户注册登录</li><li>评论系统</li><li>分类和标签</li><li>后台管理<img src=\"http://localhost:5000/Upload/2025/09/05/373f6ff54e3a466db8c3c39735cc30de.jpg\" style=\"max-width:100%;\"></li></ul>', 'http://localhost:5000/Upload/2025/09/05/cb5e0839d1c04b97a31975019ef5c7f0.jpg', 'https://blog-demo.example.com', 'https://github.com/only12e/only12eDBK', 'https://example.com', 'completed', 1, 'intermediate', 234, 45, 12, 102, '2025-09-05 10:00:00', '2025-09-05 15:55:28');
+INSERT INTO `blog_projects` VALUES (1, '个人博客系统', '基于Vue.js和Node.js开发的全栈个人博客系统', '<h1>个人博客系统</h1><p>这是一个功能完整的个人博客系统，包含文章管理、用户评论、分类标签等功能。</p><h2>技术栈</h2><ul><li>前端：Vue.js + Element UI</li><li>后端：Node.js + Express</li><li>数据库：MySQL</li></ul><h2>主要功能</h2><ul><li>文章发布和管理</li><li>用户注册登录</li><li>评论系统</li><li>分类和标签</li><li>后台管理<img src=\"http://localhost:5000/Upload/2025/09/05/373f6ff54e3a466db8c3c39735cc30de.jpg\" style=\"max-width:100%;\"></li></ul>', 'http://localhost:5000/Upload/2025/09/05/cb5e0839d1c04b97a31975019ef5c7f0.jpg', 'https://blog-demo.example.com', 'https://github.com/only12e/only12eDBK', 'https://example.com', 'completed', 1, 'intermediate', 234, 45, 12, 102, '2025-09-05 10:00:00', '2025-09-09 09:47:33');
 INSERT INTO `blog_projects` VALUES (2, '任务管理系统', '团队协作的任务管理和项目跟踪系统', '<h1>任务管理系统</h1><p>专为团队协作设计的任务管理系统，支持项目创建、任务分配、进度跟踪等功能。</p><h2>核心功能</h2><ul><li>项目和任务管理</li><li>团队成员协作</li><li>进度跟踪和报告</li><li>时间管理</li><li>文件共享</li></ul><h2>技术特点</h2><ul><li>响应式设计</li><li>实时数据同步</li><li>权限管理</li><li>数据可视化</li></ul>', 'http://localhost:5000/Upload/2025/09/05/38e820531b5447738ec8cdbcad256897.jpg', 'https://tasks-demo.example.com', 'https://github.com/username/task-manager', NULL, 'active', 1, 'advanced', 178, 32, 8, 20, '2025-09-05 10:30:00', '2025-09-05 15:44:15');
 INSERT INTO `blog_projects` VALUES (3, '在线代码编辑器', '支持多种编程语言的在线代码编辑和运行环境', '<h1>在线代码编辑器</h1><p>一个功能丰富的在线代码编辑器，支持语法高亮、代码提示、在线运行等功能。</p><h2>支持语言</h2><ul><li>JavaScript</li><li>Python</li><li>Java</li><li>C++</li><li>HTML/CSS</li></ul><h2>主要特性</h2><ul><li>语法高亮</li><li>代码自动补全</li><li>实时预览</li><li>代码分享</li><li>主题切换</li></ul>', 'http://localhost:5000/Upload/2025/09/05/8d1077b8b9e943b6a36edda590b82bd5.jpg', 'https://editor-demo.example.com', 'https://github.com/username/code-editor', NULL, 'active', 0, 'intermediate', 145, 28, 6, 30, '2025-09-05 11:00:00', '2025-09-05 15:23:11');
+INSERT INTO `blog_projects` VALUES (4, '在线代码编辑器', '支持多种编程语言的在线代码编辑和运行环境', '<h1>在线代码编辑器</h1><p>一个功能丰富的在线代码编辑器，支持语法高亮、代码提示、在线运行等功能。</p><h2>支持语言</h2><ul><li>JavaScript</li><li>Python</li><li>Java</li><li>C++</li><li>HTML/CSS</li></ul><h2>主要特性</h2><ul><li>语法高亮</li><li>代码自动补全</li><li>实时预览</li><li>代码分享</li><li>主题切换</li></ul>', 'http://localhost:5000/Upload/2025/09/05/8d1077b8b9e943b6a36edda590b82bd5.jpg', 'https://editor-demo.example.com', 'https://github.com/username/code-editor', NULL, 'active', 0, 'intermediate', 145, 28, 6, 30, '2025-09-05 11:00:00', '2025-09-05 15:23:11');
+INSERT INTO `blog_projects` VALUES (8, '个人博客系统', '基于Vue.js和Node.js开发的全栈个人博客系统', '<h1>个人博客系统</h1><p>这是一个功能完整的个人博客系统，包含文章管理、用户评论、分类标签等功能。</p><h2>技术栈</h2><ul><li>前端：Vue.js + Element UI</li><li>后端：Node.js + Express</li><li>数据库：MySQL</li></ul><h2>主要功能</h2><ul><li>文章发布和管理</li><li>用户注册登录</li><li>评论系统</li><li>分类和标签</li><li>后台管理<img src=\"http://localhost:5000/Upload/2025/09/05/373f6ff54e3a466db8c3c39735cc30de.jpg\" style=\"max-width:100%;\"></li></ul>', 'http://localhost:5000/Upload/2025/09/05/cb5e0839d1c04b97a31975019ef5c7f0.jpg', 'https://blog-demo.example.com', 'https://github.com/only12e/only12eDBK', 'https://example.com', 'completed', 1, 'intermediate', 234, 45, 12, 102, '2025-09-05 10:00:00', '2025-09-08 14:00:36');
 
 -- ----------------------------
 -- Table structure for blog_system_configs
@@ -619,16 +670,16 @@ CREATE TABLE `blog_system_configs`  (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `config_key`(`config_key`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_system_configs
 -- ----------------------------
-INSERT INTO `blog_system_configs` VALUES (1, 'site_title', '我的个人博客', '网站标题', '2025-09-05 10:00:00', '2025-09-05 10:00:00');
-INSERT INTO `blog_system_configs` VALUES (2, 'site_description', '分享技术心得，记录编程之路', '网站描述', '2025-09-05 10:00:00', '2025-09-05 10:00:00');
+INSERT INTO `blog_system_configs` VALUES (1, 'site_title', '我的个人博客', '网站标题', '2025-09-05 10:00:00', '2025-09-09 10:25:15');
+INSERT INTO `blog_system_configs` VALUES (2, 'site_description', '代码改变世界，成就个人价值\n分享技术心得，记录编程之路\n', '网站描述', '2025-09-05 10:00:00', '2025-09-09 10:26:24');
 INSERT INTO `blog_system_configs` VALUES (3, 'site_keywords', 'Vue.js,Node.js,JavaScript,Web开发,编程,技术博客', '网站关键词', '2025-09-05 10:00:00', '2025-09-05 10:00:00');
-INSERT INTO `blog_system_configs` VALUES (4, 'admin_email', 'admin@example.com', '管理员邮箱', '2025-09-05 10:00:00', '2025-09-05 10:00:00');
-INSERT INTO `blog_system_configs` VALUES (5, 'posts_per_page', '10', '每页文章数量', '2025-09-05 10:00:00', '2025-09-05 10:00:00');
+INSERT INTO `blog_system_configs` VALUES (4, 'admin_email', 'zhansfai@163.com', '管理员邮箱', '2025-09-05 10:00:00', '2025-09-09 10:26:49');
+INSERT INTO `blog_system_configs` VALUES (5, 'posts_per_page', '5', '每页文章数量', '2025-09-05 10:00:00', '2025-09-09 10:27:33');
 INSERT INTO `blog_system_configs` VALUES (6, 'comment_enabled', '1', '是否开启评论功能', '2025-09-05 10:00:00', '2025-09-05 10:00:00');
 
 -- ----------------------------
@@ -650,13 +701,13 @@ CREATE TABLE `blog_technologies`  (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_technologies_featured`(`is_featured`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客技术栈表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_technologies
 -- ----------------------------
-INSERT INTO `blog_technologies` VALUES (1, 'Vue.js', '/images/tech/vue.png', 'Vue.js是一个用于构建用户界面的渐进式JavaScript框架', '<h2>Vue.js简介</h2><p>Vue.js是一个用于构建用户界面的渐进式JavaScript框架。它的核心库只关注视图层，易于学习，便于与其它库或已有项目整合。</p><h3>主要特性</h3><ul><li>响应式数据绑定</li><li>组件系统</li><li>虚拟DOM</li><li>指令系统</li></ul>', 'frontend', 90, 95, 1, 10, '2025-09-05 10:00:00', '2025-09-05 10:00:00');
-INSERT INTO `blog_technologies` VALUES (2, 'Node.js', '/images/tech/nodejs.png', 'Node.js是一个基于Chrome V8引擎的JavaScript运行时环境', '<h2>Node.js简介</h2><p>Node.js是一个基于Chrome V8 JavaScript引擎构建的运行时环境，可以让JavaScript运行在服务器端。</p><h3>主要特性</h3><ul><li>事件驱动</li><li>非阻塞I/O</li><li>单线程</li><li>跨平台</li></ul>', 'backend', 85, 90, 1, 20, '2025-09-05 10:05:00', '2025-09-05 10:05:00');
+INSERT INTO `blog_technologies` VALUES (1, 'Vue.js', '/images/tech/vue.png', 'Vue.js是一个用于构建用户界面的渐进式JavaScript框架', '<h2>Vue.js简介</h2><p>Vue.js是一个用于构建用户界面的渐进式JavaScript框架。它的核心库只关注视图层，易于学习，便于与其它库或已有项目整合。</p><h3>主要特性</h3><ul><li>响应式数据绑定</li><li>组件系统</li><li>虚拟DOM</li><li>指令系统</li></ul>', 'frontend', 90, 95, 1, 10, '2025-09-05 10:00:00', '2025-09-09 09:47:25');
+INSERT INTO `blog_technologies` VALUES (2, 'Node.js', 'http://localhost:5000/Upload/2025/09/09/08c4216efa2a41a48c284c4b7b10bc27.png', 'Node.js是一个基于Chrome V8引擎的JavaScript运行时环境', '<h2>Node.js简介</h2><p>Node.js是一个基于Chrome V8 JavaScript引擎构建的运行时环境，可以让JavaScript运行在服务器端。</p><h3>主要特性</h3><ul><li>事件驱动</li><li>非阻塞I/O</li><li>单线程</li><li>跨平台</li></ul>', 'backend', 85, 90, 1, 20, '2025-09-05 10:05:00', '2025-09-09 09:50:30');
 INSERT INTO `blog_technologies` VALUES (3, 'MySQL', '/images/tech/mysql.png', 'MySQL是最流行的关系型数据库管理系统', '<h2>MySQL简介</h2><p>MySQL是最流行的关系型数据库管理系统之一，在Web应用方面，MySQL是最好的RDBMS应用软件之一。</p><h3>主要特性</h3><ul><li>高性能</li><li>可靠性</li><li>易用性</li><li>开源免费</li></ul>', 'database', 80, 85, 1, 30, '2025-09-05 10:10:00', '2025-09-05 10:10:00');
 
 -- ----------------------------
@@ -681,12 +732,12 @@ CREATE TABLE `blog_tools`  (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_tools_recommended`(`is_recommended`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客工具表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_tools
 -- ----------------------------
-INSERT INTO `blog_tools` VALUES (1, 'Visual Studio Code', 'Microsoft开发的免费开源代码编辑器', '<h1>Visual Studio Code</h1><p>VS Code是Microsoft开发的一款免费、开源的现代化代码编辑器...</p><h2>主要特性</h2><ul><li>智能代码补全</li><li>内置Git支持</li><li>丰富的插件生态</li><li>调试功能</li><li>集成终端</li></ul><h2>推荐插件</h2><ul><li>Auto Rename Tag</li><li>GitLens</li><li>Prettier</li><li>ESLint</li></ul>', 'http://localhost:5000/Upload/2025/09/05/8b5e659fccf9402181fd024a84024a9a.jpg', 'http://localhost:5000/Upload/2025/09/05/9f15482c8890443c9341939452f9fbb1.jpg', 'https://code.visualstudio.com', 'https://code.visualstudio.com/download', '编辑器', 'free', 4.9, 1, 10, '2025-09-05 10:00:00', '2025-09-05 16:18:41');
+INSERT INTO `blog_tools` VALUES (1, 'Visual Studio Code', 'Microsoft开发的免费开源代码编辑器', '<h1>Visual Studio Code</h1><p>VS Code是Microsoft开发的一款免费、开源的现代化代码编辑器...</p><h2>主要特性</h2><ul><li>智能代码补全</li><li>内置Git支持</li><li>丰富的插件生态</li><li>调试功能</li><li>集成终端</li></ul><h2>推荐插件</h2><ul><li>Auto Rename Tag</li><li>GitLens</li><li>Prettier</li><li>ESLint</li></ul>', 'http://localhost:5000/Upload/2025/09/05/8b5e659fccf9402181fd024a84024a9a.jpg', 'http://localhost:5000/Upload/2025/09/05/9f15482c8890443c9341939452f9fbb1.jpg', 'https://code.visualstudio.com', 'https://code.visualstudio.com/download', '编辑器', 'free', 4.9, 1, 10, '2025-09-05 10:00:00', '2025-09-09 09:47:29');
 INSERT INTO `blog_tools` VALUES (2, 'Postman', 'API开发和测试的协作平台', '<h1>Postman</h1><p>Postman是一个用于API开发的协作平台，简化了构建和使用API的流程...</p><h2>核心功能</h2><ul><li>API请求构建</li><li>自动化测试</li><li>API文档生成</li><li>团队协作</li><li>环境管理</li></ul><h2>使用场景</h2><ul><li>API接口测试</li><li>接口文档维护</li><li>团队API协作</li><li>自动化测试脚本</li></ul>', '/images/tools/postman.jpg', '/images/icons/postman.png', 'https://www.postman.com', 'https://www.postman.com/downloads/', 'API测试', 'freemium', 4.7, 1, 20, '2025-09-05 10:15:00', '2025-09-05 16:19:30');
 INSERT INTO `blog_tools` VALUES (3, 'Docker Desktop', '容器化应用开发平台', '<h1>Docker Desktop</h1><p>Docker Desktop是在Mac和Windows上运行容器化应用程序的最简单方法...</p><h2>主要优势</h2><ul><li>环境一致性</li><li>应用隔离</li><li>快速部署</li><li>资源高效利用</li></ul><h2>常用命令</h2><pre><code># 拉取镜像\ndocker pull nginx\n\n# 运行容器\ndocker run -d -p 8080:80 nginx\n\n# 查看容器\ndocker ps\n</code></pre>', '/images/tools/docker.jpg', '/images/icons/docker.png', 'https://www.docker.com', 'https://www.docker.com/products/docker-desktop', '容器化', 'free', 4.5, 1, 30, '2025-09-05 10:30:00', '2025-09-05 10:30:00');
 
@@ -708,15 +759,14 @@ CREATE TABLE `blog_users`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE,
   UNIQUE INDEX `email`(`email`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '博客用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blog_users
 -- ----------------------------
-INSERT INTO `blog_users` VALUES (1, 'admin_user', 'e10adc3949ba59abbe56e057f20f883e', 'admin@example.com', '系统管理员', '/images/avatars/admin.jpg', 'admin', 1, '2025-09-05 10:00:00', '2025-09-05 10:00:00');
-INSERT INTO `blog_users` VALUES (2, 'john_doe', 'e10adc3949ba59abbe56e057f20f883e', 'john@example.com', 'John Doe', '/images/avatars/john.jpg', 'user', 1, '2025-09-05 10:15:00', '2025-09-05 10:15:00');
+INSERT INTO `blog_users` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin@example.com', '系统管理员', '/images/avatars/admin.jpg', 'admin', 1, '2025-09-05 10:00:00', '2025-09-09 10:40:07');
+INSERT INTO `blog_users` VALUES (2, 'john_doe', 'e10adc3949ba59abbe56e057f20f883e', 'john@example.com', 'John Doe', 'http://localhost:5000/Upload/2025/09/08/816dd9da4fd74e7495fe0ad5c1ff700d.jpg', 'user', 1, '2025-09-05 10:15:00', '2025-09-08 14:08:25');
 INSERT INTO `blog_users` VALUES (3, 'jane_smith', 'e10adc3949ba59abbe56e057f20f883e', 'jane@example.com', 'Jane Smith', '/images/avatars/jane.jpg', 'user', 0, '2025-09-05 10:30:00', '2025-09-05 16:48:42');
-INSERT INTO `blog_users` VALUES (4, 'zsf', 'KtVl215i2tcatIDAMBbcLsc0Vsfqzgj8cIavbeY1vAY=', 'zhansfai@outlook.com', '', 'http://localhost:5000/Upload/2025/09/05/b07bf8743b384afbb32b3726f40e3fa8.jpg', 'admin', 1, '2025-09-05 16:48:27', '2025-09-05 16:48:27');
 
 -- ----------------------------
 -- Table structure for blog_views

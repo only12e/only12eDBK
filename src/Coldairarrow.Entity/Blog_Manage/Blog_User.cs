@@ -69,5 +69,11 @@ namespace Coldairarrow.Entity.Blog_Manage
         /// </summary>
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 最后登录时间
+        /// </summary>
+        [Column("last_login_at")]
+        public DateTime? LastLoginAt { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 <template>
   <a-card :bordered="false">
     <div class="table-operator">
-      <a-button v-if="hasPerm('Blog_SystemConfig.Add')" type="primary" icon="plus" @click="handleAdd()">新建配置</a-button>
-      <a-button v-if="hasPerm('Blog_SystemConfig.Delete')" type="primary" icon="minus" @click="handleDelete(selectedRowKeys)"
+      <a-button v-if="hasPerm('Blog_Config.Edit')" type="primary" icon="plus" @click="handleAdd()">新建配置</a-button>
+      <a-button v-if="hasPerm('Blog_Config.Edit')" type="primary" icon="minus" @click="handleDelete(selectedRowKeys)"
         :disabled="!hasSelected()" :loading="loading">删除</a-button>
-      <a-button v-if="hasPerm('Blog_SystemConfig.BatchUpdate')" type="default" icon="sync" @click="handleBatchUpdate"
+      <a-button v-if="hasPerm('Blog_Config.Edit')" type="default" icon="sync" @click="handleBatchUpdate"
         :disabled="!hasSelected()">批量更新</a-button>
     </div>
 
@@ -45,15 +45,15 @@
       
       <span slot="action" slot-scope="text, record">
         <template>
-          <template v-if="hasPerm('Blog_SystemConfig.Edit')">
+          <template v-if="hasPerm('Blog_Config.Edit')">
             <a @click="handleEdit(record.Id)">编辑</a>
             <a-divider type="vertical" />
           </template>
-          <template v-if="hasPerm('Blog_SystemConfig.SetValue')">
+          <template v-if="hasPerm('Blog_Config.Edit')">
             <a @click="handleSetValue(record)">设值</a>
             <a-divider type="vertical" />
           </template>
-          <a v-if="hasPerm('Blog_SystemConfig.Delete')" @click="handleDelete([record.Id])">删除</a>
+          <a v-if="hasPerm('Blog_Config.Edit')" @click="handleDelete([record.Id])">删除</a>
         </template>
       </span>
     </a-table>

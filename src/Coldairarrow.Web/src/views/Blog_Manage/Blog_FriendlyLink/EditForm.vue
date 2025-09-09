@@ -164,9 +164,15 @@ export default {
         return
       }
 
+      // 如果是编辑模式但ID还未加载，跳过校验
+      if (!this.form.Id) {
+        callback()
+        return
+      }
+
       try {
         const exists = await NameExists(value, this.form.Id)
-        if (exists) {
+        if (exists === true) {
           callback(new Error('链接名称已存在'))
         } else {
           callback()
@@ -181,9 +187,15 @@ export default {
         return
       }
 
+      // 如果是编辑模式但ID还未加载，跳过校验
+      if (!this.form.Id) {
+        callback()
+        return
+      }
+
       try {
         const exists = await UrlExists(value, this.form.Id)
-        if (exists) {
+        if (exists === true) {
           callback(new Error('链接地址已存在'))
         } else {
           callback()
@@ -198,6 +210,10 @@ export default {
         this.loading = false
         if (resJson.Success) {
           this.form = { ...resJson.Data }
+          // 数据加载完成后，清除之前的校验状态，以便重新校验
+          this.$nextTick(() => {
+            this.$refs.form && this.$refs.form.clearValidate()
+          })
         } else {
           this.$message.error(resJson.Msg || '获取数据失败')
         }

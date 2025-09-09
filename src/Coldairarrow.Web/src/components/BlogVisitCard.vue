@@ -120,12 +120,12 @@ export default {
     return {
       visiting: false,
       quickLinks: [
-        { key: 'home', label: '首页', icon: 'home', color: 'blue', path: '/' },
-        { key: 'articles', label: '技术文章', icon: 'file-text', color: 'green', path: '/articles' },
-        { key: 'projects', label: '项目展示', icon: 'project', color: 'orange', path: '/projects' },
-        { key: 'tools', label: '工具推荐', icon: 'tool', color: 'purple', path: '/tools' },
-        { key: 'about', label: '关于我', icon: 'user', color: 'cyan', path: '/about' },
-        { key: 'contact', label: '联系方式', icon: 'mail', color: 'red', path: '/contact' }
+        { key: 'home', label: '首页', icon: 'home', color: 'blue', path: '' },
+        { key: 'articles', label: '技术文章', icon: 'file-text', color: 'green', path: '' },
+        { key: 'projects', label: '项目展示', icon: 'project', color: 'orange', path: '' },
+        { key: 'tools', label: '工具推荐', icon: 'tool', color: 'purple', path: '' },
+        { key: 'about', label: '关于我', icon: 'user', color: 'cyan', path: '' },
+        { key: 'contact', label: '联系方式', icon: 'mail', color: 'red', path: '' }
       ]
     }
   },
@@ -133,17 +133,25 @@ export default {
     visitBlog() {
       this.visiting = true
       try {
-        window.open(this.blogUrl, '_blank')
-        this.$message.success('正在打开博客网站...')
+        // 构建内部博客路由URL - 使用完整路径避免路由嵌套问题
+        const currentOrigin = window.location.origin
+        const currentPort = window.location.port
+        const baseUrl = currentPort ? `${currentOrigin}` : currentOrigin
+        const blogUrl = `${baseUrl}/#/blog-website`
+        
+        // 直接在当前窗口导航而不是打开新窗口，避免路由嵌套
+        this.$router.push('/blog-website')
+        this.$message.success('正在跳转到博客首页...')
         
         // 模拟访问统计更新
         this.$emit('visit-tracked', {
-          type: 'direct',
+          type: 'blog_home_visit',
           timestamp: new Date(),
-          url: this.blogUrl
+          url: blogUrl,
+          from: 'admin_dashboard'
         })
       } catch (error) {
-        this.$message.error('打开博客网站失败')
+        this.$message.error('打开博客首页失败')
         console.error('访问博客失败:', error)
       } finally {
         setTimeout(() => {
@@ -153,25 +161,29 @@ export default {
     },
     
     previewBlog() {
-      const previewUrl = `${this.blogUrl}?preview=true`
+      // 预览模式在新窗口打开博客首页，使用完整URL确保独立性
+      const currentOrigin = window.location.origin
+      const previewUrl = `${currentOrigin}/#/blog-website`
       window.open(previewUrl, '_blank', 'width=1200,height=800,scrollbars=yes')
-      this.$message.info('已在预览模式下打开')
+      this.$message.info('已在预览模式下打开博客首页')
       
       this.$emit('preview-opened', {
         url: previewUrl,
-        timestamp: new Date()
+        timestamp: new Date(),
+        mode: 'preview'
       })
     },
     
     quickVisit(link) {
-      const fullUrl = `${this.blogUrl}${link.path}`
-      window.open(fullUrl, '_blank')
-      this.$message.success(`正在访问${link.label}页面...`)
+      // 快速访问直接跳转到博客页面
+      this.$router.push('/blog-website')
+      this.$message.success(`正在跳转到博客${link.label}...`)
       
       this.$emit('quick-visit', {
         type: 'quick',
         link: link.key,
-        url: fullUrl,
+        url: '/blog-website',
+        targetPath: link.path,
         timestamp: new Date()
       })
     },
