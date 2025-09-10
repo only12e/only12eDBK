@@ -31,15 +31,15 @@ OnlyBlog 是一个现代化的个人博客系统，基于 .NET 5 和 Vue.js 构�
 
 ### 管理端：
 
-![75747919581](G:\Project\only12eDBK\1757479195817.png)
+![管理后台](./images/admin-dashboard.png)
 
-![75747924739](G:\Project\only12eDBK\1757479247396.png)
+![管理系统](./images/admin-management.png)
 
 ### 用户端：
 
-![75747933019](G:\Project\only12eDBK\1757479330195.png)
+![用户首页](./images/user-homepage.png)
 
-![75747935573](C:\Users\htl616\AppData\Local\Temp\1757479355733.png)
+![文章页面](./images/user-articles.png)
 
 ### 页面设计特色
 
@@ -515,45 +515,13 @@ sudo ufw enable
 - 配置 HTTPS 强制跳转
 - 设置请求频率限制
 
-## 🚨 故障排除
-
-### 常见问题
-
-1. **API 无法启动**
-   - 检查数据库连接
-   - 验证 .NET 运行时版本
-   - 查看日志文件
-2. **前端无法访问 API**
-   - 检查 Nginx 代理配置
-   - 验证防火墙设置
-   - 检查 CORS 配置
-3. **数据库连接失败**
-   - 验证连接字符串
-   - 检查数据库服务状态
-   - 确认用户权限
-
-### 性能优化
-
-1. **数据库优化**
-   - 添加必要的索引
-   - 优化查询语句
-   - 配置连接池
-2. **缓存优化**
-   - 启用 Redis 缓存
-   - 配置静态文件缓存
-   - 使用 CDN 加速
-3. **前端优化**
-   - 启用 Gzip 压缩
-   - 配置浏览器缓存
-   - 使用图片压缩
-
 ## 📞 技术支持
 
 如遇到部署问题，请查看：
 
 - 项目 GitHub Issues
 - 数据库设计文档: `博客系统数据库设计.md`
-- API 文档: https://yourdomain.com/swagger
+- API 文档: 后端启动后自动打开swaggerAPI文档
 
 ------
 
