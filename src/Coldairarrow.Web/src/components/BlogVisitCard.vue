@@ -16,7 +16,7 @@
           <div class="stat-item">
             <a-icon type="eye" />
             <span class="stat-label">今日访问</span>
-            <span class="stat-value">{{ todayVisits || 0 }}</span>
+            <span class="stat-value">{{ currentTodayVisits }}</span>
           </div>
           <div class="stat-item">
             <a-icon type="user" />
@@ -31,7 +31,7 @@
           <div class="horizontal-stat-item">
             <a-icon type="eye" />
             <div class="stat-info">
-              <span class="stat-value">{{ todayVisits || 0 }}</span>
+              <span class="stat-value">{{ currentTodayVisits }}</span>
               <span class="stat-label">今日访问</span>
             </div>
           </div>
@@ -61,9 +61,9 @@
             type="default" 
             :size="isHorizontal ? 'default' : 'large'"
             class="preview-btn"
-            @click="previewBlog">
-            <a-icon type="desktop" />
-            预览模式
+            @click="visitBlogDirectly">
+            <a-icon type="global" />
+            外部访问
           </a-button>
         </div>
         
@@ -119,6 +119,7 @@ export default {
   data() {
     return {
       visiting: false,
+      localTodayVisits: 0, // 本地今日访问计数器
       quickLinks: [
         { key: 'home', label: '首页', icon: 'home', color: 'blue', path: '' },
         { key: 'articles', label: '技术文章', icon: 'file-text', color: 'green', path: '' },
@@ -129,20 +130,45 @@ export default {
       ]
     }
   },
+  computed: {
+    // 计算当前今日访问次数（优先使用本地计数，如果为0则使用传入的prop）
+    currentTodayVisits() {
+      return Math.max(this.localTodayVisits, this.todayVisits || 0)
+    }
+  },
+  watch: {
+    // 监听传入的今日访问次数，与本地计数同步
+    todayVisits: {
+      handler(newVal) {
+        if (newVal && newVal > this.localTodayVisits) {
+          this.localTodayVisits = newVal
+          // 同步到localStorage
+          const today = new Date().toDateString()
+          const visitKey = 'blog_visit_count_' + today
+          localStorage.setItem(visitKey, newVal.toString())
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
     visitBlog() {
       this.visiting = true
       try {
-        // 直接在当前窗口导航到博客首页
+        // 立即访问：在当前窗口导航到本地博客页面
         this.$router.push('/blog-website')
         this.$message.success('欢迎来到博客网站！')
+        
+        // 增加今日访问计数
+        this.incrementTodayVisit()
         
         // 模拟访问统计更新
         this.$emit('visit-tracked', {
           type: 'blog_home_visit',
           timestamp: new Date(),
           url: '/blog-website',
-          from: 'admin_dashboard'
+          from: 'admin_dashboard',
+          visitType: 'internal'
         })
       } catch (error) {
         this.$message.error('跳转博客首页失败')
@@ -154,32 +180,88 @@ export default {
       }
     },
     
-    previewBlog() {
-      // 预览模式在新窗口打开博客首页，使用完整URL确保独立性
-      const currentOrigin = window.location.origin
-      const previewUrl = `${currentOrigin}/#/blog-website`
-      window.open(previewUrl, '_blank', 'width=1200,height=800,scrollbars=yes')
-      this.$message.info('已在预览模式下打开博客首页')
-      
-      this.$emit('preview-opened', {
-        url: previewUrl,
-        timestamp: new Date(),
-        mode: 'preview'
-      })
+    visitBlogDirectly() {
+      try {
+        // 预览模式：在新窗口打开外部博客网站
+        const blogUrl = this.blogUrl || 'http://192.168.124.23:5001/blog-website'
+        window.open(blogUrl, '_blank', 'width=1200,height=800,scrollbars=yes,toolbar=yes,location=yes,status=yes,menubar=yes,resizable=yes')
+        // this.$message.success('已在新窗口打开外部博客网站')
+        
+        // 增加今日访问计数
+        this.incrementTodayVisit()
+        
+        this.$emit('visit-tracked', {
+          type: 'blog_external_visit',
+          url: blogUrl,
+          timestamp: new Date(),
+          mode: 'preview',
+          visitType: 'external'
+        })
+      } catch (error) {
+        this.$message.error('无法打开外部博客网站')
+        console.error('打开外部链接失败:', error)
+      }
     },
     
+    
     quickVisit(link) {
-      // 快速访问直接跳转到博客页面
+      // 快速访问：直接跳转到本地博客页面
       this.$router.push('/blog-website')
       this.$message.success(`欢迎访问博客${link.label}！`)
+      
+      // 增加今日访问计数
+      this.incrementTodayVisit()
       
       this.$emit('quick-visit', {
         type: 'quick',
         link: link.key,
         url: '/blog-website',
         targetPath: link.path,
-        timestamp: new Date()
+        timestamp: new Date(),
+        visitType: 'internal'
       })
+    },
+    
+    // 增加今日访问计数
+    incrementTodayVisit() {
+      const today = new Date().toDateString()
+      const visitKey = 'blog_visit_count_' + today
+      
+      try {
+        // 从localStorage获取今日访问次数
+        let count = parseInt(localStorage.getItem(visitKey) || '0')
+        count++
+        
+        // 更新本地计数
+        this.localTodayVisits = count
+        localStorage.setItem(visitKey, count.toString())
+        
+        // 通知父组件更新访问统计
+        this.$emit('visit-count-updated', {
+          todayVisits: count,
+          date: today,
+          timestamp: new Date()
+        })
+        
+        // console.log(`今日访问次数已更新: ${count}`)
+      } catch (error) {
+        console.error('更新访问统计失败:', error)
+      }
+    },
+    
+    // 获取今日访问次数
+    getTodayVisitCount() {
+      const today = new Date().toDateString()
+      const visitKey = 'blog_visit_count_' + today
+      
+      try {
+        const count = parseInt(localStorage.getItem(visitKey) || '0')
+        this.localTodayVisits = count
+        return count
+      } catch (error) {
+        console.error('获取访问统计失败:', error)
+        return 0
+      }
     },
     
     // 获取在线统计数据
@@ -191,14 +273,50 @@ export default {
       } catch (error) {
         console.error('获取统计数据失败:', error)
       }
+    },
+    
+    // 清理旧的访问记录（保留最近7天）
+    cleanOldVisitRecords() {
+      try {
+        const now = new Date()
+        const keys = []
+        
+        // 获取所有localStorage中的访问记录key
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key && key.startsWith('blog_visit_count_')) {
+            keys.push(key)
+          }
+        }
+        
+        // 清理7天前的记录
+        keys.forEach(key => {
+          const dateStr = key.replace('blog_visit_count_', '')
+          const recordDate = new Date(dateStr)
+          const daysDiff = Math.floor((now - recordDate) / (1000 * 60 * 60 * 24))
+          
+          if (daysDiff > 7) {
+            localStorage.removeItem(key)
+            console.log(`已清理过期访问记录: ${key}`)
+          }
+        })
+      } catch (error) {
+        console.error('清理访问记录失败:', error)
+      }
     }
   },
   
   mounted() {
+    // 初始化今日访问统计
+    this.getTodayVisitCount()
+    
     // 每30秒更新一次统计数据
     this.statsInterval = setInterval(() => {
       this.fetchOnlineStats()
     }, 30000)
+    
+    // 每天清理旧的访问记录
+    this.cleanOldVisitRecords()
   },
   
   beforeDestroy() {
@@ -216,7 +334,13 @@ export default {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgba(255, 255, 255, 0.95);
+  background-image: url('~@/assets/background.svg');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
   
   &:hover {
     box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
@@ -230,7 +354,7 @@ export default {
   
   .visit-content {
     padding: 24px;
-    color: white;
+    color: #262626;
     position: relative;
     overflow: hidden;
     
@@ -298,14 +422,14 @@ export default {
               .stat-value {
                 font-size: 18px;
                 font-weight: 700;
-                color: white;
+                color: #262626;
                 font-family: 'Monaco', 'Menlo', monospace;
                 line-height: 1.2;
               }
               
               .stat-label {
                 font-size: 12px;
-                color: rgba(255, 255, 255, 0.8);
+                color: #666;
                 font-weight: 500;
               }
             }
@@ -384,8 +508,8 @@ export default {
       
       .globe-icon {
         font-size: 32px;
-        color: #ffd700;
-        filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.4));
+        color: #1890ff;
+        filter: none;
         animation: rotate 10s linear infinite;
       }
     }
@@ -397,15 +521,15 @@ export default {
         margin: 0 0 4px 0;
         font-size: 20px;
         font-weight: 700;
-        color: white;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        color: #262626;
+        text-shadow: none;
         letter-spacing: 0.5px;
       }
       
       .visit-subtitle {
         margin: 0;
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.8);
+        color: #666;
         font-weight: 400;
       }
     }
@@ -423,27 +547,27 @@ export default {
       flex-direction: column;
       align-items: center;
       padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(24, 144, 255, 0.1);
       border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(24, 144, 255, 0.2);
       backdrop-filter: blur(10px);
       flex: 1;
       transition: all 0.3s ease;
       
       &:hover {
-        background: rgba(255, 255, 255, 0.25);
+        background: rgba(24, 144, 255, 0.2);
         transform: translateY(-2px);
       }
       
       .anticon {
         font-size: 18px;
-        color: #ffd700;
+        color: #1890ff;
         margin-bottom: 8px;
       }
       
       .stat-label {
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.7);
+        color: #666;
         margin-bottom: 4px;
         font-weight: 500;
       }
@@ -451,7 +575,7 @@ export default {
       .stat-value {
         font-size: 18px;
         font-weight: 700;
-        color: white;
+        color: #262626;
         font-family: 'Monaco', 'Menlo', monospace;
       }
     }
@@ -467,20 +591,20 @@ export default {
     .visit-btn {
       flex: 2;
       height: 44px;
-      border: none;
+      border: 2px solid rgba(24, 144, 255, 0.9);
       border-radius: 12px;
-      background: linear-gradient(45deg, #ff6b6b, #ff5252);
+      background: rgba(24, 144, 255, 0.9);
       color: white;
       font-weight: 600;
       font-size: 16px;
-      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      box-shadow: 0 4px 15px rgba(24, 144, 255, 0.4);
       transition: all 0.3s ease;
       
       &:hover, &:focus {
-        background: linear-gradient(45deg, #ff5252, #ff4444);
-        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        background: rgba(64, 169, 255, 0.9);
+        box-shadow: 0 6px 20px rgba(24, 144, 255, 0.6);
         transform: translateY(-2px);
-        border: none;
+        border: 2px solid rgba(64, 169, 255, 0.9);
         color: white;
       }
       
@@ -492,18 +616,18 @@ export default {
     .preview-btn {
       flex: 1;
       height: 44px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.6);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
+      background: rgba(255, 255, 255, 0.8);
+      color: #262626;
       font-weight: 500;
       backdrop-filter: blur(10px);
       transition: all 0.3s ease;
       
       &:hover, &:focus {
-        background: rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.5);
-        color: white;
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(64, 169, 255, 0.6);
+        color: #262626;
         transform: translateY(-2px);
       }
     }

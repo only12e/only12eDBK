@@ -275,8 +275,8 @@ export default {
       navItems: [
         { key: 'home', label: '首页', icon: 'home' },
         { key: 'articles', label: '技术文章', icon: 'file-text', route: '/blog-website/articles' },
-        { key: 'projects', label: '项目展示', icon: 'project' },
-        { key: 'tools', label: '工具推荐', icon: 'tool' },
+        { key: 'projects', label: '项目展示', icon: 'project', route: '/blog-website/projects' },
+        { key: 'tools', label: '工具推荐', icon: 'tool', route: '/blog-website/tools' },
       ],
       
       // 统计数据
@@ -806,7 +806,7 @@ export default {
           
           .logo-icon {
             font-size: 24px;
-            color: white;
+            color: #1890ff;
           }
         }
         

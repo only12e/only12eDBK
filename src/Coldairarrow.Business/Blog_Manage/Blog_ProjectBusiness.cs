@@ -160,6 +160,17 @@ namespace Coldairarrow.Business.Blog_Manage
                 .ToListAsync();
         }
 
+        public async Task IncrementViewCountAsync(int id)
+        {
+            var project = await GetEntityAsync(id);
+            if (project != null)
+            {
+                project.ViewCount++;
+                project.UpdatedAt = DateTime.Now;
+                await UpdateAsync(project);
+            }
+        }
+
         #endregion
     }
 }

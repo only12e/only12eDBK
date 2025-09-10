@@ -9,7 +9,6 @@ OnlyBlog 是一个现代化的个人博客系统，基于 .NET 5 和 Vue.js 构�
 本项目基于 **Colder.Admin.AntdVue** 框架开发，这是一个优秀的 Web 后台快速开发框架，采用 .NET5 + Ant Design Vue 技术栈。
 
 **框架资源：**
-
 - **代码(GitHub)：** <https://github.com/Coldairarrow/Colder.Admin.AntdVue>  
 - **文档(GitHub)：** <https://github.com/Coldairarrow/Colder.Admin.AntdVue/wiki>  
 - **代码(码云镜像)：** <https://gitee.com/Coldairarrow/Colder.Admin.AntdVue>  
@@ -19,7 +18,6 @@ OnlyBlog 是一个现代化的个人博客系统，基于 .NET 5 和 Vue.js 构�
 ### 项目特色
 
 在 Colder.Admin.AntdVue 基础框架之上，OnlyBlog 扩展实现了：
-
 - 🎨 现代化的博客展示前台页面
 - 📝 完整的技术文章管理系统
 - 🚀 项目展示和介绍功能
@@ -44,46 +42,42 @@ OnlyBlog 是一个现代化的个人博客系统，基于 .NET 5 和 Vue.js 构�
 ### 页面设计特色
 
 **🎨 现代化UI设计**
-
 - **玻璃形态设计 (Glassmorphism)**: 所有卡片和组件采用半透明玻璃效果，配合模糊背景和渐变边框，营造现代科技感
 - **渐变色彩方案**: 使用 `linear-gradient(135deg, #667eea 0%, #764ba2 100%)` 主色调，统一的紫蓝色系
 - **圆角设计**: 16px 圆角半径，柔和的视觉效果
 - **阴影层次**: 多层次阴影效果 `0 8px 32px rgba(102, 126, 234, 0.1)`
 
 **✨ 动态粒子特效系统**
-
 - **浮动粒子动画**: 页面背景包含 20-50 个动态粒子，随机分布并缓慢浮动
 - **鼠标交互响应**: 粒子会根据鼠标位置进行偏移，营造沉浸式交互体验
 - **自适应数量**: 不同页面根据复杂度调整粒子数量（首页50个，详情页20个）
 - **性能优化**: 使用 CSS Transform 和 GPU 加速，确保流畅的动画效果
 
 **🌟 交互动效**
-
 - **悬停效果**: 卡片悬停时上移 4px 并增强阴影 `transform: translateY(-4px)`
 - **平滑过渡**: 所有交互采用 `cubic-bezier(0.4, 0, 0.2, 1)` 缓动函数
 - **微弹效果**: 按钮点击时轻微缩放和颜色变化
 - **滚动视差**: 背景粒子随滚动产生轻微视差效果
 
 **📱 响应式设计**
-
 - **移动优先**: 采用移动优先的响应式设计策略
 - **断点适配**: 768px、1200px 主要断点，完美适配手机、平板、桌面
 - **布局重排**: 大屏网格布局，小屏堆叠布局
 - **字体缩放**: 根据设备尺寸自动调整字体大小
 
 **🎭 视觉层次**
-
 - **信息架构**: 清晰的信息层次和视觉重量分配
 - **色彩对比**: 充分的颜色对比度，确保可访问性
 - **留白艺术**: 合理的留白空间，避免视觉拥挤
 - **品牌一致性**: 统一的设计语言贯穿整个系统
+
+
 
 ## 🏗️ 系统架构
 
 ### 技术栈
 
 **后端 (API)**
-
 - **框架**: .NET 5.0 Web API
 - **ORM**: Entity Framework Core 5.0 + EFCore.Sharding
 - **认证**: JWT Bearer Token
@@ -93,7 +87,6 @@ OnlyBlog 是一个现代化的个人博客系统，基于 .NET 5 和 Vue.js 构�
 - **文档**: NSwag (Swagger)
 
 **前端 (Web)**
-
 - **框架**: Vue.js 2.5+ + Vue Router + Vuex
 - **UI库**: Ant Design Vue 1.5.3
 - **构建工具**: Vue CLI 3.7+
@@ -123,7 +116,6 @@ OnlyBlog 是一个现代化的个人博客系统，基于 .NET 5 和 Vue.js 构�
 ### 系统要求
 
 **服务器环境**
-
 - **操作系统**: Linux (Ubuntu 20.04+/CentOS 8+) 或 Windows Server 2019+
 - **运行时**: .NET 5.0 Runtime
 - **内存**: 最低 2GB，推荐 4GB+
@@ -131,7 +123,6 @@ OnlyBlog 是一个现代化的个人博客系统，基于 .NET 5 和 Vue.js 构�
 - **网络**: 公网IP或域名
 
 **依赖服务**
-
 - **数据库**: MySQL 8.0+ (推荐) 或其他支持的数据库
 - **缓存**: Redis 6.0+ (可选，推荐用于生产环境)
 - **Web服务器**: Nginx 1.18+ (用于反向代理和静态文件服务)
@@ -139,7 +130,6 @@ OnlyBlog 是一个现代化的个人博客系统，基于 .NET 5 和 Vue.js 构�
 ### 1. 数据库准备
 
 #### 1.1 MySQL 数据库安装
-
 ```bash
 # Ubuntu/Debian
 sudo apt update
@@ -150,7 +140,6 @@ sudo yum install mysql-server
 ```
 
 #### 1.2 创建数据库和用户
-
 ```sql
 -- 创建数据库
 CREATE DATABASE Colder_Admin_AntdVue CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -164,7 +153,6 @@ FLUSH PRIVILEGES;
 ```
 
 #### 1.3 导入数据库结构
-
 ```bash
 mysql -u blog_user -p Colder_Admin_AntdVue < colder.admin.antdvue.sql
 ```
@@ -189,7 +177,6 @@ requirepass your_redis_password
 ### 3. 后端 API 部署
 
 #### 3.1 编译发布
-
 ```bash
 # 在开发环境执行
 cd src/Coldairarrow.Api
@@ -197,9 +184,7 @@ dotnet publish -c Release -o ./publish --self-contained false
 ```
 
 #### 3.2 配置文件修改
-
 编辑 `appsettings.json`:
-
 ```json
 {
   "urls": "http://*:5000",
@@ -224,7 +209,6 @@ dotnet publish -c Release -o ./publish --self-contained false
 ```
 
 #### 3.3 部署到服务器
-
 ```bash
 # 上传发布文件到服务器
 scp -r ./publish user@server:/opt/onlyblog-api/
@@ -237,9 +221,7 @@ sudo apt install aspnetcore-runtime-5.0
 ```
 
 #### 3.4 创建系统服务
-
 创建 `/etc/systemd/system/onlyblog-api.service`:
-
 ```ini
 [Unit]
 Description=OnlyBlog API
@@ -268,7 +250,6 @@ sudo systemctl enable onlyblog-api
 ### 4. 前端部署
 
 #### 4.1 编译构建
-
 ```bash
 cd src/Coldairarrow.Web
 
@@ -280,16 +261,13 @@ npm run build
 ```
 
 #### 4.2 部署静态文件
-
 ```bash
 # 上传构建产物到服务器
 scp -r ./dist user@server:/var/www/onlyblog/
 ```
 
 #### 4.3 Nginx 配置
-
 创建 `/etc/nginx/sites-available/onlyblog`:
-
 ```nginx
 server {
     listen 80;
@@ -363,7 +341,6 @@ sudo systemctl reload nginx
 ### 5. SSL 证书配置
 
 #### 使用 Let's Encrypt 免费证书
-
 ```bash
 # 安装 Certbot
 sudo apt install certbot python3-certbot-nginx
@@ -379,7 +356,6 @@ sudo crontab -e
 ### 6. Docker 部署 (可选)
 
 #### 6.1 构建后端镜像
-
 ```dockerfile
 # Dockerfile (已包含在项目中)
 FROM registry.cn-hangzhou.aliyuncs.com/colder-public/aspnet:5.0.2
@@ -391,7 +367,6 @@ ENTRYPOINT ["dotnet","Coldairarrow.Api.dll"]
 ```
 
 #### 6.2 Docker Compose 配置
-
 ```yaml
 version: '3.8'
 
@@ -452,7 +427,6 @@ volumes:
 ## 🔧 运维监控
 
 ### 1. 日志管理
-
 ```bash
 # 查看 API 日志
 sudo journalctl -u onlyblog-api -f
@@ -463,13 +437,11 @@ sudo tail -f /var/log/nginx/error.log
 ```
 
 ### 2. 性能监控
-
 - 使用 htop 监控系统资源
 - 配置 MySQL 慢查询日志
 - 使用 Redis 监控工具监控缓存性能
 
 ### 3. 备份策略
-
 ```bash
 # 数据库备份脚本
 #!/bin/bash
@@ -479,7 +451,6 @@ find /backup -name "onlyblog_*.sql" -mtime +7 -delete
 ```
 
 ### 4. 更新部署
-
 ```bash
 # 后端更新
 sudo systemctl stop onlyblog-api
@@ -494,7 +465,6 @@ sudo systemctl reload nginx
 ## 🔐 安全配置
 
 ### 1. 防火墙设置
-
 ```bash
 # UFW 配置
 sudo ufw allow ssh
@@ -504,13 +474,11 @@ sudo ufw enable
 ```
 
 ### 2. 数据库安全
-
 - 禁用 root 远程登录
 - 定期更新密码
 - 开启二进制日志
 
 ### 3. 应用安全
-
 - 定期更新 JWT Secret
 - 配置 HTTPS 强制跳转
 - 设置请求频率限制
@@ -523,10 +491,12 @@ sudo ufw enable
    - 检查数据库连接
    - 验证 .NET 运行时版本
    - 查看日志文件
+
 2. **前端无法访问 API**
    - 检查 Nginx 代理配置
    - 验证防火墙设置
    - 检查 CORS 配置
+
 3. **数据库连接失败**
    - 验证连接字符串
    - 检查数据库服务状态
@@ -538,10 +508,12 @@ sudo ufw enable
    - 添加必要的索引
    - 优化查询语句
    - 配置连接池
+
 2. **缓存优化**
    - 启用 Redis 缓存
    - 配置静态文件缓存
    - 使用 CDN 加速
+
 3. **前端优化**
    - 启用 Gzip 压缩
    - 配置浏览器缓存
@@ -550,17 +522,15 @@ sudo ufw enable
 ## 📞 技术支持
 
 如遇到部署问题，请查看：
-
 - 项目 GitHub Issues
 - 数据库设计文档: `博客系统数据库设计.md`
 - API 文档: https://yourdomain.com/swagger
 
-------
+---
 
 ## 📝 更新日志
 
 ### v1.0.0 (2025-01-XX)
-
 - ✅ 完整的博客系统功能
 - ✅ 技术文章管理和展示
 - ✅ 项目展示功能
@@ -568,6 +538,6 @@ sudo ufw enable
 - ✅ 响应式设计
 - ✅ 管理后台
 
-------
+---
 
 **注意**: 请确保在生产环境中修改所有默认密码和密钥，并定期进行安全更新。

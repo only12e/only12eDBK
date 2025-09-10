@@ -9,6 +9,12 @@
         <div class="shape shape-4"></div>
         <div class="shape shape-5"></div>
         <div class="shape shape-6"></div>
+        <div class="shape shape-7"></div>
+        <div class="shape shape-8"></div>
+        <div class="shape shape-9"></div>
+        <div class="shape shape-10"></div>
+        <div class="shape shape-11"></div>
+        <div class="shape shape-12"></div>
       </div>
     </div>
 
@@ -244,51 +250,99 @@ export default {
       animation: float 20s infinite linear;
       
       &.shape-1 {
-        width: 200px;
-        height: 200px;
+        width: 280px;
+        height: 280px;
         top: 10%;
         left: 10%;
         animation-delay: 0s;
       }
       
       &.shape-2 {
-        width: 150px;
-        height: 150px;
+        width: 220px;
+        height: 220px;
         top: 20%;
         right: 15%;
         animation-delay: -5s;
       }
       
       &.shape-3 {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
         top: 60%;
         left: 5%;
         animation-delay: -10s;
       }
       
       &.shape-4 {
-        width: 180px;
-        height: 180px;
+        width: 250px;
+        height: 250px;
         bottom: 20%;
         right: 10%;
         animation-delay: -15s;
       }
       
       &.shape-5 {
-        width: 120px;
-        height: 120px;
+        width: 180px;
+        height: 180px;
         top: 50%;
         left: 50%;
         animation-delay: -3s;
       }
       
       &.shape-6 {
-        width: 80px;
-        height: 80px;
+        width: 130px;
+        height: 130px;
         bottom: 10%;
         left: 30%;
         animation-delay: -8s;
+      }
+      
+      &.shape-7 {
+        width: 200px;
+        height: 200px;
+        top: 30%;
+        left: 70%;
+        animation-delay: -12s;
+      }
+      
+      &.shape-8 {
+        width: 160px;
+        height: 160px;
+        top: 70%;
+        right: 30%;
+        animation-delay: -6s;
+      }
+      
+      &.shape-9 {
+        width: 110px;
+        height: 110px;
+        bottom: 40%;
+        left: 15%;
+        animation-delay: -18s;
+      }
+      
+      &.shape-10 {
+        width: 240px;
+        height: 240px;
+        top: 5%;
+        left: 60%;
+        animation-delay: -2s;
+      }
+      
+      &.shape-11 {
+        width: 190px;
+        height: 190px;
+        bottom: 30%;
+        right: 40%;
+        animation-delay: -14s;
+      }
+      
+      &.shape-12 {
+        width: 140px;
+        height: 140px;
+        top: 40%;
+        left: 25%;
+        animation-delay: -9s;
       }
     }
   }

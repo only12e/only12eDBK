@@ -1,5 +1,5 @@
 <template>
-  <div class="statistics-dashboard">
+  <div class="statistics-dashboard" :style="{ backgroundImage: backgroundImageUrl }">
     <!-- 总览卡片 -->
     <a-row :gutter="[16, 16]">
       <a-col :xl="6" :lg="8" :md="12" :sm="24">
@@ -210,7 +210,7 @@
           :online-users="safeOverview.Users.ActiveCount || 0"
           :is-horizontal="true"
           @visit-tracked="handleVisitTracked"
-          @preview-opened="handlePreviewOpened"
+          @visit-count-updated="handleVisitCountUpdated"
           @quick-visit="handleQuickVisit"
           class="horizontal-blog-card"
         />
@@ -220,7 +220,7 @@
     <!-- 趋势图表区域 -->
     <a-row :gutter="[16, 16]" style="margin-top: 24px;">
       <a-col :xl="16" :lg="24" :md="24" :sm="24">
-        <a-card title="趋势统计" :loading="trendLoading">
+        <a-card title="趋势统计" :loading="trendLoading" class="trend-chart-card">
           <div slot="extra">
             <a-select v-model="trendQuery.type" style="width: 120px; margin-right: 8px;" @change="getTrendData">
               <a-select-option value="article">文章</a-select-option>
@@ -237,10 +237,10 @@
             </a-select>
           </div>
           
-          <div v-if="trendData && trendData.DataPoints && trendData.DataPoints.length > 0">
-            <div id="trendChart" style="width: 100%; height: 450px;"></div>
+          <div v-if="trendData && trendData.DataPoints && trendData.DataPoints.length > 0" class="trend-chart-container">
+            <div id="trendChart" class="trend-chart"></div>
           </div>
-          <a-empty v-else description="暂无趋势数据">
+          <a-empty v-else description="暂无趋势数据" class="trend-empty">
             <a-button slot="description" type="primary" @click="getTrendData">刷新数据</a-button>
           </a-empty>
         </a-card>
@@ -361,6 +361,7 @@
 import { GetOverview, GetTrendStatistics } from '@/api/blog_statistics'
 import BlogVisitCard from '@/components/BlogVisitCard.vue'
 import * as echarts from 'echarts'
+import backgroundImage from '@/assets/background.svg'
 
 export default {
   name: 'BlogStatistics',
@@ -369,7 +370,8 @@ export default {
   },
   data() {
     return {
-      blogUrl: 'https://blog.only12edbk.com', // 修改为博客网站的正确地址
+      blogUrl: 'http://192.168.124.23:5001/blog-website', // 修改为可访问的博客网站地址
+      backgroundImage,
       overview: {},
       overviewLoading: true,
       
@@ -410,6 +412,10 @@ export default {
         Users: this.overview.Users || {},
         Access: this.overview.Access || {}
       }
+    },
+    
+    backgroundImageUrl() {
+      return `url(${this.backgroundImage})`
     },
     
     chartOptions() {
@@ -522,11 +528,23 @@ export default {
           title: {
             text: `${this.getTypeText(this.trendQuery.type)}${this.getPeriodText(this.trendQuery.period)}趋势统计`,
             left: 'center',
+            top: '10px',
             textStyle: {
               fontSize: 16,
               fontWeight: 'normal',
               color: '#262626'
             }
+          },
+          legend: {
+            data: ['数量'],
+            left: 'center',
+            top: '40px',
+            textStyle: {
+              color: '#666',
+              fontSize: 12
+            },
+            itemWidth: 16,
+            itemHeight: 10
           },
           tooltip: {
             trigger: 'axis',
@@ -541,9 +559,10 @@ export default {
             }
           },
           grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
+            left: '5%',
+            right: '5%',
+            top: '80px',
+            bottom: '60px',
             containLabel: true
           },
           xAxis: {
@@ -692,31 +711,85 @@ export default {
       const option = {
         title: {
           text: `${this.getTypeText(this.trendModalQuery.type)}${this.getPeriodText(this.trendModalQuery.period)}趋势统计`,
-          left: 'center'
+          left: 'center',
+          top: '10px',
+          textStyle: {
+            fontSize: 16,
+            fontWeight: 'normal',
+            color: '#262626'
+          }
+        },
+        legend: {
+          data: ['数量'],
+          left: 'center',
+          top: '40px',
+          textStyle: {
+            color: '#666',
+            fontSize: 12
+          },
+          itemWidth: 16,
+          itemHeight: 10
         },
         tooltip: {
           trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          },
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          borderColor: '#e6f7ff',
+          borderWidth: 1,
           formatter: function(params) {
             return `${params[0].name}: ${params[0].value}`
           }
+        },
+        grid: {
+          left: '5%',
+          right: '5%',
+          top: '80px',
+          bottom: '60px',
+          containLabel: true
         },
         xAxis: {
           type: 'category',
           data: dates,
           axisLabel: {
-            rotate: 45
+            rotate: 45,
+            color: '#666'
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#e8e8e8'
+            }
           }
         },
         yAxis: {
           type: 'value',
-          minInterval: 1
+          minInterval: 1,
+          axisLabel: {
+            color: '#666'
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#e8e8e8'
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f0f0f0'
+            }
+          }
         },
         series: [{
+          name: '数量',
           data: values,
           type: 'line',
           smooth: true,
           areaStyle: {
-            opacity: 0.3
+            opacity: 0.3,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(24, 144, 255, 0.3)' },
+              { offset: 1, color: 'rgba(24, 144, 255, 0.05)' }
+            ])
           },
           itemStyle: {
             color: '#1890ff'
@@ -773,22 +846,42 @@ export default {
     
     // 博客访问相关事件处理
     handleVisitTracked(data) {
-      this.$message.success('博客访问已记录')
-      console.log('访问跟踪:', data)
+      // console.log('访问跟踪:', data)
+      
+      // 根据访问类型显示不同提示
+      if (data.visitType === 'internal') {
+        // this.$message.success('已跳转到本地博客页面')
+      } else if (data.visitType === 'external') {
+        // this.$message.success('外部博客网站已在新窗口打开')
+      }
       
       // 可以在这里调用API记录访问统计
       // trackVisit(data)
     },
     
-    handlePreviewOpened(data) {
-      this.$message.info('预览模式已开启')
-      console.log('预览打开:', data)
+    handleVisitCountUpdated(data) {
+      // console.log('访问计数更新:', data)
+      
+      // 更新本地访问统计显示
+      if (this.overview && this.overview.Access) {
+        this.overview.Access.TodayViews = data.todayVisits
+      }
+      
+      // 可以调用API同步到服务器
+      // updateTodayVisitCount(data)
+      
+      // this.$message.success(`今日访问量已更新: ${data.todayVisits}`, 2)
     },
     
     handleQuickVisit(data) {
-      console.log('快速访问:', data)
+      // console.log('快速访问:', data)
       
-      // 可以在这里更新访问统计
+      // 更新快速访问统计
+      if (data.visitType === 'internal') {
+        // this.$message.success(`已通过快捷方式访问${data.link}页面`)
+      }
+      
+      // 可以在这里更新快速访问统计数据
       // updateQuickVisitStats(data)
     }
   }
@@ -797,33 +890,79 @@ export default {
 
 <style lang="less" scoped>
 .statistics-dashboard {
+  position: relative;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(240, 248, 255, 0.1) 100%
+    );
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 0;
+  }
+  
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+  
   .stat-card {
     height: 180px;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     
     &:hover {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-      transform: translateY(-2px);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 16px 40px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.3);
     }
     
     .ant-card-body {
       padding: 24px;
+      background: transparent;
+      border-radius: 16px;
     }
     
     .ant-statistic-title {
       font-size: 15px;
-      color: #666;
-      font-weight: 500;
-      margin-bottom: 8px;
+      color: rgba(0, 0, 0, 0.75);
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }
     
     .ant-statistic-content {
       font-size: 32px;
-      font-weight: bold;
+      font-weight: 800;
       line-height: 1.2;
       font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
     }
     
     .stat-details {
@@ -833,12 +972,20 @@ export default {
       
       .stat-item {
         display: inline-block;
-        margin-right: 16px;
-        color: #999;
-        padding: 4px 8px;
-        background: #f5f5f5;
-        border-radius: 4px;
+        margin-right: 12px;
+        color: rgba(0, 0, 0, 0.65);
+        padding: 6px 12px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 8px;
         font-weight: 500;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.6);
+          transform: translateY(-1px);
+        }
       }
     }
     
@@ -847,146 +994,264 @@ export default {
       font-size: 13px;
       
       .growth-item {
-        color: #52c41a;
-        font-weight: 500;
+        color: rgba(82, 196, 26, 0.9);
+        font-weight: 600;
         display: flex;
         align-items: center;
+        padding: 4px 8px;
+        background: rgba(82, 196, 26, 0.1);
+        border-radius: 6px;
+        border: 1px solid rgba(82, 196, 26, 0.2);
+        backdrop-filter: blur(5px);
         
         .anticon {
           margin-right: 6px;
           font-size: 14px;
+          filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.8));
         }
       }
     }
     
     /* 不同卡片的主题色彩和边框 */
     &.article-card {
-      border-top: 4px solid #1890ff;
+      border-top: 4px solid rgba(24, 144, 255, 0.8);
+      background: linear-gradient(135deg, 
+        rgba(24, 144, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
       
       .ant-statistic-content {
         color: #1890ff;
+        text-shadow: 0 2px 4px rgba(24, 144, 255, 0.2);
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, 
+          rgba(24, 144, 255, 0.15) 0%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        border-top-color: rgba(24, 144, 255, 1);
       }
     }
     
     &.project-card {
-      border-top: 4px solid #52c41a;
+      border-top: 4px solid rgba(82, 196, 26, 0.8);
+      background: linear-gradient(135deg, 
+        rgba(82, 196, 26, 0.08) 0%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
       
       .ant-statistic-content {
         color: #52c41a;
+        text-shadow: 0 2px 4px rgba(82, 196, 26, 0.2);
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, 
+          rgba(82, 196, 26, 0.15) 0%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        border-top-color: rgba(82, 196, 26, 1);
       }
     }
     
     &.tool-card {
-      border-top: 4px solid #fa8c16;
+      border-top: 4px solid rgba(250, 140, 22, 0.8);
+      background: linear-gradient(135deg, 
+        rgba(250, 140, 22, 0.08) 0%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
       
       .ant-statistic-content {
         color: #fa8c16;
+        text-shadow: 0 2px 4px rgba(250, 140, 22, 0.2);
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, 
+          rgba(250, 140, 22, 0.15) 0%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        border-top-color: rgba(250, 140, 22, 1);
       }
     }
     
     &.tech-card {
-      border-top: 4px solid #eb2f96;
+      border-top: 4px solid rgba(235, 47, 150, 0.8);
+      background: linear-gradient(135deg, 
+        rgba(235, 47, 150, 0.08) 0%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
       
       .ant-statistic-content {
         color: #eb2f96;
+        text-shadow: 0 2px 4px rgba(235, 47, 150, 0.2);
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, 
+          rgba(235, 47, 150, 0.15) 0%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        border-top-color: rgba(235, 47, 150, 1);
       }
     }
     
     &.comment-card {
-      border-top: 4px solid #722ed1;
+      border-top: 4px solid rgba(114, 46, 209, 0.8);
+      background: linear-gradient(135deg, 
+        rgba(114, 46, 209, 0.08) 0%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
       
       .ant-statistic-content {
         color: #722ed1;
+        text-shadow: 0 2px 4px rgba(114, 46, 209, 0.2);
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, 
+          rgba(114, 46, 209, 0.15) 0%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        border-top-color: rgba(114, 46, 209, 1);
       }
     }
     
     &.user-card {
-      border-top: 4px solid #13c2c2;
+      border-top: 4px solid rgba(19, 194, 194, 0.8);
+      background: linear-gradient(135deg, 
+        rgba(19, 194, 194, 0.08) 0%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
       
       .ant-statistic-content {
         color: #13c2c2;
+        text-shadow: 0 2px 4px rgba(19, 194, 194, 0.2);
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, 
+          rgba(19, 194, 194, 0.15) 0%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        border-top-color: rgba(19, 194, 194, 1);
       }
     }
     
     &.access-card {
-      border-top: 4px solid #f5222d;
+      border-top: 4px solid rgba(245, 34, 45, 0.8);
+      background: linear-gradient(135deg, 
+        rgba(245, 34, 45, 0.08) 0%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
       
       .ant-statistic-content {
         color: #f5222d;
+        text-shadow: 0 2px 4px rgba(245, 34, 45, 0.2);
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, 
+          rgba(245, 34, 45, 0.15) 0%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        border-top-color: rgba(245, 34, 45, 1);
       }
     }
     
     &.action-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
+      border-top: 4px solid rgba(114, 46, 209, 0.8);
+      background: linear-gradient(135deg, 
+        rgba(114, 46, 209, 0.08) 0%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
       height: 180px;
       
+      .ant-statistic-content {
+        color: #722ed1;
+      }
+      
+      &:hover {
+        background: linear-gradient(135deg, 
+          rgba(114, 46, 209, 0.15) 0%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        border-top-color: rgba(114, 46, 209, 1);
+      }
+      
       .ant-card-body {
-        padding: 24px;
+        padding: 20px;
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
       }
       
       .quick-actions {
         h4 {
-          color: white;
-          font-size: 14px;
+          color: rgba(0, 0, 0, 0.75);
+          font-size: 15px;
           font-weight: 600;
           margin-bottom: 12px;
-          text-align: center;
+          text-align: left;
+          text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
         
         .action-buttons {
           display: flex;
           flex-direction: column;
           gap: 8px;
+          flex: 1;
         }
         
         .action-btn {
           width: 100%;
           height: 32px;
-          border-radius: 6px;
+          border-radius: 8px;
           font-weight: 500;
-          font-size: 11px;
-          transition: all 0.3s ease;
+          font-size: 12px;
+          transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 0 8px;
+          backdrop-filter: blur(10px);
           
           .anticon {
             margin-right: 4px;
             font-size: 12px;
           }
           
-          &:not(.ant-btn-link) {
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+          &.ant-btn-default {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(0, 0, 0, 0.75);
             
             &:hover {
-              background: rgba(255, 255, 255, 0.2);
-              border-color: rgba(255, 255, 255, 0.5);
-              transform: translateY(-1px);
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-            
-            &:active {
-              transform: translateY(0);
+              background: rgba(255, 255, 255, 0.35);
+              border-color: rgba(64, 169, 255, 0.5);
+              color: #40a9ff;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             }
           }
           
           &.ant-btn-primary {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(114, 46, 209, 0.8);
+            border: 1px solid rgba(114, 46, 209, 0.6);
+            color: white;
             
             &:hover {
-              background: rgba(255, 255, 255, 0.3);
-              border-color: rgba(255, 255, 255, 0.6);
+              background: rgba(146, 84, 222, 0.9);
+              border-color: rgba(146, 84, 222, 0.8);
+              color: white;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 12px rgba(114, 46, 209, 0.4);
             }
+          }
+          
+          &:active {
+            transform: translateY(0);
           }
         }
       }
@@ -995,77 +1260,196 @@ export default {
   
   /* 卡片通用样式 */
   .ant-card {
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     
     &:hover {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+      box-shadow: 
+        0 16px 40px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
     }
     
     .ant-card-head {
-      border-bottom: 1px solid #f0f0f0;
-      border-radius: 12px 12px 0 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px 16px 0 0;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
       
       .ant-card-head-title {
         font-size: 18px;
-        font-weight: 600;
-        color: #262626;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.85);
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
       }
       
       .ant-card-extra {
         .ant-select, .ant-input-number {
-          border-radius: 6px;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          backdrop-filter: blur(10px);
           
           &:hover {
-            border-color: #40a9ff;
+            border-color: rgba(64, 169, 255, 0.6);
+            background: rgba(255, 255, 255, 0.3);
           }
         }
       }
     }
     
     .ant-card-body {
-      border-radius: 0 0 12px 12px;
+      border-radius: 0 0 16px 16px;
+      background: transparent;
+    }
+  }
+  
+  /* 趋势图表卡片样式 */
+  .trend-chart-card {
+    height: auto;
+    min-height: 650px; /* 增加高度为图例留空间 */
+    
+    .ant-card-body {
+      padding: 24px;
+      height: calc(100% - 64px); /* 减去header高度 */
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .trend-chart-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0; /* 重要：允许flex子项缩小 */
+    }
+    
+    .trend-chart {
+      width: 100%;
+      flex: 1;
+      min-height: 400px;
+      max-height: 500px;
+      padding: 10px; /* 为图例和标题留出空间 */
+    }
+    
+    .trend-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 400px;
+    }
+    
+    /* 响应式高度调整 */
+    @media (max-width: 1200px) {
+      min-height: 550px; /* 增加高度 */
+      
+      .trend-chart {
+        min-height: 300px;
+        max-height: 400px;
+        padding: 8px;
+      }
+      
+      .trend-empty {
+        min-height: 300px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      min-height: 450px; /* 增加高度 */
+      
+      .trend-chart {
+        min-height: 250px;
+        max-height: 300px;
+        padding: 5px;
+      }
+      
+      .trend-empty {
+        min-height: 250px;
+      }
     }
   }
   
   /* 数据汇总卡片样式 */
   .summary-card {
+    height: auto;
+    min-height: 650px; /* 与趋势图表卡片保持一致 */
+    
+    .ant-card-body {
+      padding: 24px;
+      height: calc(100% - 64px); /* 减去header高度 */
+      display: flex;
+      flex-direction: column;
+    }
+    
     .summary-stats {
       display: flex;
       flex-direction: column;
       gap: 20px;
+      flex: 1;
+      justify-content: space-around;
+    }
+    
+    /* 响应式高度调整 */
+    @media (max-width: 1200px) {
+      min-height: 550px; /* 与趋势图表卡片保持一致 */
+    }
+    
+    @media (max-width: 768px) {
+      min-height: 450px; /* 与趋势图表卡片保持一致 */
     }
     
     .summary-item {
       display: flex;
       align-items: center;
-      padding: 16px;
-      background: linear-gradient(45deg, #fafbff, #f0f8ff);
-      border-radius: 12px;
-      border: 1px solid #e6f4ff;
-      transition: all 0.3s ease;
+      padding: 20px;
+      background: linear-gradient(135deg, 
+        rgba(240, 248, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.2) 100%
+      );
+      border-radius: 16px;
+      border: 1px solid rgba(230, 244, 255, 0.3);
+      backdrop-filter: blur(15px);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       
       &:hover {
-        background: linear-gradient(45deg, #e6f7ff, #bae7ff);
-        border-color: #40a9ff;
-        box-shadow: 0 4px 16px rgba(24, 144, 255, 0.1);
-        transform: translateY(-2px);
+        background: linear-gradient(135deg, 
+          rgba(230, 247, 255, 0.6) 0%,
+          rgba(186, 231, 255, 0.3) 100%
+        );
+        border-color: rgba(64, 169, 255, 0.4);
+        box-shadow: 0 8px 24px rgba(24, 144, 255, 0.15);
+        transform: translateY(-4px) scale(1.02);
       }
       
       .summary-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.8);
-        margin-right: 16px;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        margin-right: 20px;
         flex-shrink: 0;
+        box-shadow: 
+          0 4px 12px rgba(0, 0, 0, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.5);
         
         .anticon {
-          font-size: 24px;
+          font-size: 28px;
+          filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.8));
         }
       }
       
@@ -1073,24 +1457,27 @@ export default {
         flex: 1;
         
         .summary-title {
-          font-size: 14px;
-          color: #666;
-          margin-bottom: 4px;
-          font-weight: 500;
+          font-size: 15px;
+          color: rgba(0, 0, 0, 0.7);
+          margin-bottom: 6px;
+          font-weight: 600;
+          text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
         
         .summary-value {
-          font-size: 24px;
-          font-weight: 700;
-          color: #262626;
+          font-size: 28px;
+          font-weight: 800;
+          color: rgba(0, 0, 0, 0.9);
           margin-bottom: 4px;
           font-family: 'Monaco', 'Menlo', monospace;
+          text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
         }
         
         .summary-desc {
-          font-size: 12px;
-          color: #999;
-          font-weight: 400;
+          font-size: 13px;
+          color: rgba(0, 0, 0, 0.6);
+          font-weight: 500;
         }
       }
     }
@@ -1193,11 +1580,21 @@ export default {
     .statistics-dashboard .ant-col {
       margin-bottom: 16px;
     }
+    
+    .trend-chart-card,
+    .summary-card {
+      min-height: 550px; /* 增加高度为图例留出空间 */
+    }
   }
   
   @media (max-width: 768px) {
     .statistics-dashboard {
       padding: 0 8px;
+    }
+    
+    .trend-chart-card,
+    .summary-card {
+      min-height: 450px; /* 增加高度为图例留出空间 */
     }
     
     .stat-card {
@@ -1251,6 +1648,11 @@ export default {
     #trendChart, #trendModalChart {
       height: 300px !important;
     }
+    
+    .trend-chart {
+      min-height: 250px !important;
+      max-height: 300px !important;
+    }
   }
   
   @media (max-width: 576px) {
@@ -1261,6 +1663,11 @@ export default {
     .ant-card {
       margin-bottom: 12px;
       border-radius: 8px;
+    }
+    
+    .trend-chart-card,
+    .summary-card {
+      min-height: 400px; /* 为小屏幕调整高度 */
     }
     
     .stat-card {
@@ -1289,18 +1696,23 @@ export default {
     #trendChart, #trendModalChart {
       height: 250px !important;
     }
+    
+    .trend-chart {
+      min-height: 200px !important;
+      max-height: 250px !important;
+    }
   }
 }
 
 /* 全局动画效果 */
 .statistics-dashboard {
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
@@ -1314,38 +1726,69 @@ export default {
     opacity: 1;
   }
   50% {
-    transform: scale(1.1);
-    opacity: 0.8;
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.02);
   }
 }
 
 /* 图表动画 */
 #trendChart, #trendModalChart {
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform: scale(1.01);
+    background: rgba(255, 255, 255, 0.1);
   }
 }
 
 /* 滚动条样式优化 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  backdrop-filter: blur(5px);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   
   &:hover {
-    background: #a8a8a8;
+    background: linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
   }
 }
 </style>

@@ -16,5 +16,6 @@ namespace Coldairarrow.IBusiness.Blog_Manage
         Task DeleteDataAsync(List<int> ids);
         Task<List<Blog_Project>> GetFeaturedProjectsAsync(int count = 10);
         Task<List<Blog_Project>> GetLatestProjectsAsync(int count = 10);
+        Task IncrementViewCountAsync(int id);
     }
 }
