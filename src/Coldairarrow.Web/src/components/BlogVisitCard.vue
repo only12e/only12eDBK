@@ -1,5 +1,5 @@
 <template>
-  <a-card class="blog-visit-card" :hoverable="true">
+  <a-card class="blog-visit-card" :hoverable="false">
     <div class="visit-content" :class="{ 'horizontal-layout': isHorizontal }">
       <div class="visit-left-section">
         <div class="visit-header">
@@ -333,7 +333,6 @@ export default {
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: rgba(255, 255, 255, 0.95);
   background-image: url('~@/assets/background.svg');
   background-size: cover;
@@ -341,11 +340,6 @@ export default {
   background-blend-mode: overlay;
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  
-  &:hover {
-    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
-    transform: translateY(-4px) scale(1.02);
-  }
   
   :deep(.ant-card-body) {
     padding: 0;
@@ -403,12 +397,6 @@ export default {
             border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             min-width: 120px;
-            transition: all 0.3s ease;
-            
-            &:hover {
-              background: rgba(255, 255, 255, 0.25);
-              transform: translateY(-2px);
-            }
             
             .anticon {
               font-size: 20px;
@@ -552,12 +540,6 @@ export default {
       border: 1px solid rgba(24, 144, 255, 0.2);
       backdrop-filter: blur(10px);
       flex: 1;
-      transition: all 0.3s ease;
-      
-      &:hover {
-        background: rgba(24, 144, 255, 0.2);
-        transform: translateY(-2px);
-      }
       
       .anticon {
         font-size: 18px;
@@ -647,13 +629,7 @@ export default {
       font-size: 12px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s ease;
       backdrop-filter: blur(10px);
-      
-      &:hover {
-        transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
       
       .anticon {
         margin-right: 4px;

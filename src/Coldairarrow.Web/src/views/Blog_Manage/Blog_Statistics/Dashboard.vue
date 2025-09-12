@@ -184,7 +184,7 @@
           <div class="quick-actions">
             <h4>快速操作</h4>
             <div class="action-buttons">
-              <a-button type="primary" @click="refreshData" :loading="overviewLoading" class="action-btn">
+              <a-button type="default" @click="refreshData" :loading="overviewLoading" class="action-btn">
                 <a-icon type="reload" />
                 刷新数据
               </a-button>
@@ -930,17 +930,6 @@ export default {
       0 8px 32px rgba(0, 0, 0, 0.1),
       0 4px 16px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
-    &:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 
-        0 16px 40px rgba(0, 0, 0, 0.15),
-        0 8px 24px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      background: rgba(255, 255, 255, 0.25);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
     
     .ant-card-body {
       padding: 24px;
@@ -980,12 +969,6 @@ export default {
         font-weight: 500;
         border: 1px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-        
-        &:hover {
-          background: rgba(255, 255, 255, 0.6);
-          transform: translateY(-1px);
-        }
       }
     }
     
@@ -1104,17 +1087,6 @@ export default {
       0 8px 32px rgba(0, 0, 0, 0.1),
       0 4px 16px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
-    &:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 
-        0 16px 40px rgba(0, 0, 0, 0.15),
-        0 8px 24px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      background: rgba(255, 255, 255, 0.25);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
   }
   
   /* 卡片通用样式 */
@@ -1127,16 +1099,6 @@ export default {
     box-shadow: 
       0 8px 32px rgba(0, 0, 0, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 
-        0 16px 40px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.25);
-    }
     
     .ant-card-head {
       border-bottom: 1px solid rgba(255, 255, 255, 0.15);
@@ -1185,17 +1147,6 @@ export default {
       0 8px 32px rgba(0, 0, 0, 0.1),
       0 4px 16px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
-    &:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 
-        0 16px 40px rgba(0, 0, 0, 0.15),
-        0 8px 24px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      background: rgba(255, 255, 255, 0.25);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
     
     .ant-card-body {
       padding: 24px;
@@ -1272,17 +1223,6 @@ export default {
       0 8px 32px rgba(0, 0, 0, 0.1),
       0 4px 16px rgba(0, 0, 0, 0.06),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
-    &:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 
-        0 16px 40px rgba(0, 0, 0, 0.15),
-        0 8px 24px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      background: rgba(255, 255, 255, 0.25);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
     
     .ant-card-body {
       padding: 24px;
@@ -1320,17 +1260,6 @@ export default {
       border-radius: 16px;
       border: 1px solid rgba(230, 244, 255, 0.3);
       backdrop-filter: blur(15px);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(230, 247, 255, 0.6) 0%,
-          rgba(186, 231, 255, 0.3) 100%
-        );
-        border-color: rgba(64, 169, 255, 0.4);
-        box-shadow: 0 8px 24px rgba(24, 144, 255, 0.15);
-        transform: translateY(-4px) scale(1.02);
-      }
       
       .summary-icon {
         display: flex;
@@ -1390,13 +1319,6 @@ export default {
     border-radius: 8px;
     margin-bottom: 8px;
     background: #fafafa;
-    transition: all 0.3s ease;
-    
-    &:hover {
-      background: #f0f8ff;
-      box-shadow: 0 2px 8px rgba(24, 144, 255, 0.1);
-      transform: translateX(4px);
-    }
   }
   
   /* 空状态样式 */
@@ -1442,10 +1364,6 @@ export default {
         padding: 12px 20px;
         font-weight: 500;
         border-radius: 6px 6px 0 0;
-        
-        &:hover {
-          color: #40a9ff;
-        }
         
         &.ant-tabs-tab-active {
           background: linear-gradient(45deg, #e6f7ff, #bae7ff);
