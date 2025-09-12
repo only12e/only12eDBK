@@ -109,17 +109,17 @@ import EditForm from './EditForm'
 
 const columns = [
   {
-    title: '封面',
-    dataIndex: 'CoverImage',
-    scopedSlots: { customRender: 'cover' },
-    width: 80,
-    fixed: 'left'
-  },
-  {
     title: '图标',
     dataIndex: 'IconUrl',
     scopedSlots: { customRender: 'icon' },
     width: 60,
+    fixed: 'left'
+  },
+  {
+    title: '封面',
+    dataIndex: 'CoverImage',
+    scopedSlots: { customRender: 'cover' },
+    width: 80,
     fixed: 'left'
   },
   {

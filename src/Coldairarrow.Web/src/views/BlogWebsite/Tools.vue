@@ -178,11 +178,15 @@
               v-for="tool in tools" 
               :key="tool.Id"
               class="tool-card glass-card"
+              :style="tool.CoverImage ? { backgroundImage: `url(${tool.CoverImage})` } : {}"
               @click="goToTool(tool.Id)"
             >
-              <!-- 工具图标 -->
+              <!-- 浅色遮罩层 -->
+              <div v-if="tool.CoverImage" class="card-overlay"></div>
+              
+              <!-- 工具Logo图标 -->
               <div class="tool-icon">
-                <img v-if="tool.IconUrl" :src="tool.IconUrl" :alt="tool.Name" />
+                <img v-if="tool.IconUrl" :src="tool.IconUrl" :alt="tool.Name" class="logo-image" />
                 <div v-else class="default-icon">
                   <a-icon type="tool" />
                 </div>
@@ -662,7 +666,7 @@ export default {
         
         .logo-icon {
           font-size: 24px;
-          color: white;
+          color: #1890ff;
         }
       }
       
@@ -867,16 +871,74 @@ export default {
         padding: 24px;
         cursor: pointer;
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 280px;
+        
+        // 添加浅色遮罩层
+        .card-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(255, 255, 255, 0.6);
+          backdrop-filter: blur(4px);
+          z-index: 1;
+        }
+        
+        // 确保内容在遮罩层上方
+        > * {
+          position: relative;
+          z-index: 2;
+        }
         
         &:hover {
           transform: translateY(-4px);
           box-shadow: 0 16px 64px rgba(102, 126, 234, 0.15);
+          
+          .card-overlay {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(3px);
+          }
         }
         
         .tool-icon {
           width: 64px;
           height: 64px;
           margin-bottom: 16px;
+          
+          .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+          
+          .cover-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+          }
+          
+          .icon-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+          }
           
           img {
             width: 100%;

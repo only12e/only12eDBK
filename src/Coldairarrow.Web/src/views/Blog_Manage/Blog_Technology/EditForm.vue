@@ -53,13 +53,6 @@
                   设为精选技术栈
                 </a-checkbox>
               </a-form-model-item>
-
-              <a-form-model-item label="技术Logo" :labelCol="{ span: 8 }" :wrapperCol="{ span: 16 }">
-                <c-upload-img v-model="entity.LogoUrl" :maxCount="1"></c-upload-img>
-                <div style="margin-top: 4px; font-size: 12px; color: #999;">
-                  建议上传32x32或更大的正方形图片
-                </div>
-              </a-form-model-item>
             </a-card>
           </a-col>
         </a-row>
@@ -70,7 +63,6 @@
 
 <script>
 import { GetTheData, SaveData } from '@/api/blog_technology'
-import CUploadImg from '@/components/CUploadImg/CUploadImg'
 import TokenCache from '@/utils/cache/TokenCache'
 
 // 引入wangEditor
@@ -78,7 +70,6 @@ import E from 'wangeditor'
 
 export default {
   components: {
-    CUploadImg
   },
   props: {
     afterSubmit: {
@@ -137,7 +128,6 @@ export default {
         Name: '',
         Description: '',
         Content: '',
-        LogoUrl: '',
         Category: 'frontend'
       }
     },

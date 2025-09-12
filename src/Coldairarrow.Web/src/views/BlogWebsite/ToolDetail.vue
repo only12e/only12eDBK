@@ -608,7 +608,7 @@ export default {
         
         .logo-icon {
           font-size: 24px;
-          color: white;
+          color: #1890ff;
         }
       }
       

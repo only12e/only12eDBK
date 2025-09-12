@@ -34,15 +34,6 @@
       </a-form-model-item>
 
       <a-form-model-item
-        label="Logo图片"
-        prop="LogoUrl">
-        <c-upload-file v-model="form.LogoUrl" :listType="'picture'"></c-upload-file>
-        <div class="ant-form-explain">
-          建议尺寸：200x200像素，支持png、jpg、gif格式
-        </div>
-      </a-form-model-item>
-
-      <a-form-model-item
         label="链接描述"
         prop="Description">
         <a-textarea
@@ -87,11 +78,9 @@
 
 <script>
 import { SaveData, GetTheData, NameExists, UrlExists } from '@/api/blog_friendlylink'
-import CUploadFile from '@/components/CUploadFile/CUploadFile'
 
 export default {
   components: {
-    CUploadFile
   },
   props: {
     afterSubmit: Function
@@ -120,9 +109,6 @@ export default {
             validator: this.validateUrl,
             trigger: 'blur'
           }
-        ],
-        LogoUrl: [
-          { max: 255, message: 'Logo图片URL长度不能超过255个字符', trigger: 'blur' }
         ],
         Description: [
           { max: 500, message: '链接描述长度不能超过500个字符', trigger: 'blur' }

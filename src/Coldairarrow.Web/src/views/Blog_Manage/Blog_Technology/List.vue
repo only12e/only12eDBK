@@ -2,8 +2,8 @@
   <a-card :bordered="false">
     <div class="table-operator">
       <a-button v-if="hasPerm('Blog_Technology.Add')" type="primary" icon="plus" @click="handleAdd()">新建技术栈</a-button>
-      <a-button v-if="hasPerm('Blog_Technology.Delete')" type="primary" icon="minus" @click="handleDelete(selectedRowKeys)"
-        :disabled="!hasSelected()" :loading="loading">删除</a-button>
+      <a-button v-if="hasPerm('Blog_Technology.Delete')" type="primary" icon="minus"
+        @click="handleDelete(selectedRowKeys)" :disabled="!hasSelected()" :loading="loading">删除</a-button>
       <a-dropdown v-if="hasSelected()">
         <a-menu slot="overlay" @click="handleBatchAction">
           <a-menu-item key="featured">批量设为精选</a-menu-item>
@@ -20,8 +20,7 @@
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
             <a-form-item label="关键字">
-              <a-input v-model="queryParam.keyword" placeholder="技术名称、描述" 
-                       @pressEnter="handleSearch" allowClear />
+              <a-input v-model="queryParam.keyword" placeholder="技术名称、描述" @pressEnter="handleSearch" allowClear />
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="24">
@@ -43,8 +42,8 @@
           </a-col>
           <a-col :md="4" :sm="24">
             <a-form-item label="最低熟练度">
-              <a-input-number v-model="queryParam.minProficiencyLevel" placeholder="0-100" 
-                              :min="0" :max="100" style="width: 100%" />
+              <a-input-number v-model="queryParam.minProficiencyLevel" placeholder="0-100" :min="0" :max="100"
+                style="width: 100%" />
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="24">
@@ -58,10 +57,6 @@
     <a-table ref="table" :columns="columns" :rowKey="row => row.Id" :dataSource="data" :pagination="pagination"
       :loading="loading" @change="handleTableChange" :scroll="{ x: 1400, y: 600 }"
       :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :bordered="true" size="middle">
-      <span slot="logo" slot-scope="text">
-        <img v-if="text" :src="text" style="width: 32px; height: 32px; object-fit: cover; border-radius: 4px;" />
-        <span v-else>-</span>
-      </span>
       <span slot="category" slot-scope="text">
         <a-tag :color="getCategoryColor(text)">{{ getCategoryName(text) }}</a-tag>
       </span>
@@ -102,13 +97,6 @@ import { GetDataList, DeleteData, GetCategories } from '@/api/blog_technology'
 import EditForm from './EditForm'
 
 const columns = [
-  {
-    title: 'Logo',
-    dataIndex: 'LogoUrl',
-    scopedSlots: { customRender: 'logo' },
-    width: 80,
-    fixed: 'left'
-  },
   {
     title: '技术名称',
     dataIndex: 'Name',

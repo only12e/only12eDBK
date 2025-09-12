@@ -51,15 +51,6 @@
       :loading="loading" @change="handleTableChange" :scroll="{ x: 800, y: 600 }"
       :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :bordered="true" size="middle">
       
-      <span slot="logo" slot-scope="text, record">
-        <img v-if="text" 
-             :src="text" 
-             :key="record.Id + '-' + text"
-             style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" 
-             @error="handleImageError" />
-        <span v-else>-</span>
-      </span>
-
       <span slot="url" slot-scope="text">
         <a :href="text" target="_blank" style="color: #1890ff;">
           <span style="max-width: 200px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ text }}</span>
@@ -110,13 +101,6 @@ import { GetDataList, DeleteData, BatchUpdateStatus, UpdateSortOrder, ToggleStat
 import EditForm from './EditForm'
 
 const columns = [
-  {
-    title: 'Logo',
-    dataIndex: 'LogoUrl',
-    scopedSlots: { customRender: 'logo' },
-    width: 80,
-    fixed: 'left'
-  },
   {
     title: '链接名称',
     dataIndex: 'Name',
@@ -357,13 +341,6 @@ export default {
       this.queryParam = {}
       this.pagination.current = 1
       this.getDataList()
-    },
-    handleImageError(event) {
-      // 图片加载失败时的处理
-      console.warn('图片加载失败:', event.target.src)
-      event.target.style.display = 'none'
-      // 可以设置一个默认图片
-      // event.target.src = '/default-logo.png'
     }
   }
 }

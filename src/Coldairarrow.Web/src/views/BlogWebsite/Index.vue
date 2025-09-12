@@ -94,12 +94,12 @@
             </div>
             
             <div class="hero-actions">
-              <button class="primary-btn">
+              <button class="primary-btn" @click="scrollToFeaturedContent">
                 <a-icon type="compass" />
                 <span>开始探索</span>
                 <div class="btn-bg"></div>
               </button>
-              <button class="secondary-btn">
+              <button class="secondary-btn" @click="scrollToAboutSection">
                 <a-icon type="message" />
                 <span>与我交流</span>
                 <div class="btn-bg"></div>
@@ -126,7 +126,7 @@
       </section>
 
       <!-- 特色内容展示 -->
-      <section class="features-section">
+      <section class="features-section" id="featured-content">
         <div class="section-header">
           <h2 class="section-title">精选内容</h2>
           <p class="section-subtitle">发现更多精彩内容</p>
@@ -177,7 +177,7 @@
       </section>
 
       <!-- 关于区域 -->
-      <section class="about-section">
+      <section class="about-section" id="about-section">
         <div class="about-content">
           <div class="about-text">
             <div class="about-badge glass-card">
@@ -361,6 +361,28 @@ export default {
       this.$message.success('正在跳转到管理后台...')
     },
     
+    // 滚动到精选内容区域
+    scrollToFeaturedContent() {
+      const featuredContentEl = document.getElementById('featured-content')
+      if (featuredContentEl) {
+        featuredContentEl.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        })
+      }
+    },
+    
+    // 滚动到关于我区域
+    scrollToAboutSection() {
+      const aboutSectionEl = document.getElementById('about-section')
+      if (aboutSectionEl) {
+        aboutSectionEl.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        })
+      }
+    },
+    
     // 处理导航点击
     handleNavClick(item) {
       this.activeNav = item.key
@@ -381,12 +403,15 @@ export default {
       if (index === 0) {
         // 技术文章
         this.$router.push('/blog-website/articles')
+        this.$message.success('正在跳转到技术文章页面...')
       } else if (index === 1) {
         // 项目展示
-        this.$message.info('项目展示功能即将上线，敬请期待！')
+        this.$router.push('/blog-website/projects')
+        this.$message.success('正在跳转到项目展示页面...')
       } else if (index === 2) {
         // 工具推荐
-        this.$message.info('工具推荐功能即将上线，敬请期待！')
+        this.$router.push('/blog-website/tools')
+        this.$message.success('正在跳转到工具推荐页面...')
       }
     },
     

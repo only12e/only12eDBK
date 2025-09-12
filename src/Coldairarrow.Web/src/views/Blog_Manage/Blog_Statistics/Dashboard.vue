@@ -1012,173 +1012,8 @@ export default {
       }
     }
     
-    /* 不同卡片的主题色彩和边框 */
-    &.article-card {
-      border-top: 4px solid rgba(24, 144, 255, 0.8);
-      background: linear-gradient(135deg, 
-        rgba(24, 144, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.15) 100%
-      );
-      
-      .ant-statistic-content {
-        color: #1890ff;
-        text-shadow: 0 2px 4px rgba(24, 144, 255, 0.2);
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(24, 144, 255, 0.15) 0%,
-          rgba(255, 255, 255, 0.25) 100%
-        );
-        border-top-color: rgba(24, 144, 255, 1);
-      }
-    }
-    
-    &.project-card {
-      border-top: 4px solid rgba(82, 196, 26, 0.8);
-      background: linear-gradient(135deg, 
-        rgba(82, 196, 26, 0.08) 0%,
-        rgba(255, 255, 255, 0.15) 100%
-      );
-      
-      .ant-statistic-content {
-        color: #52c41a;
-        text-shadow: 0 2px 4px rgba(82, 196, 26, 0.2);
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(82, 196, 26, 0.15) 0%,
-          rgba(255, 255, 255, 0.25) 100%
-        );
-        border-top-color: rgba(82, 196, 26, 1);
-      }
-    }
-    
-    &.tool-card {
-      border-top: 4px solid rgba(250, 140, 22, 0.8);
-      background: linear-gradient(135deg, 
-        rgba(250, 140, 22, 0.08) 0%,
-        rgba(255, 255, 255, 0.15) 100%
-      );
-      
-      .ant-statistic-content {
-        color: #fa8c16;
-        text-shadow: 0 2px 4px rgba(250, 140, 22, 0.2);
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(250, 140, 22, 0.15) 0%,
-          rgba(255, 255, 255, 0.25) 100%
-        );
-        border-top-color: rgba(250, 140, 22, 1);
-      }
-    }
-    
-    &.tech-card {
-      border-top: 4px solid rgba(235, 47, 150, 0.8);
-      background: linear-gradient(135deg, 
-        rgba(235, 47, 150, 0.08) 0%,
-        rgba(255, 255, 255, 0.15) 100%
-      );
-      
-      .ant-statistic-content {
-        color: #eb2f96;
-        text-shadow: 0 2px 4px rgba(235, 47, 150, 0.2);
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(235, 47, 150, 0.15) 0%,
-          rgba(255, 255, 255, 0.25) 100%
-        );
-        border-top-color: rgba(235, 47, 150, 1);
-      }
-    }
-    
-    &.comment-card {
-      border-top: 4px solid rgba(114, 46, 209, 0.8);
-      background: linear-gradient(135deg, 
-        rgba(114, 46, 209, 0.08) 0%,
-        rgba(255, 255, 255, 0.15) 100%
-      );
-      
-      .ant-statistic-content {
-        color: #722ed1;
-        text-shadow: 0 2px 4px rgba(114, 46, 209, 0.2);
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(114, 46, 209, 0.15) 0%,
-          rgba(255, 255, 255, 0.25) 100%
-        );
-        border-top-color: rgba(114, 46, 209, 1);
-      }
-    }
-    
-    &.user-card {
-      border-top: 4px solid rgba(19, 194, 194, 0.8);
-      background: linear-gradient(135deg, 
-        rgba(19, 194, 194, 0.08) 0%,
-        rgba(255, 255, 255, 0.15) 100%
-      );
-      
-      .ant-statistic-content {
-        color: #13c2c2;
-        text-shadow: 0 2px 4px rgba(19, 194, 194, 0.2);
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(19, 194, 194, 0.15) 0%,
-          rgba(255, 255, 255, 0.25) 100%
-        );
-        border-top-color: rgba(19, 194, 194, 1);
-      }
-    }
-    
-    &.access-card {
-      border-top: 4px solid rgba(245, 34, 45, 0.8);
-      background: linear-gradient(135deg, 
-        rgba(245, 34, 45, 0.08) 0%,
-        rgba(255, 255, 255, 0.15) 100%
-      );
-      
-      .ant-statistic-content {
-        color: #f5222d;
-        text-shadow: 0 2px 4px rgba(245, 34, 45, 0.2);
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(245, 34, 45, 0.15) 0%,
-          rgba(255, 255, 255, 0.25) 100%
-        );
-        border-top-color: rgba(245, 34, 45, 1);
-      }
-    }
-    
     &.action-card {
-      border-top: 4px solid rgba(114, 46, 209, 0.8);
-      background: linear-gradient(135deg, 
-        rgba(114, 46, 209, 0.08) 0%,
-        rgba(255, 255, 255, 0.15) 100%
-      );
       height: 180px;
-      
-      .ant-statistic-content {
-        color: #722ed1;
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, 
-          rgba(114, 46, 209, 0.15) 0%,
-          rgba(255, 255, 255, 0.25) 100%
-        );
-        border-top-color: rgba(114, 46, 209, 1);
-      }
       
       .ant-card-body {
         padding: 20px;
@@ -1258,6 +1093,30 @@ export default {
     }
   }
   
+  /* 水平博客卡片样式 */
+  .horizontal-blog-card {
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 16px 40px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+  
   /* 卡片通用样式 */
   .ant-card {
     border-radius: 16px;
@@ -1317,12 +1176,33 @@ export default {
   .trend-chart-card {
     height: auto;
     min-height: 650px; /* 增加高度为图例留空间 */
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 16px 40px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
     
     .ant-card-body {
       padding: 24px;
       height: calc(100% - 64px); /* 减去header高度 */
       display: flex;
       flex-direction: column;
+      background: transparent;
     }
     
     .trend-chart-container {
@@ -1383,12 +1263,33 @@ export default {
   .summary-card {
     height: auto;
     min-height: 650px; /* 与趋势图表卡片保持一致 */
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 16px 40px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
     
     .ant-card-body {
       padding: 24px;
       height: calc(100% - 64px); /* 减去header高度 */
       display: flex;
       flex-direction: column;
+      background: transparent;
     }
     
     .summary-stats {
