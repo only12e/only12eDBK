@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/Coldairarrow.Api/*.csproj",
+      "use": "@vercel/dotnet"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "src/Coldairarrow.Api/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "src/Coldairarrow.Api/$1"
+    }
+  ],
+  "env": {
+    "ASPNETCORE_ENVIRONMENT": "Production"
+  }
+}
