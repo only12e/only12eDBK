@@ -49,7 +49,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         [HttpPost]
         public async Task<Blog_Project> GetTheData(IdInputDTO input)
         {
-            return await _projectBus.GetTheDataAsync(input.id.ToInt());
+            return await _projectBus.GetTheDataAsync(input.id.ToLong());
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task DeleteData(List<int> ids)
+        public async Task DeleteData(List<long> ids)
         {
             await _projectBus.DeleteDataAsync(ids);
         }
@@ -101,6 +101,30 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         public async Task<List<Blog_Project>> GetLatestProjects(int count = 10)
         {
             return await _projectBus.GetLatestProjectsAsync(count);
+        }
+
+        /// <summary>
+        /// 点赞项目（公共接口）
+        /// </summary>
+        /// <param name="projectId">项目ID</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<AjaxResult> LikeProject(long projectId)
+        {
+            await _projectBus.LikeProjectAsync(projectId);
+            return Success();
+        }
+
+        /// <summary>
+        /// 增加项目访问量（公共接口）
+        /// </summary>
+        /// <param name="projectId">项目ID</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<AjaxResult> IncrementViewCount(long projectId)
+        {
+            await _projectBus.IncrementViewCountAsync(projectId);
+            return Success();
         }
 
         #endregion

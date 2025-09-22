@@ -71,7 +71,7 @@ namespace Coldairarrow.Business.Blog_Manage
             return await q.GetPageResultAsync(input);
         }
 
-        public async Task<Blog_Project> GetTheDataAsync(int id)
+        public async Task<Blog_Project> GetTheDataAsync(long id)
         {
             return await GetIQueryable()
                 .Where(x => x.Id == id)
@@ -128,17 +128,17 @@ namespace Coldairarrow.Business.Blog_Manage
             await UpdateAsync(project);
         }
 
-        [DataDeleteLog(UserLogType.博客管理, "Name", "项目")]  
+        [DataDeleteLog(UserLogType.博客管理, "Name", "项目")]
         public async Task DeleteDataAsync(List<string> ids)
         {
             await DeleteAsync(ids);
         }
 
-        // 为前端提供的int类型ID删除方法
-        public async Task DeleteDataAsync(List<int> ids)
+        // 为前端提供的long类型ID删除方法
+        public async Task DeleteDataAsync(List<long> ids)
         {
             var stringIds = ids.Select(x => x.ToString()).ToList();
-            await DeleteDataAsync(stringIds);
+            await DeleteAsync(stringIds);
         }
 
         public async Task<List<Blog_Project>> GetFeaturedProjectsAsync(int count = 10)
@@ -160,12 +160,23 @@ namespace Coldairarrow.Business.Blog_Manage
                 .ToListAsync();
         }
 
-        public async Task IncrementViewCountAsync(int id)
+        public async Task IncrementViewCountAsync(long id)
         {
             var project = await GetEntityAsync(id);
             if (project != null)
             {
                 project.ViewCount++;
+                project.UpdatedAt = DateTime.Now;
+                await UpdateAsync(project);
+            }
+        }
+
+        public async Task LikeProjectAsync(long id)
+        {
+            var project = await GetEntityAsync(id);
+            if (project != null)
+            {
+                project.LikeCount++;
                 project.UpdatedAt = DateTime.Now;
                 await UpdateAsync(project);
             }

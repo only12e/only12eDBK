@@ -36,13 +36,6 @@
             返回列表
           </a-button>
         </div>
-        
-        <div class="header-actions">
-          <a-button type="primary" @click="goToAdmin" class="admin-btn glass-btn">
-            <a-icon type="setting" />
-            <span>管理后台</span>
-          </a-button>
-        </div>
       </div>
     </header>
 
@@ -292,7 +285,6 @@ export default {
   },
   
   async mounted() {
-    this.initMouseEffect()
     this.initScrollListener()
     await this.loadTool()
   },
@@ -420,10 +412,6 @@ export default {
       this.$router.push('/blog-website/tools')
     },
     
-    goToAdmin() {
-      this.$router.push('/')
-      this.$message.success('正在跳转到管理后台...')
-    },
     
     goToTool(toolId) {
       this.$router.push(`/blog-website/tools/${toolId}`)
@@ -454,22 +442,7 @@ export default {
       }
     },
     
-    // 鼠标交互效果
-    initMouseEffect() {
-      document.addEventListener('mousemove', (e) => {
-        const particles = document.querySelectorAll('.particle')
-        const x = e.clientX / window.innerWidth
-        const y = e.clientY / window.innerHeight
-        
-        particles.forEach((particle, index) => {
-          const speed = (index + 1) * 0.2
-          const xOffset = (x - 0.5) * speed * 8
-          const yOffset = (y - 0.5) * speed * 8
-          
-          particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`
-        })
-      })
-    }
+    // 鼠标交互效果已移除，保留粒子自然动画
   }
 }
 </script>
@@ -837,21 +810,38 @@ export default {
               }
             }
             
+            &.secondary,
+            &.share {
+              min-width: 140px;
+              height: 48px;
+              justify-content: center;
+
+              span {
+                font-size: 16px;
+                font-weight: 500;
+                white-space: nowrap;
+              }
+
+              .anticon {
+                font-size: 16px;
+              }
+            }
+
             &.secondary {
               background: rgba(52, 199, 89, 0.1);
               color: #34c759;
-              
+
               &:hover {
                 background: rgba(52, 199, 89, 0.2);
                 transform: translateY(-2px);
                 color: #34c759;
               }
             }
-            
+
             &.share {
               background: rgba(0, 0, 0, 0.05);
               color: var(--text-primary);
-              
+
               &:hover {
                 background: rgba(0, 0, 0, 0.1);
                 transform: translateY(-2px);

@@ -60,12 +60,6 @@ namespace Coldairarrow.IBusiness.Blog_Manage
         Task<CommentStatistics> GetCommentStatisticsAsync();
 
         /// <summary>
-        /// 获取用户统计详情
-        /// </summary>
-        /// <returns></returns>
-        Task<UserStatistics> GetUserStatisticsAsync();
-
-        /// <summary>
         /// 获取访问统计详情
         /// </summary>
         /// <returns></returns>

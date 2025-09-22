@@ -14,7 +14,7 @@ namespace Coldairarrow.Entity.Blog_Manage
         /// 项目ID，主键
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 项目名称

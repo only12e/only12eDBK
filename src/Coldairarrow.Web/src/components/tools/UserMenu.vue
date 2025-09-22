@@ -68,6 +68,10 @@ export default {
     },
     handleChangePwd() {
       this.$refs.changePwd.open()
+    },
+    handleVisitBlog() {
+      // 在新标签页中打开博客前端
+      window.open('/blog-website', '_blank')
     }
   }
 }

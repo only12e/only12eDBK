@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Coldairarrow.Entity.Base_Manage;
 
 namespace Coldairarrow.Entity.Blog_Manage
 {
@@ -14,7 +15,7 @@ namespace Coldairarrow.Entity.Blog_Manage
         /// 文章ID，主键
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 文章标题
@@ -51,7 +52,7 @@ namespace Coldairarrow.Entity.Blog_Manage
         /// 作者ID，关联users表
         /// </summary>
         [Column("author_id")]
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; }
 
         /// <summary>
         /// 文章状态：draft草稿/published已发布/hidden隐藏
@@ -111,6 +112,7 @@ namespace Coldairarrow.Entity.Blog_Manage
         /// 作者信息
         /// </summary>
         [ForeignKey("AuthorId")]
-        public virtual Blog_User Author { get; set; }
+        public virtual Base_User Author { get; set; }
+
     }
 }

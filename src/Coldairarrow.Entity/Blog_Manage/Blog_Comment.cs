@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Coldairarrow.Entity.Base_Manage;
 
 namespace Coldairarrow.Entity.Blog_Manage
 {
@@ -14,7 +15,7 @@ namespace Coldairarrow.Entity.Blog_Manage
         /// 评论ID，主键
         /// </summary>
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 评论内容
@@ -26,7 +27,7 @@ namespace Coldairarrow.Entity.Blog_Manage
         /// 评论用户ID
         /// </summary>
         [Column("user_id")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// 评论目标类型：article文章/project项目/tool工具/technology技术栈
@@ -39,13 +40,13 @@ namespace Coldairarrow.Entity.Blog_Manage
         /// 评论目标ID
         /// </summary>
         [Column("target_id")]
-        public int TargetId { get; set; }
+        public long TargetId { get; set; }
 
         /// <summary>
         /// 父评论ID，用于回复功能
         /// </summary>
         [Column("parent_id")]
-        public int? ParentId { get; set; }
+        public long? ParentId { get; set; }
 
         /// <summary>
         /// 评论点赞数
@@ -91,15 +92,15 @@ namespace Coldairarrow.Entity.Blog_Manage
 
         // 导航属性
         /// <summary>
-        /// 评论用户信息
-        /// </summary>
-        [ForeignKey("UserId")]
-        public virtual Blog_User User { get; set; }
-
-        /// <summary>
         /// 父评论信息
         /// </summary>
         [ForeignKey("ParentId")]
         public virtual Blog_Comment ParentComment { get; set; }
+
+        /// <summary>
+        /// 用户信息
+        /// </summary>
+        [ForeignKey("UserId")]
+        public virtual Base_User User { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// 文章ID
         /// </summary>
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// 文章标题
@@ -99,7 +99,7 @@ namespace Coldairarrow.Entity.DTO
         /// 文章ID列表
         /// </summary>
         [Required(ErrorMessage = "文章ID不能为空")]
-        public List<int> Ids { get; set; }
+        public List<long> Ids { get; set; }
 
         /// <summary>
         /// 发布状态：published发布/draft草稿/hidden隐藏
@@ -116,7 +116,7 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// 项目ID
         /// </summary>
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// 项目名称
@@ -220,7 +220,7 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// 工具ID
         /// </summary>
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// 工具名称
@@ -327,9 +327,9 @@ namespace Coldairarrow.Entity.DTO
     public class BlogTechnologyInputDTO
     {
         /// <summary>
-        /// 技术栈ID
+        /// 技术ID
         /// </summary>
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// 技术名称
@@ -428,7 +428,7 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// 评论ID
         /// </summary>
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// 评论内容
@@ -439,7 +439,7 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// 评论用户ID
         /// </summary>
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// 评论目标类型：article文章/project项目/tool工具/technology技术栈
@@ -450,12 +450,12 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// 评论目标ID
         /// </summary>
-        public int TargetId { get; set; }
+        public long TargetId { get; set; }
 
         /// <summary>
         /// 父评论ID，用于回复功能
         /// </summary>
-        public int? ParentId { get; set; }
+        public long? ParentId { get; set; }
 
         /// <summary>
         /// 审核状态
@@ -491,7 +491,7 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// 评论目标ID
         /// </summary>
-        public int? TargetId { get; set; }
+        public long? TargetId { get; set; }
 
         /// <summary>
         /// 审核状态
@@ -501,7 +501,7 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// 评论用户ID
         /// </summary>
-        public int? UserId { get; set; }
+        public long? UserId { get; set; }
 
         /// <summary>
         /// 是否只查询顶级评论（非回复）
@@ -528,7 +528,7 @@ namespace Coldairarrow.Entity.DTO
         /// 评论ID列表
         /// </summary>
         [Required(ErrorMessage = "评论ID不能为空")]
-        public List<int> Ids { get; set; }
+        public List<long> Ids { get; set; }
 
         /// <summary>
         /// 操作类型：approve通过/reject拒绝
@@ -592,6 +592,11 @@ namespace Coldairarrow.Entity.DTO
         /// 创建时间
         /// </summary>
         public DateTime? CreatedAt { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime? UpdatedAt { get; set; }
 
         /// <summary>
         /// 名字（用于注册时的显示名称，会与姓氏组合存储到 Nickname 字段）
@@ -785,11 +790,6 @@ namespace Coldairarrow.Entity.DTO
         /// 评论统计
         /// </summary>
         public CommentStatistics Comments { get; set; }
-
-        /// <summary>
-        /// 用户统计
-        /// </summary>
-        public UserStatistics Users { get; set; }
 
         /// <summary>
         /// 访问统计
@@ -1203,7 +1203,7 @@ namespace Coldairarrow.Entity.DTO
         /// <summary>
         /// ID
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 标题/名称

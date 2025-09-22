@@ -14,38 +14,49 @@ const whiteList = ['Login'] // no redirect whitelist
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
-  // 已授权
+
+  // 如果访问的是登录页面，直接放行
+  if (to.path === '/Home/Login') {
+    next()
+    return
+  }
+
+  // 博客页面路由（直接放行，不需要认证）
+  if (to.path.startsWith('/blog-website') || to.path.startsWith('/blog-admin-bridge')) {
+    next()
+    return
+  }
+
+  // 管理端路由认证检查
   if (TokenCache.getToken()) {
     OperatorCache.init(() => {
-      if (to.path === '/Home/Login') {
-        next({ path: '/' })
-        NProgress.done()
-      } else {
-        initRouter(to, from, next).then(() => {
-          const redirect = decodeURIComponent(from.query.redirect || to.path)
-          //桌面特殊处理
-          if (to.path == defaultSettings.desktopPath || to.path == '/404') {
+      initRouter(to, from, next).then(() => {
+        const redirect = decodeURIComponent(from.query.redirect || to.path)
+        //桌面特殊处理
+        if (to.path == defaultSettings.desktopPath || to.path == '/404') {
+          next()
+        } else {
+          if (to.path === redirect) {
             next()
           } else {
-            if (to.path === redirect) {
-              next()
-            } else {
-              // 跳转到目的路由
-              next({ path: redirect })
-            }
+            // 跳转到目的路由
+            next({ path: redirect })
           }
-        })
-      }
+        }
+      })
     })
-  } else {
-    if (whiteList.includes(to.name)) {
-      // 在免登录白名单，直接进入
-      next()
-    } else {
-      next({ path: '/Home/Login', query: { redirect: to.fullPath } })
-      NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
-    }
+    return
   }
+
+  // 白名单检查
+  if (whiteList.includes(to.name)) {
+    next()
+    return
+  }
+
+  // 默认跳转到管理系统登录页面
+  next({ path: '/Home/Login', query: { redirect: to.fullPath } })
+  NProgress.done()
 })
 
 router.afterEach(() => {

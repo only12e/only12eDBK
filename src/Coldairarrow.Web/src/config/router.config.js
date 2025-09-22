@@ -8,7 +8,7 @@ import { UserLayout, PageView, BlankLayout } from '@/layouts'
 export const constantRouterMap = [
   {
     path: '/',
-    redirect: process.env.VUE_APP_DesktopPath || '/welcome',
+    redirect: '/Home/Login',
     hidden: true
   },
   {
@@ -39,6 +39,12 @@ export const constantRouterMap = [
   {
     path: '/404',
     component: () => import('@/views/exception/404')
+  },
+  {
+    path: '/blog-admin-bridge',
+    name: 'BlogAdminBridge',
+    component: () => import('@/views/BlogWebsite/AdminBridge'),
+    hidden: true
   },
   {
     path: '/blog-website',
@@ -80,6 +86,12 @@ export const constantRouterMap = [
     path: '/blog-website/tools/:id',
     name: 'BlogToolDetail',
     component: () => import('@/views/BlogWebsite/ToolDetail'),
+    hidden: true
+  },
+  {
+    path: '/blog-website/profile',
+    name: 'BlogUserProfile',
+    component: () => import('@/views/BlogWebsite/UserProfile'),
     hidden: true
   }
 ]

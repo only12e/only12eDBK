@@ -28,13 +28,6 @@
             </div>
           </div>
         </div>
-
-        <div class="header-actions">
-          <a-button type="primary" @click="goToAdmin" class="admin-btn glass-btn">
-            <a-icon type="setting" />
-            <span>管理后台</span>
-          </a-button>
-        </div>
       </div>
     </header>
 
@@ -237,7 +230,6 @@
 
         <div class="footer-links">
           <a href="javascript:void(0)" class="footer-link" @click="goHome">返回首页</a>
-          <a href="javascript:void(0)" class="footer-link" @click="goToAdmin">管理后台</a>
         </div>
       </div>
     </footer>
@@ -271,7 +263,6 @@ export default {
   },
 
   async mounted() {
-    this.initMouseEffect()
     await this.loadData()
   },
 
@@ -417,10 +408,6 @@ export default {
       this.$router.push('/blog-website')
     },
 
-    goToAdmin() {
-      this.$router.push('/')
-      this.$message.success('正在跳转到管理后台...')
-    },
 
     goToArticle(articleId) {
       this.$router.push(`/blog-website/articles/${articleId}`)
@@ -471,22 +458,7 @@ export default {
       return diffDays <= 7
     },
 
-    // 鼠标交互效果
-    initMouseEffect() {
-      document.addEventListener('mousemove', (e) => {
-        const particles = document.querySelectorAll('.particle')
-        const x = e.clientX / window.innerWidth
-        const y = e.clientY / window.innerHeight
-
-        particles.forEach((particle, index) => {
-          const speed = (index + 1) * 0.3
-          const xOffset = (x - 0.5) * speed * 10
-          const yOffset = (y - 0.5) * speed * 10
-
-          particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`
-        })
-      })
-    }
+    // 鼠标交互效果已移除，保留粒子自然动画
   }
 }
 </script>
@@ -1008,7 +980,6 @@ export default {
           margin-bottom: 12px;
           line-height: 1.4;
           display: -webkit-box;
-          -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
@@ -1019,7 +990,6 @@ export default {
           line-height: 1.6;
           margin-bottom: 16px;
           display: -webkit-box;
-          -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           overflow: hidden;
           flex: 1;

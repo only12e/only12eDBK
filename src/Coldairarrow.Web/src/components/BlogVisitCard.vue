@@ -182,24 +182,28 @@ export default {
     
     visitBlogDirectly() {
       try {
-        // 预览模式：在新窗口打开外部博客网站
-        const blogUrl = this.blogUrl || 'http://192.168.124.23:5001/blog-website'
-        window.open(blogUrl, '_blank', 'width=1200,height=800,scrollbars=yes,toolbar=yes,location=yes,status=yes,menubar=yes,resizable=yes')
-        // this.$message.success('已在新窗口打开外部博客网站')
-        
+        console.log('外部访问点击 - 开始在新标签页打开博客网站')
+        // 外部访问：在新标签页中使用IP地址打开博客网站
+        const currentHost = window.location.host
+        const blogUrl = `${window.location.protocol}//${currentHost}/blog-website`
+
+        window.open(blogUrl, '_blank')
+        this.$message.success('正在新标签页中打开博客网站')
+
         // 增加今日访问计数
         this.incrementTodayVisit()
-        
+
         this.$emit('visit-tracked', {
           type: 'blog_external_visit',
           url: blogUrl,
           timestamp: new Date(),
-          mode: 'preview',
+          mode: 'external',
           visitType: 'external'
         })
       } catch (error) {
-        this.$message.error('无法打开外部博客网站')
-        console.error('打开外部链接失败:', error)
+        console.error('外部访问失败:', error)
+        this.$message.error('打开博客网站失败')
+        console.error('跳转失败:', error)
       }
     },
     

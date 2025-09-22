@@ -96,3 +96,27 @@ export function GetProjectDetailForPublic(id) {
     data: { id }
   })
 }
+
+/**
+ * 点赞项目
+ * @param {number} projectId 项目ID
+ */
+export function LikeProject(projectId) {
+  return request({
+    url: '/Blog_Manage/Blog_Project/LikeProject',
+    method: 'post',
+    data: { projectId }
+  })
+}
+
+/**
+ * 增加项目访问量
+ * @param {number} projectId 项目ID
+ */
+export function IncrementProjectViewCount(projectId) {
+  return request({
+    url: '/Blog_Manage/Blog_Project/IncrementViewCount',
+    method: 'post',
+    data: { projectId }
+  })
+}

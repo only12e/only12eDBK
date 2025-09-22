@@ -109,16 +109,6 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         }
 
         /// <summary>
-        /// 获取用户统计详情
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<UserStatistics> GetUserStatistics()
-        {
-            return await _statisticsBus.GetUserStatisticsAsync();
-        }
-
-        /// <summary>
         /// 获取访问统计详情
         /// </summary>
         /// <returns></returns>

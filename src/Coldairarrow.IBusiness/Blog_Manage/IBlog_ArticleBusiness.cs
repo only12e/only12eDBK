@@ -9,16 +9,17 @@ namespace Coldairarrow.IBusiness.Blog_Manage
     public interface IBlog_ArticleBusiness
     {
         Task<PageResult<Blog_Article>> GetDataListAsync(BlogArticleQueryInputDTO input);
-        Task<Blog_Article> GetTheDataAsync(int id);
+        Task<Blog_Article> GetTheDataAsync(long id);
         Task AddDataAsync(BlogArticleInputDTO input);
         Task UpdateDataAsync(BlogArticleInputDTO input);
-        Task DeleteDataAsync(List<int> ids);
+        Task DeleteDataAsync(List<long> ids);
         Task PublishDataAsync(BlogArticlePublishInputDTO input);
         Task<List<Blog_Article>> GetFeaturedArticlesAsync(int count = 10);
         Task<List<Blog_Article>> GetLatestArticlesAsync(int count = 10);
+        Task IncrementViewCountAsync(long id);
         Task<List<Blog_ArticleCategory>> GetCategoriesAsync();
         Task AddCategoryAsync(Blog_ArticleCategory category);
         Task UpdateCategoryAsync(Blog_ArticleCategory category);
-        Task DeleteCategoryAsync(List<int> ids);
+        Task DeleteCategoryAsync(List<long> ids);
     }
 }

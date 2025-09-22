@@ -36,13 +36,6 @@
             返回列表
           </a-button>
         </div>
-        
-        <div class="header-actions">
-          <a-button type="primary" @click="goToAdmin" class="admin-btn glass-btn">
-            <a-icon type="setting" />
-            <span>管理后台</span>
-          </a-button>
-        </div>
       </div>
     </header>
 
@@ -125,10 +118,14 @@
             <!-- 文章底部操作 -->
             <div class="article-actions glass-card">
               <div class="action-buttons">
-                <a-button type="primary" ghost @click="handleLike" :loading="liking">
-                  <a-icon type="heart" :theme="liked ? 'filled' : 'outlined'" />
-                  {{ liked ? '已点赞' : '点赞' }} ({{ article.LikeCount || 0 }})
-                </a-button>
+                <like-button
+                  target-type="article"
+                  :target-id="article.Id"
+                  :initial-liked="false"
+                  :initial-count="article.LikeCount || 0"
+                  size="large"
+                  @liked="onArticleLiked"
+                />
                 <a-button @click="shareArticle">
                   <a-icon type="share-alt" />
                   分享文章
@@ -256,15 +253,14 @@
                     </div>
                   </div>
                   <div class="comment-actions">
-                    <a-button 
-                      type="link" 
-                      size="small" 
-                      @click="likeComment(comment)"
-                      :disabled="comment.liking"
-                    >
-                      <a-icon type="heart" :style="{ color: comment.liked ? '#ff4757' : '#999' }" />
-                      {{ comment.LikeCount || 0 }}
-                    </a-button>
+                    <like-button
+                      target-type="comment"
+                      :target-id="comment.Id"
+                      :initial-liked="false"
+                      :initial-count="comment.LikeCount || 0"
+                      size="small"
+                      @liked="onCommentLiked"
+                    />
                     <a-button 
                       type="link" 
                       size="small" 
@@ -322,15 +318,14 @@
                         </span>
                         <span class="reply-time">{{ formatTime(reply.CreatedAt) }}</span>
                       </div>
-                      <a-button 
-                        type="link" 
-                        size="small" 
-                        @click="likeComment(reply)"
-                        :disabled="reply.liking"
-                      >
-                        <a-icon type="heart" :style="{ color: reply.liked ? '#ff4757' : '#999' }" />
-                        {{ reply.LikeCount || 0 }}
-                      </a-button>
+                      <like-button
+                        target-type="comment"
+                        :target-id="reply.Id"
+                        :initial-liked="false"
+                        :initial-count="reply.LikeCount || 0"
+                        size="small"
+                        @liked="onCommentLiked"
+                      />
                     </div>
                     <div class="reply-content">{{ reply.Content }}</div>
                   </div>
@@ -405,10 +400,15 @@
 
 <script>
 import { GetTheData, GetDataList } from '@/api/blog_article'
+import { LikeArticle, IncrementArticleViewCount } from '@/api/blog_article_public'
 import { GetArticleComments, PostComment, LikeComment, GetRepliesByParentId } from '@/api/blog_comment'
+import LikeButton from '@/components/LikeButton.vue'
 
 export default {
   name: 'BlogArticleDetail',
+  components: {
+    LikeButton
+  },
   data() {
     return {
       loading: true,
@@ -418,8 +418,6 @@ export default {
       tocItems: [],
       activeAnchor: '',
       showBackTop: false,
-      liked: false,
-      liking: false,
       
       // 评论相关
       comments: [],
@@ -456,7 +454,7 @@ export default {
   },
   
   async mounted() {
-    this.initMouseEffect()
+    // this.initMouseEffect() // Commented out mouse-controlled particle effects
     this.initScrollListener()
     await this.loadArticle()
     await this.loadComments()
@@ -467,6 +465,17 @@ export default {
   },
   
   methods: {
+    // 文章点赞事件处理
+    onArticleLiked(event) {
+      // 更新文章的点赞数
+      this.article.LikeCount = event.likeCount
+    },
+
+    // 评论点赞事件处理
+    onCommentLiked(event) {
+      // 可以在这里添加额外的逻辑，比如更新评论列表
+      console.log('评论点赞状态变化:', event)
+    },
     async loadArticle() {
       const articleId = this.$route.params.id
       
@@ -484,10 +493,7 @@ export default {
         
         if (response.Success && response.Data) {
           this.article = response.Data
-          
-          // 检查用户是否已点赞此文章
-          this.liked = this.checkUserLike(this.article.Id)
-          
+
           // 增加浏览量（这里可以调用专门的API）
           this.incrementViewCount()
           
@@ -611,85 +617,25 @@ export default {
       }
     },
     
-    incrementViewCount() {
-      // 这里可以调用专门的浏览量统计API
-      // 暂时只在本地更新
-      if (this.article.ViewCount !== undefined) {
-        this.article.ViewCount += 1
-      }
-    },
-    
-    async handleLike() {
-      if (this.liking) return
-      
-      this.liking = true
-      
+    async incrementViewCount() {
       try {
-        // TODO: 这里应该调用真实的点赞API
-        // const response = await likeArticle(this.article.Id, !this.liked)
-        
-        // 模拟API调用
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
-        // 模拟成功响应
-        const success = Math.random() > 0.1 // 90% 成功率
-        
-        if (success) {
-          if (!this.liked) {
-            this.liked = true
-            this.article.LikeCount = (this.article.LikeCount || 0) + 1
-            this.$message.success('点赞成功！')
-            
-            // 保存到本地存储
-            this.saveUserLike(this.article.Id, true)
-          } else {
-            this.liked = false
-            this.article.LikeCount = Math.max((this.article.LikeCount || 0) - 1, 0)
-            this.$message.success('取消点赞！')
-            
-            // 从本地存储移除
-            this.saveUserLike(this.article.Id, false)
+        const response = await IncrementArticleViewCount(this.article.Id)
+        if (response.Success) {
+          // 更新本地数据
+          if (this.article.ViewCount !== undefined) {
+            this.article.ViewCount += 1
           }
-        } else {
-          throw new Error('服务器响应失败')
         }
       } catch (error) {
-        console.error('点赞失败:', error)
-        this.$message.error('操作失败，请稍后重试')
-      } finally {
-        this.liking = false
+        console.error('更新访问量失败:', error)
+        // 即使API调用失败，也在本地更新显示，不影响用户体验
+        if (this.article.ViewCount !== undefined) {
+          this.article.ViewCount += 1
+        }
       }
     },
     
-    // 保存用户点赞状态到本地存储
-    saveUserLike(articleId, liked) {
-      try {
-        const key = 'blog_user_likes'
-        const likes = JSON.parse(localStorage.getItem(key) || '{}')
-        
-        if (liked) {
-          likes[articleId] = true
-        } else {
-          delete likes[articleId]
-        }
-        
-        localStorage.setItem(key, JSON.stringify(likes))
-      } catch (error) {
-        console.error('保存点赞状态失败:', error)
-      }
-    },
     
-    // 检查用户是否已点赞
-    checkUserLike(articleId) {
-      try {
-        const key = 'blog_user_likes'
-        const likes = JSON.parse(localStorage.getItem(key) || '{}')
-        return !!likes[articleId]
-      } catch (error) {
-        console.error('检查点赞状态失败:', error)
-        return false
-      }
-    },
     
     shareArticle() {
       const url = window.location.href
@@ -730,10 +676,6 @@ export default {
       this.$router.push('/blog-website/articles')
     },
     
-    goToAdmin() {
-      this.$router.push('/')
-      this.$message.success('正在跳转到管理后台...')
-    },
     
     goToArticle(articleId) {
       this.$router.push(`/blog-website/articles/${articleId}`)
@@ -764,22 +706,22 @@ export default {
       }
     },
     
-    // 鼠标交互效果
-    initMouseEffect() {
-      document.addEventListener('mousemove', (e) => {
-        const particles = document.querySelectorAll('.particle')
-        const x = e.clientX / window.innerWidth
-        const y = e.clientY / window.innerHeight
-        
-        particles.forEach((particle, index) => {
-          const speed = (index + 1) * 0.2
-          const xOffset = (x - 0.5) * speed * 8
-          const yOffset = (y - 0.5) * speed * 8
-          
-          particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`
-        })
-      })
-    },
+    // Mouse effect method commented out to remove mouse-controlled particle effects
+    // initMouseEffect() {
+    //   document.addEventListener('mousemove', (e) => {
+    //     const particles = document.querySelectorAll('.particle')
+    //     const x = e.clientX / window.innerWidth
+    //     const y = e.clientY / window.innerHeight
+    //
+    //     particles.forEach((particle, index) => {
+    //       const speed = (index + 1) * 0.2
+    //       const xOffset = (x - 0.5) * speed * 8
+    //       const yOffset = (y - 0.5) * speed * 8
+    //
+    //       particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`
+    //     })
+    //   })
+    // },
 
     // 评论相关方法
     async loadComments() {
@@ -806,6 +748,7 @@ export default {
               console.error('加载回复失败:', error)
             }
           }
+
         }
       } catch (error) {
         console.error('加载评论失败:', error)
@@ -869,14 +812,32 @@ export default {
           const response = await PostComment(commentData)
           if (response.Success) {
             this.$message.success('评论发表成功!')
+
+            // 构造新评论对象并直接添加到列表开头
+            const newComment = {
+              Id: (response.Data && response.Data.Id) || Date.now(), // 使用返回的ID或临时ID
+              Content: this.commentForm.Content,
+              CreatedAt: new Date().toISOString(),
+              LikeCount: 0,
+              replies: [],
+              ReplyCount: 0,
+              User: {
+                Username: this.commentForm.Username || 'current_user',
+                Nickname: this.commentForm.Username || 'current_user'
+              }
+            }
+
+            // 添加到评论列表开头
+            this.comments.unshift(newComment)
+
+            // 更新评论总数
+            this.commentCount += 1
+
+            // 清空表单
             this.commentForm.Content = ''
             this.commentForm.Username = ''
             this.commentForm.Email = ''
             this.$refs.commentForm.clearValidate()
-            
-            // 重新加载评论
-            this.commentPage = 1
-            await this.loadComments()
           } else {
             this.$message.error(response.Msg || '评论提交失败')
           }
@@ -889,24 +850,6 @@ export default {
       })
     },
 
-    async likeComment(comment) {
-      if (comment.liking) return
-      
-      comment.liking = true
-      try {
-        const response = await LikeComment(comment.Id)
-        if (response.Success) {
-          comment.LikeCount = (comment.LikeCount || 0) + 1
-          comment.liked = true
-          this.$message.success('点赞成功!')
-        }
-      } catch (error) {
-        console.error('点赞失败:', error)
-        this.$message.error('点赞失败，请稍后重试')
-      } finally {
-        comment.liking = false
-      }
-    },
 
     showReplyForm(commentId) {
       this.replyingTo = commentId
@@ -938,11 +881,35 @@ export default {
         const response = await PostComment(replyData)
         if (response.Success) {
           this.$message.success('回复发表成功!')
+
+          // 直接在前端添加新回复到对应的评论，避免重新加载所有数据
+          const parentComment = this.comments.find(c => c.Id === parentId)
+          if (parentComment) {
+            if (!parentComment.replies) {
+              parentComment.replies = []
+            }
+
+            // 构造新回复对象
+            const newReply = {
+              Id: (response.Data && response.Data.Id) || Date.now(), // 使用返回的ID或临时ID
+              Content: this.replyForm.Content,
+              CreatedAt: new Date().toISOString(),
+              LikeCount: 0,
+              User: {
+                Username: 'current_user', // 临时用户名
+                Nickname: 'current_user'
+              }
+            }
+
+            // 添加到回复列表开头
+            parentComment.replies.unshift(newReply)
+            parentComment.ReplyCount = parentComment.replies.length
+
+            // 更新总评论数
+            this.commentCount += 1
+          }
+
           this.cancelReply()
-          
-          // 重新加载评论
-          this.commentPage = 1
-          await this.loadComments()
         } else {
           this.$message.error(response.Msg || '回复提交失败')
         }

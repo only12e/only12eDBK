@@ -54,10 +54,36 @@
         </nav>
         
         <div class="header-actions">
-          <a-button type="primary" @click="goToAdmin" class="admin-btn glass-btn">
-            <a-icon type="setting" />
-            <span>管理后台</span>
-          </a-button>
+          <!-- 用户菜单 -->
+          <div class="user-menu" v-if="blogUser">
+            <a-dropdown placement="bottomRight">
+              <div class="user-info glass-btn">
+                <a-avatar v-if="blogUser.Avatar" :src="blogUser.Avatar" />
+                <a-avatar v-else icon="user" />
+                <span class="username">{{ blogUser.Nickname || blogUser.Username }}</span>
+                <a-icon type="down" />
+              </div>
+              <a-menu slot="overlay" @click="handleUserMenuClick">
+                <a-menu-item key="profile">
+                  <a-icon type="user" />
+                  个人资料
+                </a-menu-item>
+                <a-menu-item key="settings">
+                  <a-icon type="setting" />
+                  设置
+                </a-menu-item>
+                <a-menu-item key="admin">
+                  <a-icon type="dashboard" />
+                  进入管理后台
+                </a-menu-item>
+                <a-menu-divider />
+                <a-menu-item key="logout">
+                  <a-icon type="logout" />
+                  退出登录
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </div>
         </div>
       </div>
     </header>
@@ -272,6 +298,9 @@ export default {
       error: null,
       dataLoadTime: null,
       
+      // 博客用户信息
+      blogUser: null,
+      
       navItems: [
         { key: 'home', label: '首页', icon: 'home' },
         { key: 'articles', label: '技术文章', icon: 'file-text', route: '/blog-website/articles' },
@@ -347,19 +376,70 @@ export default {
         Users: this.overview.Users || { TotalCount: 0, ActiveCount: 0, AdminCount: 0, TodayCount: 0 },
         Access: this.overview.Access || { TotalViews: 0, TotalLikes: 0, TodayViews: 0, TodayLikes: 0 }
       }
-    }
+    },
   },
   
   async mounted() {
-    this.initMouseEffect()
+    // 初始化用户信息
+    this.initBlogUser()
+    
+    // this.initMouseEffect() // Commented out mouse-controlled particle effects
     await this.loadAllData()
   },
   
   methods: {
-    goToAdmin() {
-      this.$router.push('/')
-      this.$message.success('正在跳转到管理后台...')
+    // 初始化用户信息
+    initBlogUser() {
+      try {
+        const blogUser = localStorage.getItem('blog_user')
+        if (blogUser && blogUser !== 'undefined' && blogUser !== 'null') {
+          this.blogUser = JSON.parse(blogUser)
+        } else {
+          this.blogUser = null
+        }
+      } catch (error) {
+        console.error('解析用户信息失败:', error)
+        this.blogUser = null
+        // 清理无效的用户数据
+        localStorage.removeItem('blog_user')
+        localStorage.removeItem('blog_token')
+      }
     },
+
+    // 处理用户菜单点击
+    handleUserMenuClick({ key }) {
+      switch (key) {
+        case 'profile':
+          this.$router.push('/blog-website/profile')
+          break
+        case 'settings':
+          this.$router.push('/blog-website/profile')
+          break
+        case 'admin':
+          // 在新标签页中打开管理后台
+          window.open('/', '_blank')
+          break
+        case 'logout':
+          this.handleLogout()
+          break
+      }
+    },
+
+    // 处理登出
+    handleLogout() {
+      this.$confirm({
+        title: '确认退出',
+        content: '确定要退出登录吗？',
+        onOk: () => {
+          localStorage.removeItem('blog_token')
+          localStorage.removeItem('blog_user')
+          this.blogUser = null
+          this.$message.success('已退出登录')
+          this.$router.push('/blog-login')
+        }
+      })
+    },
+
     
     // 滚动到精选内容区域
     scrollToFeaturedContent() {
@@ -415,21 +495,22 @@ export default {
       }
     },
     
-    initMouseEffect() {
-      document.addEventListener('mousemove', (e) => {
-        const shapes = document.querySelectorAll('.floating-shapes .shape')
-        const x = e.clientX / window.innerWidth
-        const y = e.clientY / window.innerHeight
-        
-        shapes.forEach((shape, index) => {
-          const speed = (index + 1) * 0.5
-          const xOffset = (x - 0.5) * speed * 20
-          const yOffset = (y - 0.5) * speed * 20
-          
-          shape.style.transform = `translate(${xOffset}px, ${yOffset}px)`
-        })
-      })
-    },
+    // Mouse effect method commented out to remove mouse-controlled particle effects
+    // initMouseEffect() {
+    //   document.addEventListener('mousemove', (e) => {
+    //     const shapes = document.querySelectorAll('.floating-shapes .shape')
+    //     const x = e.clientX / window.innerWidth
+    //     const y = e.clientY / window.innerHeight
+    //
+    //     shapes.forEach((shape, index) => {
+    //       const speed = (index + 1) * 0.5
+    //       const xOffset = (x - 0.5) * speed * 20
+    //       const yOffset = (y - 0.5) * speed * 20
+    //
+    //       shape.style.transform = `translate(${xOffset}px, ${yOffset}px)`
+    //     })
+    //   })
+    // },
     
     // 加载所有数据
     async loadAllData() {
@@ -620,13 +701,6 @@ export default {
   box-shadow: var(--glass-shadow);
   border-radius: 16px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 12px 48px rgba(31, 38, 135, 0.25);
-    transform: translateY(-2px);
-  }
 }
 
 .glass-btn {
@@ -872,18 +946,37 @@ export default {
           border-radius: 12px;
           color: var(--text-secondary);
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
-          
-          &:hover, &.active {
+          backdrop-filter: blur(10px);
+          border: 1px solid transparent;
+
+          &:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+
+          &.active {
             color: var(--text-primary);
             background: rgba(255, 255, 255, 0.1);
           }
-          
+
+          &:active {
+            transform: translateY(0);
+          }
+
           .anticon {
             font-size: 16px;
+            transition: transform 0.2s ease;
           }
-          
+
+          &:hover .anticon {
+            transform: scale(1.1);
+          }
+
           span {
             font-size: 14px;
             font-weight: 500;
@@ -893,6 +986,46 @@ export default {
     }
     
     .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      
+      .user-menu {
+        .user-info {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 16px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+          }
+          
+          .ant-avatar {
+            flex-shrink: 0;
+          }
+          
+          .username {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          
+          .anticon-down {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            transition: transform 0.3s ease;
+          }
+        }
+      }
+      
       .admin-btn {
         display: flex;
         align-items: center;

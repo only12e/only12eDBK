@@ -43,7 +43,6 @@ namespace Coldairarrow.Business.Blog_Manage
                 Tools = await GetToolStatisticsAsync(),
                 Technologies = await GetTechnologyStatisticsAsync(),
                 Comments = await GetCommentStatisticsAsync(),
-                Users = await GetUserStatisticsAsync(),
                 Access = await GetAccessStatisticsAsync()
             };
 
@@ -135,9 +134,9 @@ namespace Coldairarrow.Business.Blog_Manage
                 {
                     Id = x.Id,
                     Title = x.Name,
-                    ViewCount = 0, // 工具表暂无浏览数字段
-                    LikeCount = 0, // 工具表暂无点赞数字段
-                    CommentCount = 0, // 工具表暂无评论数字段
+                    ViewCount = 0, 
+                    LikeCount = 0, 
+                    CommentCount = 0,
                     CreatedAt = x.CreatedAt
                 })
                 .ToListAsync();
@@ -170,6 +169,7 @@ namespace Coldairarrow.Business.Blog_Manage
         public async Task<ArticleStatistics> GetArticleStatisticsAsync()
         {
             var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
             var monthStart = new DateTime(today.Year, today.Month, 1);
 
             var query = _db.GetIQueryable<Blog_Article>();
@@ -182,7 +182,7 @@ namespace Coldairarrow.Business.Blog_Manage
                 FeaturedCount = await query.Where(x => x.IsFeatured == 1).CountAsync(),
                 TotalViews = await query.SumAsync(x => x.ViewCount),
                 TotalLikes = await query.SumAsync(x => x.LikeCount),
-                TodayCount = await query.Where(x => x.CreatedAt >= today).CountAsync(),
+                TodayCount = await query.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).CountAsync(),
                 MonthCount = await query.Where(x => x.CreatedAt >= monthStart).CountAsync()
             };
         }
@@ -194,6 +194,7 @@ namespace Coldairarrow.Business.Blog_Manage
         public async Task<ProjectStatistics> GetProjectStatisticsAsync()
         {
             var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
             var monthStart = new DateTime(today.Year, today.Month, 1);
 
             var query = _db.GetIQueryable<Blog_Project>();
@@ -207,7 +208,7 @@ namespace Coldairarrow.Business.Blog_Manage
                 FeaturedCount = await query.Where(x => x.IsFeatured == 1).CountAsync(),
                 TotalViews = await query.SumAsync(x => x.ViewCount),
                 TotalLikes = await query.SumAsync(x => x.LikeCount),
-                TodayCount = await query.Where(x => x.CreatedAt >= today).CountAsync(),
+                TodayCount = await query.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).CountAsync(),
                 MonthCount = await query.Where(x => x.CreatedAt >= monthStart).CountAsync()
             };
         }
@@ -219,6 +220,7 @@ namespace Coldairarrow.Business.Blog_Manage
         public async Task<ToolStatistics> GetToolStatisticsAsync()
         {
             var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
             var monthStart = new DateTime(today.Year, today.Month, 1);
 
             var query = _db.GetIQueryable<Blog_Tool>();
@@ -229,7 +231,7 @@ namespace Coldairarrow.Business.Blog_Manage
                 RecommendedCount = await query.Where(x => x.IsRecommended == 1).CountAsync(),
                 FreeCount = await query.Where(x => x.PriceType == "free").CountAsync(),
                 PaidCount = await query.Where(x => x.PriceType == "paid").CountAsync(),
-                TodayCount = await query.Where(x => x.CreatedAt >= today).CountAsync(),
+                TodayCount = await query.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).CountAsync(),
                 MonthCount = await query.Where(x => x.CreatedAt >= monthStart).CountAsync()
             };
         }
@@ -241,6 +243,7 @@ namespace Coldairarrow.Business.Blog_Manage
         public async Task<TechnologyStatistics> GetTechnologyStatisticsAsync()
         {
             var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
             var monthStart = new DateTime(today.Year, today.Month, 1);
 
             var query = _db.GetIQueryable<Blog_Technology>();
@@ -254,7 +257,7 @@ namespace Coldairarrow.Business.Blog_Manage
                 FeaturedCount = await query.Where(x => x.IsFeatured == 1).CountAsync(),
                 AverageProficiency = Math.Round(avgProficiency, 2),
                 AverageRecommendation = Math.Round(avgRecommendation, 2),
-                TodayCount = await query.Where(x => x.CreatedAt >= today).CountAsync(),
+                TodayCount = await query.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).CountAsync(),
                 MonthCount = await query.Where(x => x.CreatedAt >= monthStart).CountAsync()
             };
         }
@@ -266,6 +269,7 @@ namespace Coldairarrow.Business.Blog_Manage
         public async Task<CommentStatistics> GetCommentStatisticsAsync()
         {
             var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
             var monthStart = new DateTime(today.Year, today.Month, 1);
 
             var query = _db.GetIQueryable<Blog_Comment>();
@@ -276,29 +280,7 @@ namespace Coldairarrow.Business.Blog_Manage
                 PendingCount = await query.Where(x => x.Status == "pending").CountAsync(),
                 ApprovedCount = await query.Where(x => x.Status == "approved").CountAsync(),
                 RejectedCount = await query.Where(x => x.Status == "rejected").CountAsync(),
-                TodayCount = await query.Where(x => x.CreatedAt >= today).CountAsync(),
-                MonthCount = await query.Where(x => x.CreatedAt >= monthStart).CountAsync()
-            };
-        }
-
-        /// <summary>
-        /// 获取用户统计详情
-        /// </summary>
-        /// <returns></returns>
-        public async Task<UserStatistics> GetUserStatisticsAsync()
-        {
-            var today = DateTime.Today;
-            var monthStart = new DateTime(today.Year, today.Month, 1);
-
-            var query = _db.GetIQueryable<Blog_User>();
-
-            return new UserStatistics
-            {
-                TotalCount = await query.CountAsync(),
-                ActiveCount = await query.Where(x => x.Status == 1).CountAsync(),
-                InactiveCount = await query.Where(x => x.Status == 0).CountAsync(),
-                AdminCount = await query.Where(x => x.Role == "admin").CountAsync(),
-                TodayCount = await query.Where(x => x.CreatedAt >= today).CountAsync(),
+                TodayCount = await query.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).CountAsync(),
                 MonthCount = await query.Where(x => x.CreatedAt >= monthStart).CountAsync()
             };
         }
@@ -310,6 +292,7 @@ namespace Coldairarrow.Business.Blog_Manage
         public async Task<AccessStatistics> GetAccessStatisticsAsync()
         {
             var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
             var monthStart = new DateTime(today.Year, today.Month, 1);
 
             // 文章访问统计
@@ -319,11 +302,11 @@ namespace Coldairarrow.Business.Blog_Manage
             var totalViews = await articleQuery.SumAsync(x => x.ViewCount) + await projectQuery.SumAsync(x => x.ViewCount);
             var totalLikes = await articleQuery.SumAsync(x => x.LikeCount) + await projectQuery.SumAsync(x => x.LikeCount);
 
-            // 注意：这里的今日和本月统计是基于创建时间的，实际项目中可能需要访问日志表来获取真实的访问统计
-            var todayViews = await articleQuery.Where(x => x.CreatedAt >= today).SumAsync(x => x.ViewCount) +
-                            await projectQuery.Where(x => x.CreatedAt >= today).SumAsync(x => x.ViewCount);
-            var todayLikes = await articleQuery.Where(x => x.CreatedAt >= today).SumAsync(x => x.LikeCount) +
-                            await projectQuery.Where(x => x.CreatedAt >= today).SumAsync(x => x.LikeCount);
+            // 今日访问数据：统计今天创建的内容的访问量（实际应该从访问日志表获取）
+            var todayViews = await articleQuery.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).SumAsync(x => x.ViewCount) +
+                            await projectQuery.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).SumAsync(x => x.ViewCount);
+            var todayLikes = await articleQuery.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).SumAsync(x => x.LikeCount) +
+                            await projectQuery.Where(x => x.CreatedAt >= today && x.CreatedAt < tomorrow).SumAsync(x => x.LikeCount);
 
             var monthViews = await articleQuery.Where(x => x.CreatedAt >= monthStart).SumAsync(x => x.ViewCount) +
                             await projectQuery.Where(x => x.CreatedAt >= monthStart).SumAsync(x => x.ViewCount);
@@ -393,9 +376,6 @@ namespace Coldairarrow.Business.Blog_Manage
                 case "comment":
                     dataPoints = await GenerateCommentTrendDataAsync(period, startTime, endTime, limit);
                     break;
-                case "user":
-                    dataPoints = await GenerateUserTrendDataAsync(period, startTime, endTime, limit);
-                    break;
             }
 
             return dataPoints.OrderBy(x => x.Time).ToList();
@@ -436,14 +416,6 @@ namespace Coldairarrow.Business.Blog_Manage
         private async Task<List<TrendDataPoint>> GenerateCommentTrendDataAsync(string period, DateTime startTime, DateTime endTime, int limit)
         {
             var query = _db.GetIQueryable<Blog_Comment>()
-                .Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime);
-
-            return await GenerateTrendDataByPeriodAsync(query, x => x.CreatedAt, period, startTime, endTime, limit);
-        }
-
-        private async Task<List<TrendDataPoint>> GenerateUserTrendDataAsync(string period, DateTime startTime, DateTime endTime, int limit)
-        {
-            var query = _db.GetIQueryable<Blog_User>()
                 .Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime);
 
             return await GenerateTrendDataByPeriodAsync(query, x => x.CreatedAt, period, startTime, endTime, limit);
@@ -542,11 +514,6 @@ namespace Coldairarrow.Business.Blog_Manage
             {
                 var commentQuery = query as IQueryable<Blog_Comment>;
                 return await commentQuery.Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime).CountAsync();
-            }
-            else if (typeof(T) == typeof(Blog_User))
-            {
-                var userQuery = query as IQueryable<Blog_User>;
-                return await userQuery.Where(x => x.CreatedAt >= startTime && x.CreatedAt <= endTime).CountAsync();
             }
 
             return 0;

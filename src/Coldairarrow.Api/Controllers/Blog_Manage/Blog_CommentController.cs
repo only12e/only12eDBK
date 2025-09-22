@@ -49,7 +49,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         [HttpPost]
         public async Task<Blog_Comment> GetTheData(IdInputDTO input)
         {
-            return await _commentBus.GetTheDataAsync(input.id.ToInt());
+            return await _commentBus.GetTheDataAsync(input.id.ToLong());
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <returns></returns>
         [HttpPost]
         [ApiPermission("Blog_Comment.Delete")]
-        public async Task DeleteData(List<int> ids)
+        public async Task DeleteData(List<long> ids)
         {
             await _commentBus.DeleteDataAsync(ids);
         }
@@ -91,7 +91,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="count">获取数量</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<Blog_Comment>> GetCommentsByTarget(string targetType, int targetId, int count = 10)
+        public async Task<List<Blog_Comment>> GetCommentsByTarget(string targetType, long targetId, int count = 10)
         {
             return await _commentBus.GetCommentsByTargetAsync(targetType, targetId, count);
         }
@@ -135,6 +135,10 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
             {
                 await _commentBus.RejectCommentsAsync(input.Ids);
             }
+            else if (input.Action == "pending")
+            {
+                await _commentBus.SetCommentsPendingAsync(input.Ids);
+            }
             else
             {
                 throw new BusException("无效的操作类型");
@@ -158,7 +162,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="parentId">父评论ID</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<Blog_Comment>> GetRepliesByParentId(int parentId)
+        public async Task<List<Blog_Comment>> GetRepliesByParentId(long parentId)
         {
             return await _commentBus.GetRepliesByParentIdAsync(parentId);
         }
@@ -169,9 +173,10 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="commentId">评论ID</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task LikeComment(int commentId)
+        public async Task<AjaxResult> LikeComment(long commentId)
         {
-            await _commentBus.LikeCommentAsync(commentId);
+            // 使用新的点赞服务
+            return Success("请使用新的点赞接口 /Blog_Manage/Blog_Like/ToggleLike");
         }
 
         /// <summary>
@@ -201,7 +206,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="PageRows">每页数量</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PageResult<Blog_Comment>> GetArticleComments(string targetType, int targetId, int PageIndex = 1, int PageRows = 10)
+        public async Task<PageResult<Blog_Comment>> GetArticleComments(string targetType, long targetId, int PageIndex = 1, int PageRows = 10)
         {
             var input = new BlogCommentQueryInputDTO
             {
@@ -212,7 +217,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
                 PageIndex = PageIndex,
                 PageRows = PageRows
             };
-            
+
             return await _commentBus.GetDataListAsync(input);
         }
 

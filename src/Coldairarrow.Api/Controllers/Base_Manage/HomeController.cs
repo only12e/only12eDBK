@@ -1,4 +1,4 @@
-﻿using Coldairarrow.Business.Base_Manage;
+using Coldairarrow.Business.Base_Manage;
 using Coldairarrow.IBusiness;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +26,7 @@ namespace Coldairarrow.Api.Controllers.Base_Manage
         readonly IBase_UserBusiness _userBus;
         readonly IOperator _operator;
         private readonly JwtOptions _jwtOptions;
+
         public HomeController(
             IHomeBusiness homeBus,
             IPermissionBusiness permissionBus,

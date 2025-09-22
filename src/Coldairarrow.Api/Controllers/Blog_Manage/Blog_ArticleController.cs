@@ -5,6 +5,7 @@ using Coldairarrow.IBusiness.Blog_Manage;
 using Coldairarrow.Util;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -49,7 +50,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         [HttpPost]
         public async Task<Blog_Article> GetTheData(IdInputDTO input)
         {
-            return await _articleBus.GetTheDataAsync(input.id.ToInt());
+            return await _articleBus.GetTheDataAsync(input.id.ToLong());
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task DeleteData(List<int> ids)
+        public async Task DeleteData(List<long> ids)
         {
             await _articleBus.DeleteDataAsync(ids);
         }
@@ -112,6 +113,37 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         public async Task<List<Blog_Article>> GetLatestArticles(int count = 10)
         {
             return await _articleBus.GetLatestArticlesAsync(count);
+        }
+
+        /// <summary>
+        /// 点赞文章（公共接口）
+        /// </summary>
+        /// <param name="articleId">文章ID</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<AjaxResult> LikeArticle(long articleId)
+        {
+            try
+            {
+                // 使用新的点赞服务
+                return Success("请使用新的点赞接口 /Blog_Manage/Blog_Like/ToggleLike");
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 增加文章访问量（公共接口）
+        /// </summary>
+        /// <param name="articleId">文章ID</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<AjaxResult> IncrementViewCount(long articleId)
+        {
+            await _articleBus.IncrementViewCountAsync(articleId);
+            return Success();
         }
 
         #endregion
@@ -152,7 +184,7 @@ namespace Coldairarrow.Api.Controllers.Blog_Manage
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task DeleteCategory(List<int> ids)
+        public async Task DeleteCategory(List<long> ids)
         {
             await _articleBus.DeleteCategoryAsync(ids);
         }

@@ -36,13 +36,6 @@
             返回列表
           </a-button>
         </div>
-        
-        <div class="header-actions">
-          <a-button type="primary" @click="goToAdmin" class="admin-btn glass-btn">
-            <a-icon type="setting" />
-            <span>管理后台</span>
-          </a-button>
-        </div>
       </div>
     </header>
 
@@ -232,6 +225,199 @@
             </div>
           </aside>
         </div>
+
+        <!-- 评论区 -->
+        <section class="comments-section">
+          <div class="comments-container glass-card">
+            <div class="comments-header">
+              <h3>
+                <a-icon type="message" />
+                评论 ({{ commentCount }})
+              </h3>
+            </div>
+
+            <!-- 发表评论 -->
+            <div class="comment-form-container">
+              <div class="comment-form glass-card-inner">
+                <a-form-model ref="commentForm" :model="commentForm" :rules="commentRules">
+                  <a-form-model-item prop="Content">
+                    <a-textarea
+                      v-model="commentForm.Content"
+                      placeholder="写下你的评论..."
+                      :rows="4"
+                      :disabled="submittingComment"
+                    />
+                  </a-form-model-item>
+                  <div class="form-row">
+                    <div class="user-inputs">
+                      <a-input
+                        v-model="commentForm.Username"
+                        placeholder="昵称"
+                        style="width: 120px; margin-right: 12px;"
+                        :disabled="submittingComment"
+                      />
+                      <a-input
+                        v-model="commentForm.Email"
+                        placeholder="邮箱（可选）"
+                        style="width: 160px;"
+                        :disabled="submittingComment"
+                      />
+                    </div>
+                    <a-button
+                      type="primary"
+                      :loading="submittingComment"
+                      @click="submitComment"
+                      class="submit-btn"
+                    >
+                      <a-icon type="send" />
+                      发表评论
+                    </a-button>
+                  </div>
+                </a-form-model>
+              </div>
+            </div>
+
+            <!-- 评论列表 -->
+            <div class="comments-list" v-if="comments.length > 0">
+              <div
+                v-for="comment in comments"
+                :key="comment.Id"
+                class="comment-item glass-card-inner"
+              >
+                <div class="comment-header">
+                  <div class="comment-author">
+                    <a-avatar :size="32" class="author-avatar">
+                      {{ getAvatarText(comment.User ? (comment.User.Nickname || comment.User.Username) : '匿名') }}
+                    </a-avatar>
+                    <div class="author-info">
+                      <span class="author-name">
+                        {{ comment.User ? (comment.User.Nickname || comment.User.Username) : '匿名用户' }}
+                      </span>
+                      <span class="comment-time">{{ formatTime(comment.CreatedAt) }}</span>
+                    </div>
+                  </div>
+                  <div class="comment-actions">
+                    <a-button
+                      type="link"
+                      size="small"
+                      @click="likeComment(comment)"
+                      :disabled="comment.liking"
+                      :class="{ 'liked-button': comment.liked }"
+                    >
+                      <a-icon
+                        type="heart"
+                        :theme="comment.liked ? 'filled' : 'outlined'"
+                        :style="{
+                          color: comment.liked ? '#ff4757' : '#999',
+                          transition: 'all 0.3s ease'
+                        }"
+                      />
+                      {{ comment.LikeCount || 0 }}
+                    </a-button>
+                    <a-button
+                      type="link"
+                      size="small"
+                      @click="showReplyForm(comment.Id)"
+                    >
+                      <a-icon type="message" />
+                      回复
+                    </a-button>
+                  </div>
+                </div>
+
+                <div class="comment-content">{{ comment.Content }}</div>
+
+                <!-- 回复表单 -->
+                <div v-if="replyingTo === comment.Id" class="reply-form">
+                  <a-textarea
+                    v-model="replyForm.Content"
+                    placeholder="写下你的回复..."
+                    :rows="3"
+                    :disabled="submittingReply"
+                  />
+                  <div class="reply-actions">
+                    <a-button
+                      size="small"
+                      @click="cancelReply"
+                    >
+                      取消
+                    </a-button>
+                    <a-button
+                      type="primary"
+                      size="small"
+                      :loading="submittingReply"
+                      @click="submitReply(comment.Id)"
+                      style="margin-left: 8px;"
+                    >
+                      回复
+                    </a-button>
+                  </div>
+                </div>
+
+                <!-- 回复列表 -->
+                <div v-if="comment.replies && comment.replies.length > 0" class="replies-list">
+                  <div
+                    v-for="reply in comment.replies"
+                    :key="reply.Id"
+                    class="reply-item"
+                  >
+                    <div class="reply-header">
+                      <a-avatar :size="24" class="author-avatar">
+                        {{ getAvatarText(reply.User ? (reply.User.Nickname || reply.User.Username) : '匿名') }}
+                      </a-avatar>
+                      <div class="reply-info">
+                        <span class="reply-author">
+                          {{ reply.User ? (reply.User.Nickname || reply.User.Username) : '匿名用户' }}
+                        </span>
+                        <span class="reply-time">{{ formatTime(reply.CreatedAt) }}</span>
+                      </div>
+                      <a-button
+                        type="link"
+                        size="small"
+                        @click="likeComment(reply)"
+                        :disabled="reply.liking"
+                        :class="{ 'liked-button': reply.liked }"
+                      >
+                        <a-icon
+                          type="heart"
+                          :theme="reply.liked ? 'filled' : 'outlined'"
+                          :style="{
+                            color: reply.liked ? '#ff4757' : '#999',
+                            transition: 'all 0.3s ease'
+                          }"
+                        />
+                        {{ reply.LikeCount || 0 }}
+                      </a-button>
+                    </div>
+                    <div class="reply-content">{{ reply.Content }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 空状态 -->
+            <div v-else class="empty-comments">
+              <a-empty description="暂无评论">
+                <span slot="description">
+                  <a-icon type="message" style="font-size: 48px; color: #ccc;" />
+                  <p style="margin-top: 16px; color: #999;">暂无评论，快来发表第一条评论吧！</p>
+                </span>
+              </a-empty>
+            </div>
+
+            <!-- 加载更多 -->
+            <div v-if="comments.length > 0 && hasMore" class="load-more">
+              <a-button
+                @click="loadMoreComments"
+                :loading="loadingMore"
+                block
+                class="glass-btn"
+              >
+                加载更多评论
+              </a-button>
+            </div>
+          </div>
+        </section>
       </section>
     </main>
 
@@ -275,7 +461,8 @@
 </template>
 
 <script>
-import { GetProjectDetailForPublic, GetProjectListForPublic } from '@/api/blog_project_public'
+import { GetProjectDetailForPublic, GetProjectListForPublic, LikeProject, IncrementProjectViewCount } from '@/api/blog_project_public'
+import { GetArticleComments, PostComment, LikeComment, GetRepliesByParentId } from '@/api/blog_comment'
 
 export default {
   name: 'BlogProjectDetail',
@@ -288,16 +475,46 @@ export default {
       showBackTop: false,
       liked: false,
       liking: false,
-      
+
+      // 评论相关
+      comments: [],
+      commentCount: 0,
+      commentPage: 1,
+      commentPageSize: 10,
+      hasMore: false,
+      loadingMore: false,
+
+      // 评论表单
+      commentForm: {
+        Content: '',
+        Username: '',
+        Email: ''
+      },
+      commentRules: {
+        Content: [
+          { required: true, message: '请输入评论内容', trigger: 'blur' },
+          { min: 5, message: '评论内容至少5个字符', trigger: 'blur' }
+        ]
+      },
+      submittingComment: false,
+
+      // 回复功能
+      replyingTo: null,
+      replyForm: {
+        Content: ''
+      },
+      submittingReply: false,
+
       // 粒子随机数
       Math: Math
     }
   },
   
   async mounted() {
-    this.initMouseEffect()
+    // this.initMouseEffect() // Commented out mouse-controlled particle effects
     this.initScrollListener()
     await this.loadProject()
+    await this.loadComments()
   },
   
   beforeDestroy() {
@@ -395,47 +612,67 @@ export default {
       }
     },
     
-    incrementViewCount() {
-      // 这里可以调用专门的浏览量统计API
-      // 暂时只在本地更新
-      if (this.project.ViewCount !== undefined) {
-        this.project.ViewCount += 1
+    async incrementViewCount() {
+      // 调用后端API增加访问量
+      try {
+        const response = await IncrementProjectViewCount(this.project.Id)
+        if (response.Success) {
+          // 成功更新数据库后，同步更新本地显示
+          if (this.project.ViewCount !== undefined) {
+            this.project.ViewCount += 1
+          }
+        }
+      } catch (error) {
+        console.error('更新访问量失败:', error)
+        // 即使API失败，也可以显示本地增加的数字以提升用户体验
+        if (this.project.ViewCount !== undefined) {
+          this.project.ViewCount += 1
+        }
       }
     },
     
     async handleLike() {
       if (this.liking) return
-      
+
+      // 根据需求，点赞逻辑只能点赞而不能取消点赞
+      if (this.liked) {
+        this.$message.warning('您已经点赞过了')
+        return
+      }
+
       this.liking = true
-      
+
+      // 乐观更新：先更新UI，提升用户体验
+      const originalLikeCount = this.project.LikeCount || 0
+      const originalLiked = this.liked
+
+      this.liked = true
+      this.project.LikeCount = originalLikeCount + 1
+
       try {
-        // TODO: 这里应该调用真实的点赞API
-        // 模拟API调用
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
-        // 模拟成功响应
-        const success = Math.random() > 0.1 // 90% 成功率
-        
-        if (success) {
-          if (!this.liked) {
-            this.liked = true
-            this.project.LikeCount = (this.project.LikeCount || 0) + 1
-            this.$message.success('点赞成功！')
-            
-            // 保存到本地存储
-            this.saveUserLike(this.project.Id, true)
-          } else {
-            this.liked = false
-            this.project.LikeCount = Math.max((this.project.LikeCount || 0) - 1, 0)
-            this.$message.success('取消点赞！')
-            
-            // 从本地存储移除
-            this.saveUserLike(this.project.Id, false)
+        // 调用真实的点赞API
+        const response = await LikeProject(this.project.Id)
+
+        if (response.Success) {
+          this.$message.success('点赞成功！')
+
+          // 保存到本地存储
+          this.saveUserLike(this.project.Id, true)
+
+          // 如果后端返回了新的点赞数，使用后端数据
+          if (response.Data && response.Data.LikeCount !== undefined) {
+            this.project.LikeCount = response.Data.LikeCount
           }
         } else {
-          throw new Error('服务器响应失败')
+          // 点赞失败，回滚UI状态
+          this.liked = originalLiked
+          this.project.LikeCount = originalLikeCount
+          this.$message.error(response.Message || '点赞失败，请稍后重试')
         }
       } catch (error) {
+        // 请求失败，回滚UI状态
+        this.liked = originalLiked
+        this.project.LikeCount = originalLikeCount
         console.error('点赞失败:', error)
         this.$message.error('操作失败，请稍后重试')
       } finally {
@@ -511,10 +748,6 @@ export default {
       this.$router.push('/blog-website/projects')
     },
     
-    goToAdmin() {
-      this.$router.push('/')
-      this.$message.success('正在跳转到管理后台...')
-    },
     
     goToProject(projectId) {
       this.$router.push(`/blog-website/projects/${projectId}`)
@@ -569,21 +802,325 @@ export default {
       return techStack.split(',').map(tech => tech.trim()).filter(tech => tech)
     },
     
-    // 鼠标交互效果
-    initMouseEffect() {
-      document.addEventListener('mousemove', (e) => {
-        const particles = document.querySelectorAll('.particle')
-        const x = e.clientX / window.innerWidth
-        const y = e.clientY / window.innerHeight
-        
-        particles.forEach((particle, index) => {
-          const speed = (index + 1) * 0.2
-          const xOffset = (x - 0.5) * speed * 8
-          const yOffset = (y - 0.5) * speed * 8
-          
-          particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`
-        })
+    // Mouse effect method commented out to remove mouse-controlled particle effects
+    // initMouseEffect() {
+    //   document.addEventListener('mousemove', (e) => {
+    //     const particles = document.querySelectorAll('.particle')
+    //     const x = e.clientX / window.innerWidth
+    //     const y = e.clientY / window.innerHeight
+    //
+    //     particles.forEach((particle, index) => {
+    //       const speed = (index + 1) * 0.2
+    //       const xOffset = (x - 0.5) * speed * 8
+    //       const yOffset = (y - 0.5) * speed * 8
+    //
+    //       particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`
+    //     })
+    //   })
+    // },
+
+    // 评论相关方法
+    async loadComments() {
+      try {
+        const projectId = this.$route.params.id
+        if (!projectId) return
+
+        const response = await GetArticleComments(projectId, this.commentPage, this.commentPageSize)
+        if (response.Success) {
+          // 根据是否为第一页决定是否替换还是追加数据
+          if (this.commentPage === 1) {
+            this.comments = response.Data || []
+          } else {
+            this.comments.push(...(response.Data || []))
+          }
+
+          this.commentCount = response.Total || 0
+          this.hasMore = response.Total > this.commentPage * this.commentPageSize
+
+          // 为每个顶级评论加载回复（只处理新加载的评论）
+          const commentsToProcess = this.commentPage === 1 ? this.comments : (response.Data || [])
+          for (let comment of commentsToProcess) {
+            try {
+              const repliesResponse = await GetRepliesByParentId(comment.Id)
+              if (repliesResponse.Success) {
+                comment.replies = repliesResponse.Data || []
+                comment.ReplyCount = comment.replies.length
+              }
+            } catch (error) {
+              console.error('加载回复失败:', error)
+            }
+          }
+
+          // 初始化点赞状态
+          this.initializeCommentLikeStates()
+        }
+      } catch (error) {
+        console.error('加载评论失败:', error)
+      }
+    },
+
+    async loadMoreComments() {
+      this.loadingMore = true
+      this.commentPage++
+      try {
+        const projectId = this.$route.params.id
+        const response = await GetArticleComments(projectId, this.commentPage, this.commentPageSize)
+        if (response.Success) {
+          const newComments = response.Data || []
+
+          // 为新加载的评论也加载回复
+          for (let comment of newComments) {
+            try {
+              const repliesResponse = await GetRepliesByParentId(comment.Id)
+              if (repliesResponse.Success) {
+                comment.replies = repliesResponse.Data || []
+                comment.ReplyCount = comment.replies.length
+              }
+            } catch (error) {
+              console.error('加载回复失败:', error)
+            }
+          }
+
+          this.comments.push(...newComments)
+          this.hasMore = response.Total > this.commentPage * this.commentPageSize
+        }
+      } catch (error) {
+        console.error('加载更多评论失败:', error)
+      } finally {
+        this.loadingMore = false
+      }
+    },
+
+    async submitComment() {
+      this.$refs.commentForm.validate(async (valid) => {
+        if (!valid) return
+
+        this.submittingComment = true
+        try {
+          const commentData = {
+            Content: this.commentForm.Content,
+            TargetType: 'project',
+            TargetId: parseInt(this.$route.params.id),
+            UserId: 1, // 临时用户ID，实际应该从登录状态获取
+            Status: 'approved' // 直接设置为通过状态
+          }
+
+          // 如果有昵称和邮箱信息，可以创建临时用户或传递额外信息
+          if (this.commentForm.Username) {
+            commentData.Username = this.commentForm.Username
+          }
+          if (this.commentForm.Email) {
+            commentData.Email = this.commentForm.Email
+          }
+
+          const response = await PostComment(commentData)
+          if (response.Success) {
+            this.$message.success('评论发表成功!')
+
+            // 构造新评论对象并直接添加到列表开头
+            const newComment = {
+              Id: (response.Data && response.Data.Id) || Date.now(), // 使用返回的ID或临时ID
+              Content: this.commentForm.Content,
+              CreatedAt: new Date().toISOString(),
+              LikeCount: 0,
+              liked: false, // 新评论默认未点赞
+              liking: false, // 默认未在点赞中
+              replies: [],
+              ReplyCount: 0,
+              User: {
+                Username: this.commentForm.Username || 'current_user',
+                Nickname: this.commentForm.Username || 'current_user'
+              }
+            }
+
+            // 添加到评论列表开头
+            this.comments.unshift(newComment)
+
+            // 更新评论总数
+            this.commentCount += 1
+
+            // 清空表单
+            this.commentForm.Content = ''
+            this.commentForm.Username = ''
+            this.commentForm.Email = ''
+            this.$refs.commentForm.clearValidate()
+          } else {
+            this.$message.error(response.Msg || '评论提交失败')
+          }
+        } catch (error) {
+          console.error('评论提交失败:', error)
+          this.$message.error('评论提交失败，请稍后重试')
+        } finally {
+          this.submittingComment = false
+        }
       })
+    },
+
+    async likeComment(comment) {
+      // 防止重复点击：正在点赞中直接返回
+      if (comment.liking) {
+        return
+      }
+
+      // 检查是否已经点赞过
+      if (comment.liked) {
+        this.$message.warning('您已经点赞过了')
+        return
+      }
+
+      // 立即设置点赞状态，防止重复点击
+      comment.liking = true
+
+      // 乐观更新：先更新UI，再发送请求
+      const originalLikeCount = comment.LikeCount || 0
+      const originalLiked = comment.liked
+
+      comment.LikeCount = originalLikeCount + 1
+      comment.liked = true
+
+      try {
+        const response = await LikeComment(comment.Id)
+        if (response.Success) {
+          // 点赞成功，保存状态到本地存储
+          this.saveCommentLikeState(comment.Id, true)
+          this.$message.success('点赞成功!')
+        } else {
+          // 点赞失败，回滚UI状态
+          comment.LikeCount = originalLikeCount
+          comment.liked = originalLiked
+          this.$message.error('点赞失败，请稍后重试')
+        }
+      } catch (error) {
+        // 请求失败，回滚UI状态
+        comment.LikeCount = originalLikeCount
+        comment.liked = originalLiked
+        console.error('点赞失败:', error)
+        this.$message.error('点赞失败，请稍后重试')
+      } finally {
+        // 无论成功失败都要重置loading状态
+        comment.liking = false
+      }
+    },
+
+    // 保存评论点赞状态到本地存储
+    saveCommentLikeState(commentId, liked) {
+      try {
+        const key = 'blog_comment_likes'
+        const likes = JSON.parse(localStorage.getItem(key) || '{}')
+
+        if (liked) {
+          likes[commentId] = true
+        } else {
+          delete likes[commentId]
+        }
+
+        localStorage.setItem(key, JSON.stringify(likes))
+      } catch (error) {
+        console.error('保存点赞状态失败:', error)
+      }
+    },
+
+    // 检查评论是否已点赞
+    checkCommentLikeState(commentId) {
+      try {
+        const key = 'blog_comment_likes'
+        const likes = JSON.parse(localStorage.getItem(key) || '{}')
+        return !!likes[commentId]
+      } catch (error) {
+        console.error('检查点赞状态失败:', error)
+        return false
+      }
+    },
+
+    // 初始化评论的点赞状态
+    initializeCommentLikeStates() {
+      this.comments.forEach(comment => {
+        comment.liked = this.checkCommentLikeState(comment.Id)
+
+        // 也初始化回复的点赞状态
+        if (comment.replies && comment.replies.length > 0) {
+          comment.replies.forEach(reply => {
+            reply.liked = this.checkCommentLikeState(reply.Id)
+          })
+        }
+      })
+    },
+
+    showReplyForm(commentId) {
+      this.replyingTo = commentId
+      this.replyForm.Content = ''
+    },
+
+    cancelReply() {
+      this.replyingTo = null
+      this.replyForm.Content = ''
+    },
+
+    async submitReply(parentId) {
+      if (!this.replyForm.Content.trim()) {
+        this.$message.error('请输入回复内容')
+        return
+      }
+
+      this.submittingReply = true
+      try {
+        const replyData = {
+          Content: this.replyForm.Content,
+          TargetType: 'project',
+          TargetId: parseInt(this.$route.params.id),
+          UserId: 1, // 临时用户ID
+          ParentId: parentId,
+          Status: 'approved' // 直接设置为通过状态
+        }
+
+        const response = await PostComment(replyData)
+        if (response.Success) {
+          this.$message.success('回复发表成功!')
+
+          // 直接在前端添加新回复到对应的评论，避免重新加载所有数据
+          const parentComment = this.comments.find(c => c.Id === parentId)
+          if (parentComment) {
+            if (!parentComment.replies) {
+              parentComment.replies = []
+            }
+
+            // 构造新回复对象
+            const newReply = {
+              Id: (response.Data && response.Data.Id) || Date.now(), // 使用返回的ID或临时ID
+              Content: this.replyForm.Content,
+              CreatedAt: new Date().toISOString(),
+              LikeCount: 0,
+              liked: false, // 新回复默认未点赞
+              liking: false, // 默认未在点赞中
+              User: {
+                Username: 'current_user', // 临时用户名
+                Nickname: 'current_user'
+              }
+            }
+
+            // 添加到回复列表开头
+            parentComment.replies.unshift(newReply)
+            parentComment.ReplyCount = parentComment.replies.length
+
+            // 更新总评论数
+            this.commentCount += 1
+          }
+
+          this.cancelReply()
+        } else {
+          this.$message.error(response.Msg || '回复提交失败')
+        }
+      } catch (error) {
+        console.error('回复提交失败:', error)
+        this.$message.error('回复提交失败，请稍后重试')
+      } finally {
+        this.submittingReply = false
+      }
+    },
+
+    getAvatarText(name) {
+      if (!name) return '匿'
+      return name.charAt(0).toUpperCase()
     }
   }
 }
@@ -1405,6 +1942,293 @@ export default {
     flex-direction: column;
     gap: 16px;
     text-align: center;
+  }
+}
+
+// 评论区样式
+.comments-section {
+  margin-top: 40px;
+
+  .comments-container {
+    padding: 32px;
+
+    .comments-header {
+      margin-bottom: 24px;
+
+      h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+
+        .anticon {
+          color: var(--primary-color);
+        }
+      }
+    }
+
+    .comment-form-container {
+      margin-bottom: 32px;
+
+      .comment-form {
+        padding: 20px;
+        border-radius: 12px;
+
+        .form-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-top: 12px;
+
+          .user-inputs {
+            display: flex;
+            align-items: center;
+          }
+
+          .submit-btn {
+            border-radius: 20px;
+            padding: 0 20px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+        }
+      }
+    }
+
+    .comments-list {
+      .comment-item {
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 12px;
+
+        .comment-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+
+          .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .author-avatar {
+              background: var(--primary-gradient);
+              color: white;
+              font-weight: 600;
+            }
+
+            .author-info {
+              .author-name {
+                font-weight: 600;
+                color: var(--text-primary);
+                margin-right: 8px;
+              }
+
+              .comment-time {
+                font-size: 13px;
+                color: #999;
+              }
+            }
+          }
+
+          .comment-actions {
+            display: flex;
+            gap: 4px;
+
+            .ant-btn-link {
+              padding: 4px 8px;
+              height: auto;
+              font-size: 13px;
+              color: #999;
+              border-radius: 16px;
+              transition: all 0.3s ease;
+
+              &:hover {
+                color: var(--primary-color);
+                background: rgba(102, 126, 234, 0.1);
+              }
+
+              &.liked-button {
+                color: #ff4757;
+                background: rgba(255, 71, 87, 0.1);
+
+                &:hover {
+                  background: rgba(255, 71, 87, 0.2);
+                }
+              }
+            }
+          }
+        }
+
+        .comment-content {
+          margin-left: 44px;
+          line-height: 1.6;
+          color: var(--text-primary);
+          margin-bottom: 12px;
+        }
+
+        .reply-form {
+          margin: 16px 0 0 44px;
+          padding: 16px;
+          background: rgba(248, 249, 250, 0.8);
+          border-radius: 8px;
+
+          .reply-actions {
+            margin-top: 12px;
+            text-align: right;
+          }
+        }
+
+        .replies-list {
+          margin: 16px 0 0 44px;
+          padding-left: 20px;
+          border-left: 2px solid rgba(102, 126, 234, 0.1);
+
+          .reply-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            .reply-header {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-bottom: 8px;
+
+              .reply-info {
+                flex: 1;
+
+                .reply-author {
+                  font-size: 13px;
+                  font-weight: 600;
+                  color: var(--text-primary);
+                  margin-right: 8px;
+                }
+
+                .reply-time {
+                  font-size: 12px;
+                  color: #999;
+                }
+              }
+
+              .ant-btn-link {
+                padding: 2px 6px;
+                height: auto;
+                font-size: 12px;
+                color: #999;
+                border-radius: 12px;
+                transition: all 0.3s ease;
+
+                &:hover {
+                  color: var(--primary-color);
+                  background: rgba(102, 126, 234, 0.1);
+                }
+
+                &.liked-button {
+                  color: #ff4757;
+                  background: rgba(255, 71, 87, 0.1);
+
+                  &:hover {
+                    background: rgba(255, 71, 87, 0.2);
+                  }
+                }
+              }
+            }
+
+            .reply-content {
+              font-size: 14px;
+              line-height: 1.5;
+              color: var(--text-primary);
+            }
+          }
+        }
+      }
+    }
+
+    .empty-comments {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .load-more {
+      margin-top: 24px;
+
+      .glass-btn {
+        border-radius: 20px;
+        height: 40px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.glass-card-inner {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.05);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(102, 126, 234, 0.2);
+    box-shadow: 0 6px 24px rgba(102, 126, 234, 0.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .comments-section {
+    margin-top: 24px;
+
+    .comments-container {
+      padding: 20px 16px;
+
+      .comment-form-container .comment-form .form-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+
+        .user-inputs {
+          flex-direction: column;
+          gap: 8px;
+
+          input {
+            width: 100% !important;
+            margin-right: 0 !important;
+          }
+        }
+
+        .submit-btn {
+          align-self: flex-end;
+          width: auto;
+        }
+      }
+
+      .comments-list .comment-item {
+        padding: 16px;
+
+        .comment-content,
+        .reply-form,
+        .replies-list {
+          margin-left: 0;
+        }
+
+        .replies-list {
+          padding-left: 16px;
+        }
+      }
+    }
   }
 }
 </style>

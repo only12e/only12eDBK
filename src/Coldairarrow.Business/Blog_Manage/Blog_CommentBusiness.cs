@@ -1,4 +1,5 @@
 using Coldairarrow.Entity.Blog_Manage;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Entity.DTO;
 using Coldairarrow.IBusiness;
 using Coldairarrow.IBusiness.Blog_Manage;
@@ -56,7 +57,9 @@ namespace Coldairarrow.Business.Blog_Manage
             // 用户ID筛选
             if (input.UserId.HasValue)
             {
-                q = q.Where(x => x.UserId == input.UserId.Value);
+                // 将int类型的UserId转换为string进行比较（临时方案，实际应该修改前端传递string类型）
+                var userIdString = input.UserId.Value.ToString();
+                q = q.Where(x => x.UserId == userIdString);
             }
 
             // 是否只查询顶级评论
@@ -88,10 +91,30 @@ namespace Coldairarrow.Business.Blog_Manage
             // 排序
             q = q.OrderByDescending(x => x.CreatedAt);
 
-            return await q.GetPageResultAsync(input);
+            var result = await q.GetPageResultAsync(input);
+
+            // 为顶级评论计算回复数量
+            var topLevelComments = result.Data.Where(x => x.ParentId == null).ToList();
+            if (topLevelComments.Any())
+            {
+                var commentIds = topLevelComments.Select(x => x.Id).ToList();
+                var replyCounts = await GetIQueryable()
+                    .Where(x => x.ParentId.HasValue && commentIds.Contains(x.ParentId.Value) && x.Status == "approved")
+                    .GroupBy(x => x.ParentId)
+                    .Select(g => new { ParentId = g.Key, Count = g.Count() })
+                    .ToListAsync();
+
+                foreach (var comment in topLevelComments)
+                {
+                    var replyCountInfo = replyCounts.FirstOrDefault(x => x.ParentId == comment.Id);
+                    comment.ReplyCount = replyCountInfo?.Count ?? 0;
+                }
+            }
+
+            return result;
         }
 
-        public async Task<Blog_Comment> GetTheDataAsync(int id)
+        public async Task<Blog_Comment> GetTheDataAsync(long id)
         {
             return await GetIQueryable()
                 .Include(x => x.User)
@@ -136,13 +159,13 @@ namespace Coldairarrow.Business.Blog_Manage
             await UpdateAsync(theData);
         }
 
-        public async Task DeleteDataAsync(List<int> ids)
+        public async Task DeleteDataAsync(List<long> ids)
         {
             var stringIds = ids.Select(x => x.ToString()).ToList();
             await DeleteAsync(stringIds);
         }
 
-        public async Task<List<Blog_Comment>> GetCommentsByTargetAsync(string targetType, int targetId, int count = 10)
+        public async Task<List<Blog_Comment>> GetCommentsByTargetAsync(string targetType, long targetId, int count = 10)
         {
             return await GetIQueryable()
                         .Where(x => x.TargetType == targetType && x.TargetId == targetId && x.Status == "approved")
@@ -173,7 +196,7 @@ namespace Coldairarrow.Business.Blog_Manage
                         .ToListAsync();
         }
 
-        public async Task ApproveCommentsAsync(List<int> ids)
+        public async Task ApproveCommentsAsync(List<long> ids)
         {
             var comments = await GetIQueryable()
                 .Where(x => ids.Contains(x.Id))
@@ -188,7 +211,7 @@ namespace Coldairarrow.Business.Blog_Manage
             await UpdateAsync(comments);
         }
 
-        public async Task RejectCommentsAsync(List<int> ids)
+        public async Task RejectCommentsAsync(List<long> ids)
         {
             var comments = await GetIQueryable()
                 .Where(x => ids.Contains(x.Id))
@@ -210,7 +233,7 @@ namespace Coldairarrow.Business.Blog_Manage
                         .CountAsync();
         }
 
-        public async Task<List<Blog_Comment>> GetRepliesByParentIdAsync(int parentId)
+        public async Task<List<Blog_Comment>> GetRepliesByParentIdAsync(long parentId)
         {
             return await GetIQueryable()
                         .Where(x => x.ParentId == parentId && x.Status == "approved")
@@ -219,18 +242,23 @@ namespace Coldairarrow.Business.Blog_Manage
                         .ToListAsync();
         }
 
-        public async Task LikeCommentAsync(int commentId)
+
+        public async Task SetCommentsPendingAsync(List<long> ids)
         {
-            var comment = await GetEntityAsync(commentId);
-            if (comment != null)
+            var comments = await GetIQueryable()
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync();
+
+            foreach (var comment in comments)
             {
-                comment.LikeCount++;
+                comment.Status = "pending";
                 comment.UpdatedAt = DateTime.Now;
-                await UpdateAsync(comment);
             }
+
+            await UpdateAsync(comments);
         }
 
-        public async Task<int> GetRepliesCountAsync(int parentId)
+        public async Task<int> GetRepliesCountAsync(long parentId)
         {
             return await GetIQueryable()
                         .Where(x => x.ParentId == parentId && x.Status == "approved")

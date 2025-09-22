@@ -1,4 +1,5 @@
 using Coldairarrow.Entity.Blog_Manage;
+using Coldairarrow.Entity.Base_Manage;
 using Coldairarrow.Entity.DTO;
 using Coldairarrow.IBusiness;
 using Coldairarrow.IBusiness.Blog_Manage;
@@ -74,7 +75,7 @@ namespace Coldairarrow.Business.Blog_Manage
             return await q.GetPageResultAsync(input);
         }
 
-        public async Task<Blog_Article> GetTheDataAsync(int id)
+        public async Task<Blog_Article> GetTheDataAsync(long id)
         {
             return await GetIQueryable()
                 .Include(x => x.Category)
@@ -87,15 +88,8 @@ namespace Coldairarrow.Business.Blog_Manage
         [DataRepeatValidate(new string[] { "Title" }, new string[] { "文章标题" })]
         public async Task AddDataAsync(BlogArticleInputDTO input)
         {
-            // 获取当前用户ID，如果无法转换则使用默认值1
-            var userId = 1; // 默认用户ID
-            if (!string.IsNullOrEmpty(_operator.UserId))
-            {
-                if (!int.TryParse(_operator.UserId, out userId))
-                {
-                    userId = 1; // 转换失败时使用默认值
-                }
-            }
+            // 获取当前用户ID
+            var authorId = string.IsNullOrEmpty(_operator.UserId) ? "Admin" : _operator.UserId;
 
             var article = new Blog_Article
             {
@@ -104,7 +98,7 @@ namespace Coldairarrow.Business.Blog_Manage
                 Content = input.Content,
                 CoverImage = input.CoverImage,
                 CategoryId = input.CategoryId,
-                AuthorId = userId,
+                AuthorId = authorId,
                 Status = input.Status ?? "draft",
                 IsFeatured = input.IsFeatured,
                 CreatedAt = DateTime.Now,
@@ -153,11 +147,11 @@ namespace Coldairarrow.Business.Blog_Manage
             await DeleteAsync(ids);
         }
 
-        // 为前端提供的int类型ID删除方法
-        public async Task DeleteDataAsync(List<int> ids)
+        // 为前端提供的long类型ID删除方法
+        public async Task DeleteDataAsync(List<long> ids)
         {
             var stringIds = ids.Select(x => x.ToString()).ToList();
-            await DeleteDataAsync(stringIds);
+            await DeleteAsync(stringIds);
         }
 
         public async Task PublishDataAsync(BlogArticlePublishInputDTO input)
@@ -198,6 +192,18 @@ namespace Coldairarrow.Business.Blog_Manage
                 .ToListAsync();
         }
 
+        public async Task IncrementViewCountAsync(long id)
+        {
+            var article = await GetEntityAsync(id);
+            if (article != null)
+            {
+                article.ViewCount++;
+                article.UpdatedAt = DateTime.Now;
+                await UpdateAsync(article);
+            }
+        }
+
+
         #endregion
 
         #region 文章分类管理
@@ -221,7 +227,7 @@ namespace Coldairarrow.Business.Blog_Manage
             await Db.UpdateAsync(category);
         }
 
-        public async Task DeleteCategoryAsync(List<int> ids)
+        public async Task DeleteCategoryAsync(List<long> ids)
         {
             // 检查是否有文章使用了这些分类
             var categoryIds = ids.ToList(); // 确保列表被具体化

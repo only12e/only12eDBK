@@ -26,8 +26,11 @@ namespace Coldairarrow.Business.Base_Manage
         public async Task<string> SubmitLoginAsync(LoginInputDTO input)
         {
             input.password = input.password.ToMD5String();
-            var theUser = await GetIQueryable()
-                .Where(x => x.UserName == input.userName && x.Password == input.password)
+
+            // 使用Db.GetIQueryable<Base_User>()而不是GetIQueryable()，
+            // 确保能查询到所有用户（包括新注册的用户）
+            var theUser = await Db.GetIQueryable<Base_User>()
+                .Where(x => x.UserName == input.userName && x.Password == input.password && !x.Deleted)
                 .FirstOrDefaultAsync();
 
             if (theUser.IsNullOrEmpty())

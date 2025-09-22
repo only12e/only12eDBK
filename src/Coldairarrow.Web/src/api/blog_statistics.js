@@ -9,7 +9,6 @@ const api = {
   toolStatistics: '/Blog_Manage/Blog_Statistics/GetToolStatistics',
   technologyStatistics: '/Blog_Manage/Blog_Statistics/GetTechnologyStatistics',
   commentStatistics: '/Blog_Manage/Blog_Statistics/GetCommentStatistics',
-  userStatistics: '/Blog_Manage/Blog_Statistics/GetUserStatistics',
   accessStatistics: '/Blog_Manage/Blog_Statistics/GetAccessStatistics'
 }
 
@@ -67,13 +66,6 @@ export function GetTechnologyStatistics () {
 export function GetCommentStatistics () {
   return axios({
     url: api.commentStatistics,
-    method: 'get'
-  })
-}
-
-export function GetUserStatistics () {
-  return axios({
-    url: api.userStatistics,
     method: 'get'
   })
 }

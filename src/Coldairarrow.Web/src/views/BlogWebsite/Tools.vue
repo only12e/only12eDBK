@@ -36,13 +36,6 @@
             返回首页
           </a-button>
         </div>
-        
-        <div class="header-actions">
-          <a-button type="primary" @click="goToAdmin" class="admin-btn glass-btn">
-            <a-icon type="setting" />
-            <span>管理后台</span>
-          </a-button>
-        </div>
       </div>
     </header>
 
@@ -294,7 +287,6 @@
         
         <div class="footer-links">
           <a href="javascript:void(0)" class="footer-link" @click="goHome">返回首页</a>
-          <a href="javascript:void(0)" class="footer-link" @click="goToAdmin">管理后台</a>
         </div>
       </div>
     </footer>
@@ -339,7 +331,6 @@ export default {
   },
   
   async mounted() {
-    this.initMouseEffect()
     await this.loadData()
   },
   
@@ -493,10 +484,6 @@ export default {
       this.$router.push('/blog-website')
     },
     
-    goToAdmin() {
-      this.$router.push('/')
-      this.$message.success('正在跳转到管理后台...')
-    },
     
     goToTool(toolId) {
       this.$router.push(`/blog-website/tools/${toolId}`)
@@ -511,23 +498,8 @@ export default {
       }
       return typeMap[priceType] || priceType
     },
-    
-    // 鼠标交互效果
-    initMouseEffect() {
-      document.addEventListener('mousemove', (e) => {
-        const particles = document.querySelectorAll('.particle')
-        const x = e.clientX / window.innerWidth
-        const y = e.clientY / window.innerHeight
-        
-        particles.forEach((particle, index) => {
-          const speed = (index + 1) * 0.2
-          const xOffset = (x - 0.5) * speed * 10
-          const yOffset = (y - 0.5) * speed * 10
-          
-          particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`
-        })
-      })
-    }
+
+    // 鼠标交互效果已移除，保留粒子自然动画
   }
 }
 </script>

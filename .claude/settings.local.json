@@ -3,7 +3,19 @@
     "allow": [
       "Bash(awk:*)",
       "Bash(npm run dev:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(dotnet build)",
+      "Bash(curl:*)",
+      "Bash(tasklist)",
+      "Bash(findstr:*)",
+      "Bash(dotnet run:*)",
+      "Bash(taskkill:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(dotnet build:*)",
+      "Bash(find:*)",
+      "Bash(mysql:*)",
+      "Bash(npm install)"
     ],
     "deny": [],
     "ask": []

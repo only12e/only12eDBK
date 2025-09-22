@@ -32,6 +32,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.5" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.10.9" />
     <PackageReference Include="Caching.CSRedis" Version="3.6.60" />
+    <PackageReference Include="MailKit" Version="3.4.3" />
   </ItemGroup>
 
   <ItemGroup>
