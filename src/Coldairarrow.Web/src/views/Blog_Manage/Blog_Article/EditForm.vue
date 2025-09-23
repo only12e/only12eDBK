@@ -127,6 +127,12 @@ export default {
         this.editor = null
       }
 
+      // 确保DOM元素存在
+      if (!document.getElementById('editor')) {
+        console.warn('编辑器容器不存在')
+        return
+      }
+
       this.editor = new E('#editor')
 
       // 配置服务器端地址
@@ -166,10 +172,13 @@ export default {
         this.entity.Content = html
       }
 
+      // 创建编辑器
       this.editor.create()
 
-      // 确保编辑器内容为空
-      this.editor.txt.html('')
+      // 初始化时清空内容（新建模式下）
+      if (!this.entity.Id) {
+        this.editor.txt.html('')
+      }
     },
 
     getCategories() {
@@ -180,29 +189,53 @@ export default {
 
     openForm(id) {
       if (id) {
-        // 编辑时：先显示对话框和初始化编辑器，但不重置entity
+        // 编辑时：先显示对话框
         this.visible = true
-        this.$nextTick(() => {
-          this.$refs['form'].clearValidate()
-          this.initEditor()
-        })
-        this.getCategories()
-        
-        // 获取数据后再设置entity
+        this.confirmLoading = true
+
+        // 先获取数据
         GetTheData({ id }).then(resJson => {
           this.entity = {
             ...resJson.Data,
             IsFeatured: resJson.Data.IsFeatured === 1
           }
 
-          // 设置编辑器内容
-          if (this.editor && this.entity.Content) {
-            this.editor.txt.html(this.entity.Content)
-          }
+          // 数据获取完成后再初始化编辑器
+          this.$nextTick(() => {
+            this.$refs['form'].clearValidate()
+            this.initEditor()
+
+            // 确保编辑器创建完成后设置内容
+            this.$nextTick(() => {
+              this.setEditorContent(this.entity.Content)
+              this.confirmLoading = false
+            })
+          })
+        }).catch(() => {
+          this.confirmLoading = false
         })
+
+        this.getCategories()
       } else {
         // 新建时：正常初始化
         this.init()
+      }
+    },
+
+    // 设置编辑器内容的辅助方法
+    setEditorContent(content) {
+      if (this.editor && content) {
+        try {
+          this.editor.txt.html(content)
+        } catch (error) {
+          console.warn('设置编辑器内容失败:', error)
+          // 如果设置失败，尝试延迟设置
+          setTimeout(() => {
+            if (this.editor) {
+              this.editor.txt.html(content)
+            }
+          }, 100)
+        }
       }
     },
 
@@ -210,6 +243,12 @@ export default {
       // 确保内容同步
       if (this.editor) {
         this.entity.Content = this.editor.txt.html()
+      }
+
+      // 验证内容不为空
+      if (!this.entity.Content || this.entity.Content.trim() === '' || this.entity.Content === '<p><br></p>') {
+        this.$message.error('请输入文章内容')
+        return
       }
 
       this.$refs['form'].validate(valid => {
@@ -233,6 +272,9 @@ export default {
           } else {
             this.$message.error(resJson.Msg)
           }
+        }).catch(error => {
+          this.confirmLoading = false
+          this.$message.error('保存失败：' + (error.message || '网络错误'))
         })
       })
     }

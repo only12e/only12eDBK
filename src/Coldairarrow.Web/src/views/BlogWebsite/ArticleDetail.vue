@@ -303,8 +303,8 @@
 
                 <!-- 回复列表 -->
                 <div v-if="comment.replies && comment.replies.length > 0" class="replies-list">
-                  <div 
-                    v-for="reply in comment.replies" 
+                  <div
+                    v-for="reply in comment.replies"
                     :key="reply.Id"
                     class="reply-item"
                   >
@@ -474,7 +474,7 @@ export default {
     // 评论点赞事件处理
     onCommentLiked(event) {
       // 可以在这里添加额外的逻辑，比如更新评论列表
-      console.log('评论点赞状态变化:', event)
+      // console.log('评论点赞状态变化:', event)
     },
     async loadArticle() {
       const articleId = this.$route.params.id
@@ -731,24 +731,34 @@ export default {
 
         const response = await GetArticleComments(articleId, this.commentPage, this.commentPageSize)
         if (response.Success) {
+          // 直接使用返回的评论数据
           this.comments = response.Data || []
-          this.commentCount = response.Total || 0
-          this.hasMore = response.Total > this.commentPage * this.commentPageSize
+          this.commentCount = this.comments.length
+          this.hasMore = false // 暂时关闭分页
 
-          // 为每个顶级评论加载回复（不管有没有ReplyCount）
+          // 为每个顶级评论加载回复
           for (let comment of this.comments) {
-            try {
-              const repliesResponse = await GetRepliesByParentId(comment.Id)
-              if (repliesResponse.Success) {
-                comment.replies = repliesResponse.Data || []
-                // 更新回复数量
-                comment.ReplyCount = comment.replies.length
+            // 只为顶级评论加载回复
+            if (!comment.ParentId) {
+              try {
+                const repliesResponse = await GetRepliesByParentId(comment.Id)
+                if (repliesResponse.Success) {
+                  // 使用Vue.set确保响应式更新
+                  this.$set(comment, 'replies', repliesResponse.Data || [])
+                  this.$set(comment, 'ReplyCount', comment.replies.length)
+                } else {
+                  console.error('获取回复失败:', repliesResponse.Msg)
+                }
+              } catch (error) {
+                console.error('加载回复失败:', error)
+                this.$set(comment, 'replies', [])
+                this.$set(comment, 'ReplyCount', 0)
               }
-            } catch (error) {
-              console.error('加载回复失败:', error)
             }
           }
 
+        } else {
+          console.error('获取评论失败:', response.Msg)
         }
       } catch (error) {
         console.error('加载评论失败:', error)

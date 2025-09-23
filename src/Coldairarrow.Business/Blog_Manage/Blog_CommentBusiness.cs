@@ -168,9 +168,8 @@ namespace Coldairarrow.Business.Blog_Manage
         public async Task<List<Blog_Comment>> GetCommentsByTargetAsync(string targetType, long targetId, int count = 10)
         {
             return await GetIQueryable()
-                        .Where(x => x.TargetType == targetType && x.TargetId == targetId && x.Status == "approved")
+                        .Where(x => x.TargetType == targetType && x.TargetId == targetId && x.Status == "approved" && x.ParentId == null)
                         .Include(x => x.User)
-                        .Include(x => x.ParentComment)
                         .OrderByDescending(x => x.CreatedAt)
                         .Take(count)
                         .ToListAsync();

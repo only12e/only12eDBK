@@ -90,7 +90,7 @@ export function GetCommentCountByStatus(status) {
 
 export function GetRepliesByParentId(parentId) {
   return axios({
-    url: api.GetRepliesByParentId,
+    url: api.GetRepliesByParentId, // 恢复使用原来的接口
     method: 'get',
     params: { parentId }
   })
@@ -106,7 +106,7 @@ export function LikeComment(commentId) {
 
 export function PostComment(parameter) {
   return axios({
-    url: api.PostComment,
+    url: api.SaveData, // 恢复使用原来的接口
     method: 'post',
     data: parameter
   })
@@ -114,13 +114,12 @@ export function PostComment(parameter) {
 
 export function GetArticleComments(articleId, page = 1, pageSize = 10) {
   return axios({
-    url: api.GetArticleComments,
+    url: api.GetCommentsByTarget, // 恢复使用原来的接口
     method: 'get',
-    params: { 
+    params: {
       targetType: 'article',
       targetId: articleId,
-      PageIndex: page,
-      PageRows: pageSize
+      count: pageSize
     }
   })
 }

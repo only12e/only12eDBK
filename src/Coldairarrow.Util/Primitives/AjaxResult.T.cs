@@ -8,6 +8,6 @@
         /// <summary>
         /// 返回数据
         /// </summary>
-        public T Data { get; set; }
+        public new T Data { get; set; }
     }
 }

@@ -19,5 +19,10 @@
         /// 返回消息
         /// </summary>
         public string Msg { get; set; }
+
+        /// <summary>
+        /// 返回数据
+        /// </summary>
+        public object Data { get; set; }
     }
 }
